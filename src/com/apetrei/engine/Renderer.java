@@ -9,11 +9,11 @@ public class Renderer {
     private int pixelsW, pixelsH;
     private int[] pixels;
 
-    public Renderer(GameContainer gc){
-        pixelsW = gc.getWidth();
-        pixelsH = gc.getHeight();
+    public Renderer(GameContainer gameContainer){
+        pixelsW = gameContainer.getWidth();
+        pixelsH = gameContainer.getHeight();
 
-        pixels = ((DataBufferInt) gc.getWindow().getImage().getRaster().getDataBuffer()).getData();  //O dear god
+        pixels = ((DataBufferInt) gameContainer.getWindow().getImage().getRaster().getDataBuffer()).getData();  //O dear god
     }
     public void setPixel( int x, int y){
         pixels[y * pixelsW + x] = 0xFFFFFFFF;
@@ -22,7 +22,7 @@ public class Renderer {
 
     public void clear(){
         for (int i = 0; i < pixels.length; i++){
-            //pixels[i] = 0xff000000;
+            pixels[i] = 0xff000000;
         }
     }
 }

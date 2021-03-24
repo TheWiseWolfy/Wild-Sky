@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 //Clasa care gestioneaza fereastra care contine joculs
 public class Window {
+
     private JFrame frame;
     private BufferedImage image;
     private Canvas canvas;

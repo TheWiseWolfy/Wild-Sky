@@ -3,7 +3,7 @@ import java.awt.event.*;
 
 
 public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
-    private GameContainer gc;
+    private GameContainer gameContainer;
 
     private final int NUM_KEYS = 256; //De unde sa stiu eu cate butoane are utilizatorul
     private boolean[] keys = new boolean[NUM_KEYS];
@@ -16,19 +16,20 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     private  int mouseX, mouseY;
     private int scroll;
 
-//Public:
-    public Input(GameContainer _gc) {
-        gc = _gc;
+    //Public:
+    public Input(GameContainer _gameContainer) {
+        gameContainer = _gameContainer;
 
         mouseX = 0;
         mouseY = 0;
         scroll = 0;
 
-        gc.getWindow().getCanvas().addKeyListener(this);
-        gc.getWindow().getCanvas().addMouseListener(this);
-        gc.getWindow().getCanvas().addMouseMotionListener(this);
-        gc.getWindow().getCanvas().addMouseWheelListener(this);
+        gameContainer.getWindow().getCanvas().addKeyListener(this);
+        gameContainer.getWindow().getCanvas().addMouseListener(this);
+        gameContainer.getWindow().getCanvas().addMouseMotionListener(this);
+        gameContainer.getWindow().getCanvas().addMouseWheelListener(this);
     }
+
     public  void  update(){
 
         for(int i = 0; i < NUM_KEYS; i++){
@@ -105,15 +106,15 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        mouseX = (int)(e.getX() / gc.getScale());
-        mouseY  = (int)(e.getY() / gc.getScale());
+        mouseX = (int)(e.getX() / gameContainer.getScale());
+        mouseY  = (int)(e.getY() / gameContainer.getScale());
 
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        mouseX = (int)(e.getX() / gc.getScale() );
-        mouseY = (int)(e.getY() / gc.getScale() );
+        mouseX = (int)(e.getX() / gameContainer.getScale() );
+        mouseY = (int)(e.getY() / gameContainer.getScale() );
     }
 
     @Override

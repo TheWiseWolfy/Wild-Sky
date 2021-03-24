@@ -1,12 +1,16 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.components.Drawing;
+
 public class GameContainer implements Runnable {
+
 
     //Thread pe care va rula enginul
     private Thread thread;
     private Window window;
     private Renderer renderer;
     private Input input;
+    private ObjectManager objectManager;
     private AbstractGame game;
 
     private  boolean running = false;
@@ -28,9 +32,17 @@ public class GameContainer implements Runnable {
         window = new Window(this);
         renderer = new Renderer(this);
         input = new Input(this);
+        objectManager = new ObjectManager(this);
 
         //Pornim un thread separat
+
+
+        GameObject wawawa = new GameObject();
+        wawawa.addComponent(new Drawing(this));
+        objectManager.addGameObject(wawawa);
+
         thread.run();
+
     }
 
     public void stop(){
@@ -49,11 +61,9 @@ public class GameContainer implements Runnable {
         //Monitorizare performanta
         double firstTime = 0;
         double lastTime = System.nanoTime() / 10.0e8;
-        double passedTime = 0;
-        double unprocessedTime = 0;
         double frameTime = 0;
-        int frames = 0;
-        int fps = 0;
+        double unprocessedTime = 0;
+
 
         while(running) {
 
@@ -61,41 +71,26 @@ public class GameContainer implements Runnable {
             render = false;
 
             firstTime = System.nanoTime() / 10.0e8;
-            passedTime = firstTime - lastTime;
+            frameTime = firstTime - lastTime;
             lastTime = firstTime;
 
-            unprocessedTime += passedTime;
-            frameTime += passedTime;
+            unprocessedTime += frameTime;
 
-            //Un desing interesant dar cu o limitatie majora, si anume ca daca jocul devine mai greu de randat, logica o sa efectueze lucrurile mai incet
-            //Intru-un joc ideal ar fi ca logica sa se mentina independenta de viteza cu care este randat
+            //UPDATE
+          //  game.update(this, frameTime);
+            objectManager.updateObjects();
 
+
+            //RENDERING
             while (unprocessedTime >= UPDATE_CAP) {
                 unprocessedTime -= UPDATE_CAP;
-                render = true;                              //Decidem ca e timpul pentru un cadru nou
-                //System.out.println("Running");
-
-                game.update(this, (float)UPDATE_CAP);
-
-                //Paint 2 - my greatest creation
-               // if(input.isMouseKeyPressed(1)) {
-              //      renderer.setPixel((int) (input.getMouseX()), (int) (input.getMouseY()));}
-
-                //Afisam cadre pe secunda
-                if (frameTime >= 1.0) {
-                    frameTime = 0;
-                    fps = frames;
-                    frames = 0;
-                    System.out.println("FPS:" + fps);
-                }
+                render = true;
             }
             if (render) {
-
-                renderer.clear();
-                game.render(this,renderer);
+               // renderer.clear();
+                //game.render(this,renderer);
+                objectManager.renderObjects();
                 window.Update();
-
-                frames++;
             } else {
                 try {
                     Thread.sleep(1);
@@ -115,6 +110,15 @@ public class GameContainer implements Runnable {
     public Window getWindow() {
         return window;
     }
+
+    public Input getInput() {
+        return input;
+    }
+
+    public Renderer getRenderer() {
+        return renderer;
+    }
+    //Parameters
 
     public int getWidth() {
         return width;
