@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 
 //Clasa care gestioneaza fereastra care contine joculs
 public class Window {
-
     private JFrame frame;
     private BufferedImage image;
     private Canvas canvas;
@@ -38,11 +37,10 @@ public class Window {
       //Asocieri
       canvas.createBufferStrategy(2);
       bufferStrategy = canvas.getBufferStrategy();
-      graphics = bufferStrategy.getDrawGraphics   ();
+      graphics = bufferStrategy.getDrawGraphics();
 
       //Aici avem imaginea pe care o vom desena pe ecran
       image = new BufferedImage(gc.getWidth(),gc.getHeight(),BufferedImage.TYPE_INT_RGB);
-
     }
 
     //Chemat in GameContainer
@@ -60,4 +58,8 @@ public class Window {
         return canvas;
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
 }
+
