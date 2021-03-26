@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 public class Window {
 
     private JFrame frame;
-    private BufferedImage image;
     private Canvas canvas;
     private BufferStrategy bufferStrategy;
     private Graphics graphics;
@@ -41,26 +40,30 @@ public class Window {
       graphics = bufferStrategy.getDrawGraphics();
 
       //Aici avem imaginea pe care o vom desena pe ecran
-      image = new BufferedImage(gc.getWidth(),gc.getHeight(),BufferedImage.TYPE_INT_RGB);
     }
+
 
     //Chemat in GameContainer
-    public void Update(){
-        graphics.drawImage(image,0,0,canvas.getWidth(),canvas.getHeight(),null);
+    public void UpdateWindow(){
         bufferStrategy.show();
     }
-    //___________________________________________________________________________________________
+    //________________________________GETTERS__________________________________________________
 
+    /*
     public BufferedImage getImage() {
         return image;
     }
-
+    */
     public Canvas getCanvas() {
         return canvas;
     }
 
     public JFrame getFrame() {
         return frame;
+    }
+
+    public Graphics getGraphics() {
+        return graphics;
     }
 }
 

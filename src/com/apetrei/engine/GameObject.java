@@ -9,8 +9,31 @@ public class GameObject {
 
     public boolean active = false;
     private String uniqueTag;
+
     public GameObject(){
+        active = true;
         components = new ArrayList<Component>();
+    }
+
+    public void addComponent(Component newComponent ){
+        components.add(newComponent);
+    }
+
+    //Update fuction
+
+    public boolean isActive() {
+        return active;
+    }
+
+
+    public Component getComponent(String componentName){
+
+        for(Component a : components){
+            if(a.getClass().getTypeName() == componentName){
+                return a;
+            }
+        }
+        return  null;
     }
 
     public  void update(GameContainer gameContainer){
@@ -22,13 +45,5 @@ public class GameObject {
         for( Component component : components){
             component.componentRender(gameContainer);
         }
-    }
-
-    public void addComponent(Component newComponent ){
-        components.add(newComponent);
-    }
-
-    public boolean isActive() {
-        return active;
     }
 }

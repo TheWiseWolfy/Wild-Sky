@@ -5,9 +5,10 @@ import com.apetrei.engine.GameContainer;
 
 public class Drawing extends Component {
 
-    public Drawing(GameContainer gameContainer ){
+    public Drawing(GameContainer gameContainer ) {
         super(gameContainer);
     }
+
     @Override
     public void componentUpdate(GameContainer gameContainer) {
        if(gameContainer.getInput().isMouseKeyPressed(1)) {

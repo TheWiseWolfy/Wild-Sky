@@ -11,16 +11,17 @@ public class ObjectManager {
         gameObjects = new ArrayList<>();
     }
 
-    void addGameObject(GameObject created){
+   public void addGameObject(GameObject created){
         gameObjects.add(created);
     }
 
+
+    //Update fuctions
 
     void updateObjects(){
 
         for( GameObject current : gameObjects ){
             current.update(gameContainer);
-
         }
     }
 
@@ -29,6 +30,7 @@ public class ObjectManager {
             if(current.isActive() ) {
                 current.render(gameContainer);
             }
+
         }
     }
 

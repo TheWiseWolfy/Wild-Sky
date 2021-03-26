@@ -10,9 +10,8 @@ public class GameContainer implements Runnable {
     private Window window;
     private Renderer renderer;
     private Input input;
-    private ObjectManager objectManager;
-    private AbstractGame game;
 
+    private ObjectManager objectManager;
     private  boolean running = false;
 
     //Propietatile jocului
@@ -22,24 +21,19 @@ public class GameContainer implements Runnable {
     private float scale = 2f;
     private String title = "Engine v1.0";
 
-    public GameContainer(AbstractGame _game){
-        this.game = _game;
-    }
-
-    public void start(){
+    public GameContainer(){
         //Initializari importante
         thread = new Thread(this);
         window = new Window(this);
         renderer = new Renderer(this);
         input = new Input(this);
         objectManager = new ObjectManager(this);
+    }
+
+    public void start(){
 
         //Pornim un thread separat
 
-
-        GameObject wawawa = new GameObject();
-        wawawa.addComponent(new Drawing(this));
-        objectManager.addGameObject(wawawa);
 
         thread.run();
 
@@ -90,7 +84,10 @@ public class GameContainer implements Runnable {
                // renderer.clear();
                 //game.render(this,renderer);
                 objectManager.renderObjects();
-                window.Update();
+                renderer.RenderNow();
+
+                window.UpdateWindow();
+
             } else {
                 try {
                     Thread.sleep(1);
@@ -107,6 +104,10 @@ public class GameContainer implements Runnable {
 
     //_______________________Fluff________________________________
 
+    public ObjectManager getObjectManager() {
+        return objectManager;
+    }
+
     public Window getWindow() {
         return window;
     }
@@ -118,6 +119,7 @@ public class GameContainer implements Runnable {
     public Renderer getRenderer() {
         return renderer;
     }
+
     //Parameters
 
     public int getWidth() {
