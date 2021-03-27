@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 public class ObjectManager {
     protected ArrayList<GameObject> gameObjects;
-    GameContainer gameContainer;
 
-    ObjectManager(GameContainer _gameContainer){
-        gameContainer = _gameContainer;
+    ObjectManager(){
         gameObjects = new ArrayList<>();
     }
 
@@ -15,20 +13,21 @@ public class ObjectManager {
         gameObjects.add(created);
     }
 
-
     //Update fuctions
 
-    void updateObjects(){
+    void updateObjects(double fT){
 
         for( GameObject current : gameObjects ){
-            current.update(gameContainer);
+            if(current.isActive() ) {
+                current.update( fT);
+            }
         }
     }
 
     void renderObjects(){
         for( GameObject current : gameObjects ){
             if(current.isActive() ) {
-                current.render(gameContainer);
+                current.render();
             }
 
         }

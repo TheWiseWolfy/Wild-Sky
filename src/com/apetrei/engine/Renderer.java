@@ -2,7 +2,6 @@ package com.apetrei.engine;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 
 public class Renderer {
@@ -18,18 +17,30 @@ public class Renderer {
         gc = _gameContainer;
         graphics = gc.getWindow().getGraphics();
 
-        pixelsW = gc.getWidth();
-        pixelsH = gc.getHeight();
+        pixelsW = ConfigHandler.getWidth();
+        pixelsH = ConfigHandler.getHeight();
 
 
-        image = new BufferedImage(gc.getWidth(),gc.getHeight(),BufferedImage.TYPE_INT_ARGB);
+        image = new BufferedImage(ConfigHandler.getWidth(), ConfigHandler.getHeight(),BufferedImage.TYPE_INT_ARGB);
 
     }
 
     public void RenderNow(){
-         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();  //O dear god
 
-         graphics.drawImage(image,0,0,(int)(gc.getWidth()* gc.getScale()),(int)(gc.getHeight()* gc.getScale()),null);
+        int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
+        int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
+
+        //Sprite
+         graphics.clearRect(0,0,realSizeX,realSizeY);
+         gc.getObjectManager().renderObjects();
+
+         //Post processing layer
+         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+         clear();
+         graphics.drawImage(image,0,0,realSizeX,realSizeY ,null);
+
+         //Final render
+         gc.getWindow().UpdateWindow();
 
     }
 
@@ -42,7 +53,7 @@ public class Renderer {
 
     public void clear(){
         for (int i = 0; i < pixels.length; i++){
-            pixels[i] = 0xff000000;
+            pixels[i] = 0x00000000;
         }
     }
 

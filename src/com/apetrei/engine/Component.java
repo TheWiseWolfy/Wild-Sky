@@ -1,11 +1,13 @@
 package com.apetrei.engine;
 
 public abstract class Component {
-    GameContainer gameContainer;
+    protected GameObject parent;
 
-   public Component(GameContainer _gameContainer){
-        gameContainer = _gameContainer;
+
+    public Component(GameObject _parent){
+        parent = _parent;
     }
-    public abstract void componentUpdate(GameContainer gameContainer);
-    public abstract void componentRender(GameContainer gameContainer);
+
+    public abstract void componentUpdate( double fT);
+    public abstract void componentRender( );
 }

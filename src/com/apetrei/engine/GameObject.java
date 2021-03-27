@@ -7,10 +7,13 @@ public class GameObject {
     //protected LinkedList<GameObject> children;
     protected ArrayList<Component> components;
 
+    protected GameContainer gameContainer;
+
     public boolean active = false;
     private String uniqueTag;
 
-    public GameObject(){
+    public GameObject(GameContainer _gameContainer){
+        gameContainer = _gameContainer;
         active = true;
         components = new ArrayList<Component>();
     }
@@ -25,25 +28,31 @@ public class GameObject {
         return active;
     }
 
-
     public Component getComponent(String componentName){
 
         for(Component a : components){
-            if(a.getClass().getTypeName() == componentName){
+            if(a.getClass().getSimpleName() == componentName){
                 return a;
             }
         }
         return  null;
     }
 
-    public  void update(GameContainer gameContainer){
+    public  void update(double fT){
         for( Component component : components){
-            component.componentUpdate(gameContainer);
+            component.componentUpdate(fT);
         }
     }
-    public  void render(GameContainer gameContainer){
+    public  void render( ){
         for( Component component : components){
-            component.componentRender(gameContainer);
+            component.componentRender();
         }
     }
+
+    //_______________________________GETTER________________
+
+    public GameContainer getGameContainer() {
+        return gameContainer;
+    }
+
 }

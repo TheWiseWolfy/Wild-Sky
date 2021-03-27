@@ -3,7 +3,6 @@ package com.apetrei.engine;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 //Clasa care gestioneaza fereastra care contine joculs
 public class Window {
@@ -14,10 +13,15 @@ public class Window {
     private Graphics graphics;
 
     //Initializam clase si interfate inportante pentru randarea jocului
-    public Window(GameContainer gc){
+    public Window(){
       canvas = new Canvas();
 
-      Dimension s = new Dimension((int)(gc.getWidth()* gc.getScale()),(int)(gc.getHeight() * gc.getScale()));
+
+        int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
+        int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
+
+
+        Dimension s = new Dimension(realSizeX,realSizeY);
 
        //Setari canvas
       canvas.setPreferredSize(s);
@@ -25,7 +29,7 @@ public class Window {
       canvas.setMinimumSize(s);
 
       //Setari pentru fereastra
-      frame = new JFrame(gc.getTitle());
+      frame = new JFrame(ConfigHandler.getTitle());
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setLayout(new BorderLayout());
       frame.add(canvas,BorderLayout.CENTER);
