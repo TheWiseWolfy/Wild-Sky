@@ -3,15 +3,6 @@
 title __ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
-    abstract class com.apetrei.engine.Component {
-        + Component()
-        {abstract} + componentRender()
-        {abstract} + componentUpdate()
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
     class com.apetrei.engine.ConfigHandler {
         {static} - UPDATE_CAP : double
         {static} - height : int
@@ -101,25 +92,9 @@ title __ENGINE's Class Diagram__\n
     class com.apetrei.engine.ObjectManager {
         # gameObjects : ArrayList<GameObject>
         + addGameObject()
+        + renderObjects()
+        + updateObjects()
         ~ ObjectManager()
-        ~ renderObjects()
-        ~ updateObjects()
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
-    class com.apetrei.engine.Renderer {
-        - graphics : Graphics
-        - image : BufferedImage
-        - pixels : int[]
-        - pixelsH : int
-        - pixelsW : int
-        + RenderNow()
-        + Renderer()
-        + clear()
-        + drawSprite()
-        + setPixel()
     }
   }
   
@@ -139,11 +114,10 @@ title __ENGINE's Class Diagram__\n
   }
   
 
-  com.apetrei.engine.Component o-- com.apetrei.engine.GameObject : parent
   com.apetrei.engine.GameContainer .up.|> java.lang.Runnable
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.Input : input
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.ObjectManager : objectManager
-  com.apetrei.engine.GameContainer o-- com.apetrei.engine.Renderer : renderer
+  com.apetrei.engine.GameContainer o-- com.apetrei.engine.renderer.Renderer : renderer
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.Window : window
   com.apetrei.engine.GameObject o-- com.apetrei.engine.GameContainer : gameContainer
   com.apetrei.engine.Input .up.|> java.awt.event.KeyListener
@@ -151,7 +125,6 @@ title __ENGINE's Class Diagram__\n
   com.apetrei.engine.Input .up.|> java.awt.event.MouseMotionListener
   com.apetrei.engine.Input .up.|> java.awt.event.MouseWheelListener
   com.apetrei.engine.Input o-- com.apetrei.engine.GameContainer : gameContainer
-  com.apetrei.engine.Renderer o-- com.apetrei.engine.GameContainer : gc
 
 
 right footer

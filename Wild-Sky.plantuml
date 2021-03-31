@@ -3,12 +3,6 @@
 title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
-    abstract class com.apetrei.engine.Component {
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
     class com.apetrei.engine.ConfigHandler {
     }
   }
@@ -39,13 +33,15 @@ title __SKEWED ENGINE's Class Diagram__\n
   
 
   namespace com.apetrei.engine {
-    class com.apetrei.engine.Renderer {
+    class com.apetrei.engine.Window {
     }
   }
   
 
   namespace com.apetrei.engine {
-    class com.apetrei.engine.Window {
+    namespace components {
+      abstract class com.apetrei.engine.components.Component {
+      }
     }
   }
   
@@ -74,17 +70,74 @@ title __SKEWED ENGINE's Class Diagram__\n
   }
   
 
+  namespace com.apetrei.engine {
+    namespace physics.primitives {
+      class com.apetrei.engine.physics.primitives.AABB {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics.primitives {
+      class com.apetrei.engine.physics.primitives.Box2D {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics.primitives {
+      class com.apetrei.engine.physics.primitives.Collider2D {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics.rigidbody {
+      class com.apetrei.engine.physics.rigidbody.IntersectionDetector2D {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace renderer {
+      class com.apetrei.engine.renderer.Renderer {
+      }
+    }
+  }
+  
+
   namespace com.apetrei.game {
     class com.apetrei.game.GameManager {
     }
   }
   
 
-  com.apetrei.engine.Component o-- com.apetrei.engine.GameObject : parent
+  namespace com.apetrei.misc {
+    class com.apetrei.misc.ExtraMath {
+    }
+  }
+  
+
+  namespace com.apetrei.misc {
+    class com.apetrei.misc.Line {
+    }
+  }
+  
+
+  namespace com.apetrei.misc {
+    class com.apetrei.misc.Vector2 {
+    }
+  }
+  
+
   com.apetrei.engine.GameContainer .up.|> java.lang.Runnable
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.Input : input
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.ObjectManager : objectManager
-  com.apetrei.engine.GameContainer o-- com.apetrei.engine.Renderer : renderer
+  com.apetrei.engine.GameContainer o-- com.apetrei.engine.renderer.Renderer : renderer
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.Window : window
   com.apetrei.engine.GameObject o-- com.apetrei.engine.GameContainer : gameContainer
   com.apetrei.engine.Input .up.|> java.awt.event.KeyListener
@@ -92,12 +145,25 @@ title __SKEWED ENGINE's Class Diagram__\n
   com.apetrei.engine.Input .up.|> java.awt.event.MouseMotionListener
   com.apetrei.engine.Input .up.|> java.awt.event.MouseWheelListener
   com.apetrei.engine.Input o-- com.apetrei.engine.GameContainer : gameContainer
-  com.apetrei.engine.Renderer o-- com.apetrei.engine.GameContainer : gc
-  com.apetrei.engine.components.PlayerComponent -up-|> com.apetrei.engine.Component
+  com.apetrei.engine.components.Component o-- com.apetrei.engine.GameObject : parent
+  com.apetrei.engine.components.PlayerComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.PlayerComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
-  com.apetrei.engine.components.SpriteComponent -up-|> com.apetrei.engine.Component
+  com.apetrei.engine.components.SpriteComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.SpriteComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
-  com.apetrei.engine.components.TransformComponent -up-|> com.apetrei.engine.Component
+  com.apetrei.engine.components.TransformComponent -up-|> com.apetrei.engine.components.Component
+  com.apetrei.engine.components.TransformComponent o-- com.apetrei.misc.Vector2 : position
+  com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : center
+  com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : halfSize
+  com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : size
+  com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.engine.components.TransformComponent : transform
+  com.apetrei.engine.physics.primitives.Box2D o-- com.apetrei.misc.Vector2 : halfSize
+  com.apetrei.engine.physics.primitives.Box2D o-- com.apetrei.misc.Vector2 : size
+  com.apetrei.engine.physics.primitives.Box2D o-- com.apetrei.engine.components.TransformComponent : transform
+  com.apetrei.engine.physics.primitives.Collider2D -up-|> com.apetrei.engine.components.Component
+  com.apetrei.engine.physics.primitives.Collider2D o-- com.apetrei.misc.Vector2 : offset
+  com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.GameContainer : gc
+  com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : from
+  com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : to
 
 
 right footer

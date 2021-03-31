@@ -1,5 +1,7 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.components.Component;
+
 import java.util.ArrayList;
 
 public class GameObject {

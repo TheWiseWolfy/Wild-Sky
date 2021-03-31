@@ -1,5 +1,7 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.renderer.Renderer;
+
 public class GameContainer implements Runnable {
 
 
@@ -66,8 +68,8 @@ public class GameContainer implements Runnable {
                 render = true;
             }
             if (render) {
-                renderer.RenderNow();
-
+                renderer.Render();
+                renderer.Display();
             } else {
                 try {
                     Thread.sleep(1);

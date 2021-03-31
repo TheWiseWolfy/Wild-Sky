@@ -1,4 +1,6 @@
-package com.apetrei.engine;
+package com.apetrei.engine.components;
+
+import com.apetrei.engine.GameObject;
 
 public abstract class Component {
     protected GameObject parent;

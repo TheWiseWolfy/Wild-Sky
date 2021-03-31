@@ -1,9 +1,6 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.Component;
-import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.GameObject;
-import com.apetrei.engine.ObjectManager;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -38,6 +35,11 @@ public class SpriteComponent  extends Component {
 
     @Override
     public void componentRender( ) {
-        parent.getGameContainer().getRenderer().drawSprite(transformComponent.getX(),transformComponent.getY(),sprite);
+        parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition().y,transformComponent.getPosition().x,sprite);
+
+        parent.getGameContainer().getRenderer().drawRectangle(0,0,100,100);
+
     }
+
+
 }

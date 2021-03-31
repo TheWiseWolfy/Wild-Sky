@@ -1,21 +1,19 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.Component;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.components.Component;
 import com.apetrei.engine.GameObject;
-import com.apetrei.engine.ObjectManager;
+import com.apetrei.misc.Vector2;
 
 public class TransformComponent extends Component {
-    double x;
+    private Vector2 position = new Vector2();
+    private float rotation = 0.0f;
 
+    public TransformComponent(GameObject _parent) {
+        super(_parent);
+    }
 
-    double y;
-    double xV, yV;
-
-    public TransformComponent(GameObject gameObject,int _x, int _y){
-        super(gameObject);
-        x =_x;
-        y=_y;
+    public TransformComponent(GameObject _parent, Vector2 pos) {
+        super(_parent);
     }
 
     @Override
@@ -24,16 +22,25 @@ public class TransformComponent extends Component {
     }
 
     @Override
-    public void componentRender( ) {
+    public void componentRender() {
 
     }
 
-    public double getX() {
-        return x;
+    //__________________FLUF____________________
+
+    public Vector2 getPosition() {
+        return position;
     }
 
-    public double getY() {
-        return y;
+    public void setPosition(Vector2 position) {
+        this.position = position;
     }
 
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+    }
 }

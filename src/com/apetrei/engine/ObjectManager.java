@@ -15,7 +15,7 @@ public class ObjectManager {
 
     //Update fuctions
 
-    void updateObjects(double fT){
+    public void updateObjects(double fT){
 
         for( GameObject current : gameObjects ){
             if(current.isActive() ) {
@@ -24,7 +24,7 @@ public class ObjectManager {
         }
     }
 
-    void renderObjects(){
+    public void renderObjects(){
         for( GameObject current : gameObjects ){
             if(current.isActive() ) {
                 current.render();
