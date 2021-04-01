@@ -5,6 +5,8 @@ title __RIGIDBODY's Class Diagram__\n
   namespace com.apetrei.engine {
     namespace physics.rigidbody {
       class com.apetrei.engine.physics.rigidbody.IntersectionDetector2D {
+          {static} + lineAndBox2D()
+          {static} + lineInAABB()
           {static} + pointInAABB()
           {static} + pointInBox2D()
           {static} + pointOnLine()

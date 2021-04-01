@@ -6,6 +6,7 @@ title __PRIMITIVES's Class Diagram__\n
     namespace physics.primitives {
       class com.apetrei.engine.physics.primitives.AABB {
           + AABB()
+          + AABB()
           + getMax()
           + getMin()
       }

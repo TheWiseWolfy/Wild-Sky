@@ -17,9 +17,8 @@ title __MISC's Class Diagram__\n
     class com.apetrei.misc.Line {
         + Line()
         + getEnd()
-        + getFrom()
         + getStart()
-        + getTo()
+        + lenghtSquared()
     }
   }
   
@@ -33,10 +32,12 @@ title __MISC's Class Diagram__\n
         + Vector2()
         + add()
         + equals()
-        + hashCode()
+        + lenghtSquared()
         + max()
         + min()
         + mul()
+        + mul()
+        + normalize()
         + set()
         + sub()
         + toString()

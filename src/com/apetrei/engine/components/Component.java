@@ -5,6 +5,9 @@ import com.apetrei.engine.GameObject;
 public abstract class Component {
     protected GameObject parent;
 
+    public Component( ){
+        parent = null;
+    }
 
     public Component(GameObject _parent){
         parent = _parent;

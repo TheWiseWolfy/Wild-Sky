@@ -6,6 +6,7 @@ title __COMPONENTS's Class Diagram__\n
     namespace components {
       abstract class com.apetrei.engine.components.Component {
           + Component()
+          + Component()
           {abstract} + componentRender()
           {abstract} + componentUpdate()
       }
@@ -40,6 +41,7 @@ title __COMPONENTS's Class Diagram__\n
     namespace components {
       class com.apetrei.engine.components.TransformComponent {
           - rotation : float
+          + TransformComponent()
           + TransformComponent()
           + TransformComponent()
           + componentRender()

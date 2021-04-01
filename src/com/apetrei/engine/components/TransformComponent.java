@@ -14,7 +14,13 @@ public class TransformComponent extends Component {
 
     public TransformComponent(GameObject _parent, Vector2 pos) {
         super(_parent);
+        position = pos;
     }
+
+    public TransformComponent(Vector2 pos) {
+        super();
+    }
+
 
     @Override
     public void componentUpdate(double fT) {

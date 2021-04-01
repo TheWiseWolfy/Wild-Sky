@@ -32,13 +32,10 @@ public class SpriteComponent  extends Component {
     public void componentUpdate( double fT) {
 
     }
-
     @Override
     public void componentRender( ) {
-        parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition().y,transformComponent.getPosition().x,sprite);
-
-        parent.getGameContainer().getRenderer().drawRectangle(0,0,100,100);
-
+      //  parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition().y,transformComponent.getPosition().x,sprite);
+       // parent.getGameContainer().getRenderer().drawRectangle(0,0,100,100);
     }
 
 

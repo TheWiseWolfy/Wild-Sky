@@ -5,6 +5,8 @@ import com.apetrei.engine.GameObject;
 import com.apetrei.engine.components.PlayerComponent;
 import com.apetrei.engine.components.SpriteComponent;
 import com.apetrei.engine.components.TransformComponent;
+import com.apetrei.engine.physics.primitives.AABB;
+import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 
 public class GameManager {
@@ -18,6 +20,8 @@ public class GameManager {
 
         wawawa.addComponent(new SpriteComponent(wawawa,"C:\\Users\\Lucian\\Desktop\\Projects\\Git\\Wild-Sky\\src\\com\\resources\\79HAmr4.jpg")  );
         gameContainer.getObjectManager().addGameObject(wawawa);
+
+
 
         gameContainer.start();
 

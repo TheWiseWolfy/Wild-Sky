@@ -1,13 +1,17 @@
 package Physics;
 
-import com.apetrei.engine.physics.rigidbody.IntersectionDetector2D;
+import com.apetrei.engine.physics.primitives.IntersectionDetector2D;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
-import junit.framework.Assert;
 import org.junit.jupiter.api.Test;
+
 import static junit.framework.TestCase.*;
 
 public class IntersectionDetector2DTest  {
+
+
+
+
 
     @Test
     public void pointOnLine2D_Test(){
@@ -20,8 +24,6 @@ public class IntersectionDetector2DTest  {
     }
     @Test
     void lineInAABB_Test() {
-        Vector2 wakandaVector = new Vector2(5,13);
-        wakandaVector.normalize();
-        System.out.print(wakandaVector);
+
     }
 }

@@ -1,11 +1,5 @@
 package com.apetrei.misc;
 
-/**
- * Two-Value Vector2 Class
- *
- * @author Chai Nunes
- * @version 1.0
- */
 public class Vector2 {
 
     // Variables
@@ -63,9 +57,11 @@ public class Vector2 {
     }
 
     public Vector2 mul(Vector2 v){
-
+        this.x = this.x  * v.x;
+        this.y = this.y  * v.y;
         return this;
     }
+
     public Vector2 max(Vector2 v){
         this.x = Math.max(this.x,v.x);
         this.y = Math.max(this.y,v.y);
@@ -79,6 +75,10 @@ public class Vector2 {
         this.y = Math.min(this.y,v.y);
 
         return this;
+    }
+
+    public float lenghtSquared(){
+        return (float)(Math.pow(x,2) + Math.pow(y,2));
     }
 
     //____________________FLUF______________________
@@ -102,12 +102,5 @@ public class Vector2 {
         return v.x == this.x && v.y == this.y;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = (int)(53 * hash + this.x);
-        hash = (int)( 53 * hash + this.y);
-        return hash;
-    }
 
 }

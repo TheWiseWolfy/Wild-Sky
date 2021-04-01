@@ -6,18 +6,9 @@ public class Line {
     private Vector2 from;
     private Vector2 to;
 
-    public Line(Vector2 from, Vector2 to) {
-        this.from = from;
-        this.to = to;
-    }
-
-
-    public Vector2 getFrom() {
-        return from;
-    }
-
-    public Vector2 getTo() {
-        return to;
+    public Line(Vector2 _from, Vector2 _to) {
+        this.from = _from;
+        this.to = _to;
     }
 
     public Vector2 getStart() {
@@ -26,6 +17,10 @@ public class Line {
 
     public Vector2 getEnd() {
         return this.to;
+    }
+
+    public float lenghtSquared(){
+        return new Vector2(to).sub(from).lenghtSquared();
     }
 
 }

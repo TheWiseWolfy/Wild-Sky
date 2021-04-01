@@ -2,6 +2,9 @@ package com.apetrei.engine.renderer;
 
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.physics.primitives.Box2D;
+import com.apetrei.misc.Line;
+import com.apetrei.misc.Vector2;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -53,9 +56,26 @@ public class Renderer {
         gc.getWindow().UpdateWindow();
     }
 
+    //Fuction using the graphics class
+    //LINE
     public void drawLine(int x1, int y1, int x2, int y2){
         graphics.setColor(Color.BLACK);
         graphics.drawLine(x1,y1 ,x2,y2);
+    }
+
+    public void drawLine(Line line){
+        graphics.setColor(Color.BLACK);
+        graphics.drawLine((int) line.getStart().x,(int) line.getStart().y ,(int) line.getEnd().x,(int) line.getEnd().y);
+    }
+
+    public void drawLine(Line line, Color col){
+        graphics.setColor(col);
+        graphics.drawLine((int) line.getStart().x,(int) line.getStart().y ,(int) line.getEnd().x,(int) line.getEnd().y);
+    }
+
+    public void drawLine(Vector2 a,  Vector2 b){
+        graphics.setColor(Color.BLACK);
+        graphics.drawLine((int)a.x,(int)a.y ,(int)b.x,(int)b.y);
     }
 
     public void drawLine(int x1, int y1, int x2, int y2,Color col){
@@ -63,19 +83,53 @@ public class Renderer {
         graphics.drawLine(x1,y1 ,x2,y2);
     }
 
+    //RECTANGLE
     public void drawRectangle(int x, int y, int wight, int height){
         graphics.setColor(Color.BLACK);
         graphics.drawRect(x,y ,wight,height);
     }
 
+    public void drawRectangle(Vector2 min, Vector2 max){
+        graphics.setColor(Color.BLACK);
+
+        int wight =(int) (max.x - min.x);
+        int height =(int) (max.y - min.y);
+
+        graphics.drawRect((int)min.x,(int) min.y ,wight,height);
+    }
+
+    public void drawRectangle(Vector2 min, Vector2 max,Color col){
+        graphics.setColor(col);
+
+        int wight =(int) (max.x - min.x);
+        int height =(int) (max.y - min.y);
+
+        graphics.drawRect((int)min.x,(int) min.y ,wight,height);
+    }
     public void drawRectangle(int x, int y, int wight, int height, Color col){
         graphics.setColor(col);
         graphics.drawRect(x,y ,wight,height);
     }
 
+    //BOX
+
+    public void drawBox(Box2D box){
+
+        Vector2[] vertices = box.getVertices();
+
+        for (int i = 0; i < vertices.length ; ++i) {
+            drawLine(vertices[i], vertices[(i + 1) % vertices.length]);
+        }
+        //graphics.drawRect(x,y ,wight,height,6);
+    }
+
+    //SPRITES
     public void drawSprite(double x, double y, BufferedImage img){
         graphics.drawImage(img,(int)x,(int)y,200,200,null);
     }
+
+
+    //Fuctions operating on pixel array
 
     public void setPixel( int x, int y){
         pixels[y * pixelsW + x] = 0xFF000000;

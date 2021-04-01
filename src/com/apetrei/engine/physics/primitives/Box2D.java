@@ -1,6 +1,7 @@
 package com.apetrei.engine.physics.primitives;
 
 import com.apetrei.engine.components.TransformComponent;
+import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.Vector2;
 
 import static com.apetrei.misc.ExtraMath.compare;
@@ -35,16 +36,18 @@ public class Box2D {
         Vector2 min = getMin();
         Vector2 max = getMax();
 
+        //Nota: ordinea in care le pui aici conteaza, fiind ca puctele sunt unite in ordine
         Vector2[] vertices = {
-                new Vector2(min.x, min.y), new Vector2(min.x, max.y),
-                new Vector2(max.x, min.y), new Vector2(max.x, max.y)
+                new Vector2(min.x, min.y),
+                new Vector2(max.x, min.y),
+                new Vector2(max.x, max.y),
+                new Vector2(min.x, max.y)
         };
 
-        if ( compare(transform.getRotation(),0) ) {
+        boolean aligned = compare(transform.getRotation(),0);
+        if (!aligned  ) {
             for (Vector2 vert : vertices) {
-                // TODO: IMPLEMENT GETTING VERTICES OFF A BOX TYPE
-                // Rotates point(Vector2f) about center(Vector2f) by rotation(float in degrees)
-                //JMath.rotate(vert, this.rigidbody.getPosition(), this.rigidbody.getRotation());
+                   ExtraMath.rotateVec(vert, this.getTransform().getRotation(), this.getTransform().getPosition());
             }
         }
 

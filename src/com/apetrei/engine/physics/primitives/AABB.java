@@ -11,7 +11,17 @@ public class AABB {
 
     private TransformComponent transform = null;
 
-    public AABB(Vector2 min, Vector2 max){
+    public AABB(Vector2 min, Vector2 max ){
+        transform = new TransformComponent(new Vector2(0,0));
+
+        this.size = new Vector2(max).sub(min);
+
+        this.halfSize = new Vector2(size).mul(0.5f);
+    }
+
+    public AABB(Vector2 min, Vector2 max, TransformComponent _transform){
+        transform =_transform;
+
         this.size = new Vector2(max).sub(min);
 
         this.halfSize = new Vector2(size).mul(0.5f);
@@ -22,6 +32,6 @@ public class AABB {
     }
 
     public Vector2 getMax(){
-        return new Vector2(this.transform.getPosition().add(this.halfSize));
+        return new Vector2(this.transform.getPosition()).add(this.halfSize);
     }
 }
