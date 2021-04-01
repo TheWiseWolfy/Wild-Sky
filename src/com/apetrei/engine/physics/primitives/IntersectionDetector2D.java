@@ -119,8 +119,49 @@ public class IntersectionDetector2D {
 
 
         return lineInAABB(localLine, aabb);
-    }//that is hard
+    }
 
+    //RAYCAST
+    //TODO Test this amigo
+    public static boolean raycast(AABB box, Ray2D ray, RaycastResult result) {
+        RaycastResult.reset(result);
 
+        Vector2 unitVector = ray.getDirection();
+        unitVector.normalize();
+        unitVector.x = (unitVector.x != 0) ? 1.0f / unitVector.x : 0f;
+        unitVector.y = (unitVector.y != 0) ? 1.0f / unitVector.y : 0f;
 
+        Vector2 min = box.getMin();
+        min.sub(ray.getOrigin()).mul(unitVector);
+        Vector2 max = box.getMax();
+        max.sub(ray.getOrigin()).mul(unitVector);
+
+        float tmin = Math.max(Math.min(min.x, max.x), Math.min(min.y, max.y));
+        float tmax = Math.min(Math.max(min.x, max.x), Math.max(min.y, max.y));
+
+        if (tmax < 0 || tmin > tmax) {
+            return false;
+        }
+
+        float t = (tmin < 0f) ? tmax : tmin;
+        boolean hit = t > 0f; //&& t * t < ray.getMaximum();
+
+        if (!hit) {
+            return false;
+        }
+
+        if (result != null) {
+            Vector2 point = new Vector2(ray.getOrigin()).add( new Vector2(ray.getDirection()).mul(t)  );
+            Vector2 normal = new Vector2(ray.getOrigin()).sub(point);
+            normal.normalize();
+
+            result.init(point, normal, t, true);
+        }
+        return true;
+    }
+
+    public static boolean raycast(Box2D box, Ray2D ray, RaycastResult result) {
+        //TODO Implement this
+        return false;
+    }
 }

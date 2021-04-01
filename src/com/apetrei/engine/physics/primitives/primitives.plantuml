@@ -39,6 +39,30 @@ title __PRIMITIVES's Class Diagram__\n
   }
   
 
+  namespace com.apetrei.engine {
+    namespace physics.primitives {
+      class com.apetrei.engine.physics.primitives.IntersectionDetector2D {
+          {static} + lineAndBox2D()
+          {static} + lineInAABB()
+          {static} + pointInAABB()
+          {static} + pointInBox2D()
+          {static} + pointOnLine()
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics.primitives {
+      class com.apetrei.engine.physics.primitives.Ray2D {
+          + Ray2D()
+          + getDirection()
+          + getOrigin()
+      }
+    }
+  }
+  
+
   com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : center
   com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : halfSize
   com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : size
@@ -48,6 +72,8 @@ title __PRIMITIVES's Class Diagram__\n
   com.apetrei.engine.physics.primitives.Box2D o-- com.apetrei.engine.components.TransformComponent : transform
   com.apetrei.engine.physics.primitives.Collider2D -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.physics.primitives.Collider2D o-- com.apetrei.misc.Vector2 : offset
+  com.apetrei.engine.physics.primitives.Ray2D o-- com.apetrei.misc.Vector2 : direction
+  com.apetrei.engine.physics.primitives.Ray2D o-- com.apetrei.misc.Vector2 : origin
 
 
 right footer
