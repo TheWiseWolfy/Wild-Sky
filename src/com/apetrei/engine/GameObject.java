@@ -21,6 +21,8 @@ public class GameObject {
     }
 
     public void addComponent(Component newComponent ){
+        newComponent.setParent(this);
+        newComponent.componentInit();
         components.add(newComponent);
     }
 
@@ -30,14 +32,19 @@ public class GameObject {
         return active;
     }
 
-    public Component getComponent(String componentName){
+    public Component getComponent(Class desiredClass){
+
+        //Dupa multa experiemntatie, am ajuns la forma finala a acestei fuctii, in care:
+        // -Daca ceri un obiect, si acesta este prezent, iti va fi returnat.
+        // -Daca ceri un obiect, si un mostenitor al ecestuia este prezent, atunci iti va fi returnat acesta
 
         for(Component a : components){
-            if(a.getClass().getSimpleName() == componentName){
+            if(desiredClass.isAssignableFrom(a.getClass())){
                 return a;
             }
         }
         return  null;
+        //TODO Write Exception
     }
 
     public  void update(double fT){

@@ -40,6 +40,14 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace components {
+      class com.apetrei.engine.components.Collider2D {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace components {
       abstract class com.apetrei.engine.components.Component {
       }
     }
@@ -71,40 +79,118 @@ title __SKEWED ENGINE's Class Diagram__\n
   
 
   namespace com.apetrei.engine {
-    namespace physics.primitives {
-      class com.apetrei.engine.physics.primitives.AABB {
+    namespace physics {
+      class com.apetrei.engine.physics.PhysicsSystem2D {
       }
     }
   }
   
 
   namespace com.apetrei.engine {
-    namespace physics.primitives {
-      class com.apetrei.engine.physics.primitives.Box2D {
+    namespace physics {
+      namespace forces {
+        interface com.apetrei.engine.physics.forces.ForceGenerator {
+        }
       }
     }
   }
   
 
   namespace com.apetrei.engine {
-    namespace physics.primitives {
-      class com.apetrei.engine.physics.primitives.Collider2D {
+    namespace physics {
+      namespace forces {
+        class com.apetrei.engine.physics.forces.ForceRegistration {
+        }
       }
     }
   }
   
 
   namespace com.apetrei.engine {
-    namespace physics.primitives {
-      class com.apetrei.engine.physics.primitives.IntersectionDetector2D {
+    namespace physics {
+      namespace forces {
+        class com.apetrei.engine.physics.forces.ForceRegistry {
+        }
       }
     }
   }
   
 
   namespace com.apetrei.engine {
-    namespace physics.primitives {
-      class com.apetrei.engine.physics.primitives.Ray2D {
+    namespace physics {
+      namespace primitives {
+        class com.apetrei.engine.physics.primitives.AABB {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics {
+      namespace primitives {
+        class com.apetrei.engine.physics.primitives.Box2D {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics {
+      namespace primitives {
+        class com.apetrei.engine.physics.primitives.Ray2D {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics {
+      namespace primitives {
+        class com.apetrei.engine.physics.primitives.RaycastResult {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics {
+      namespace rigidbody {
+        class com.apetrei.engine.physics.rigidbody.CollisionManifold {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics {
+      namespace rigidbody {
+        class com.apetrei.engine.physics.rigidbody.Collisions {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics {
+      namespace rigidbody {
+        class com.apetrei.engine.physics.rigidbody.IntersectionDetector2D {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics {
+      namespace rigidbody {
+        class com.apetrei.engine.physics.rigidbody.Rigidbody2D {
+        }
       }
     }
   }
@@ -153,6 +239,8 @@ title __SKEWED ENGINE's Class Diagram__\n
   com.apetrei.engine.Input .up.|> java.awt.event.MouseMotionListener
   com.apetrei.engine.Input .up.|> java.awt.event.MouseWheelListener
   com.apetrei.engine.Input o-- com.apetrei.engine.GameContainer : gameContainer
+  com.apetrei.engine.components.Collider2D -up-|> com.apetrei.engine.components.Component
+  com.apetrei.engine.components.Collider2D o-- com.apetrei.misc.Vector2 : offset
   com.apetrei.engine.components.Component o-- com.apetrei.engine.GameObject : parent
   com.apetrei.engine.components.PlayerComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.PlayerComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
@@ -160,6 +248,9 @@ title __SKEWED ENGINE's Class Diagram__\n
   com.apetrei.engine.components.SpriteComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
   com.apetrei.engine.components.TransformComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.TransformComponent o-- com.apetrei.misc.Vector2 : position
+  com.apetrei.engine.physics.PhysicsSystem2D o-- com.apetrei.engine.physics.forces.ForceRegistry : forceRegistry
+  com.apetrei.engine.physics.forces.ForceRegistration o-- com.apetrei.engine.physics.forces.ForceGenerator : fg
+  com.apetrei.engine.physics.forces.ForceRegistration o-- com.apetrei.engine.components.TransformComponent : rb
   com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : center
   com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : halfSize
   com.apetrei.engine.physics.primitives.AABB o-- com.apetrei.misc.Vector2 : size
@@ -167,10 +258,15 @@ title __SKEWED ENGINE's Class Diagram__\n
   com.apetrei.engine.physics.primitives.Box2D o-- com.apetrei.misc.Vector2 : halfSize
   com.apetrei.engine.physics.primitives.Box2D o-- com.apetrei.misc.Vector2 : size
   com.apetrei.engine.physics.primitives.Box2D o-- com.apetrei.engine.components.TransformComponent : transform
-  com.apetrei.engine.physics.primitives.Collider2D -up-|> com.apetrei.engine.components.Component
-  com.apetrei.engine.physics.primitives.Collider2D o-- com.apetrei.misc.Vector2 : offset
   com.apetrei.engine.physics.primitives.Ray2D o-- com.apetrei.misc.Vector2 : direction
   com.apetrei.engine.physics.primitives.Ray2D o-- com.apetrei.misc.Vector2 : origin
+  com.apetrei.engine.physics.primitives.RaycastResult o-- com.apetrei.misc.Vector2 : normal
+  com.apetrei.engine.physics.primitives.RaycastResult o-- com.apetrei.misc.Vector2 : point
+  com.apetrei.engine.physics.rigidbody.CollisionManifold o-- com.apetrei.misc.Vector2 : normal
+  com.apetrei.engine.physics.rigidbody.Rigidbody2D -up-|> com.apetrei.engine.components.TransformComponent
+  com.apetrei.engine.physics.rigidbody.Rigidbody2D o-- com.apetrei.engine.components.Collider2D : collider2D
+  com.apetrei.engine.physics.rigidbody.Rigidbody2D o-- com.apetrei.misc.Vector2 : forceAccum
+  com.apetrei.engine.physics.rigidbody.Rigidbody2D o-- com.apetrei.misc.Vector2 : linearVelocity
   com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.GameContainer : gc
   com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : from
   com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : to

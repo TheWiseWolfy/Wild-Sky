@@ -31,7 +31,9 @@ title __MISC's Class Diagram__\n
         + Vector2()
         + Vector2()
         + add()
+        + dot()
         + equals()
+        + get()
         + lenghtSquared()
         + max()
         + min()
@@ -39,6 +41,8 @@ title __MISC's Class Diagram__\n
         + mul()
         + normalize()
         + set()
+        + set()
+        + setComponent()
         + sub()
         + toString()
     }

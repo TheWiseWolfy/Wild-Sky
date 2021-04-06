@@ -1,19 +1,27 @@
 package com.apetrei.engine.components;
 
 import com.apetrei.engine.*;
-import com.apetrei.engine.physics.primitives.Box2D;
-import com.apetrei.engine.physics.primitives.IntersectionDetector2D;
+import com.apetrei.engine.physics.primitives.colliders.Box2DCollider;
+import com.apetrei.engine.physics.rigidbody.IntersectionDetector2D;
+import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
+import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class PlayerComponent extends Component {
-    private TransformComponent transformComponent;
+    private Rigidbody2D rigidbody;
+    public PlayerComponent(){
+        super();
+    }
 
-    public PlayerComponent(GameObject gameObject){
-        super(gameObject);
-
+    @Override
+    public void componentInit() {
         try {
-            transformComponent = (TransformComponent) parent.getComponent(TransformComponent.class.getSimpleName());
+            rigidbody = (Rigidbody2D) parent.getComponent(Rigidbody2D.class);
+
         }
         catch (Exception e){
             e.printStackTrace();
@@ -23,28 +31,62 @@ public class PlayerComponent extends Component {
     @Override
     public void componentUpdate(double fT) {
 
-        float mouseX =  parent.getGameContainer().getInput().getMouseX() * ConfigHandler.getScale() ;
-        float mouseY = parent.getGameContainer().getInput().getMouseY()* ConfigHandler.getScale();
+        Vector2 newVelocity = new Vector2(rigidbody.getLinearVelocity() );
 
-        if(parent.getGameContainer().getInput().isMouseKeyPressed(1)){
-            transformComponent.setPosition(new Vector2(mouseX,mouseY));
+
+        if(parent.getGameContainer().getInput().isKeyPressed(65)) {
+            newVelocity.y = -1;
+            System.out.print(  newVelocity.x );
+            rigidbody.setLinearVelocity(newVelocity);
         }
-        transformComponent.setRotation(13);
+        if(parent.getGameContainer().getInput().isKeyPressed(68)) {
+            newVelocity.y = 1;
+            System.out.print(  newVelocity.x );
+            rigidbody.setLinearVelocity(newVelocity);
+        }
+
+        if(parent.getGameContainer().getInput().isKeyPressed(87)) {
+            newVelocity.x = -1;
+            System.out.print(  newVelocity.x );
+            rigidbody.setLinearVelocity(newVelocity);
+         }
+        if(parent.getGameContainer().getInput().isKeyPressed(83)) {
+            newVelocity.x = 1 ;
+            System.out.print(  newVelocity.x );
+            rigidbody.setLinearVelocity(newVelocity);
+        }else {
+            newVelocity.x = 0;
+        }
+
     }
     @Override
     public void componentRender() {
-        int a =(int) transformComponent.getPosition().x;
-        int b =(int) transformComponent.getPosition().y;
 
-        Line line = new Line( new Vector2(50,500), new Vector2(500,100));
-        Box2D box = new Box2D(new Vector2(0,0), new Vector2( 120,120), transformComponent);
+        Vector2[] waka = {
+                new Vector2(0, 0),
+                new Vector2(200, 200),
+                new Vector2(300, 400),
+                new Vector2(100, 600)
+        };
+        ConvexPolygon2D wa = new ConvexPolygon2D(waka);
 
-        //parent.getGameContainer().getRenderer().drawRectangle(box.getMin(), box.getMax() );
-        parent.getGameContainer().getRenderer().drawBox(box);
-        parent.getGameContainer().getRenderer().drawLine(line);
+         parent.getGameContainer().getRenderer().drawPoligon(wa);
 
-        if(IntersectionDetector2D.lineAndBox2D(line,box,parent)){
-            System.out.print("Collision detected\n");
-        }
+        int x =-180;
+        int y =0;
+        Vector2[] waka2 = {
+                new Vector2(370+x, 400+y),
+                new Vector2(600+x, 500+y),
+                new Vector2(620+x, 740+y),
+                new Vector2(310+x, 720+y)
+        };
+        ConvexPolygon2D wa2 = new ConvexPolygon2D(waka2);
+
+         parent.getGameContainer().getRenderer().drawPoligon(wa2);
+
+        Vector2[] waka3 = IntersectionDetector2D.GetIntersectionOfPolygons(wa,wa2);
+        ConvexPolygon2D wa3 = new ConvexPolygon2D( waka3 );
+
+         parent.getGameContainer().getRenderer().drawPoligon(wa3, Color.RED);
     }
 }

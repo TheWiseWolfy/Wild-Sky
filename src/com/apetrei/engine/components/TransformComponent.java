@@ -5,31 +5,31 @@ import com.apetrei.engine.GameObject;
 import com.apetrei.misc.Vector2;
 
 public class TransformComponent extends Component {
-    private Vector2 position = new Vector2();
-    private float rotation = 0.0f;
+    protected Vector2 position = new Vector2();
+    protected float rotation = 0.0f;
 
-    public TransformComponent(GameObject _parent) {
-        super(_parent);
-    }
-
-    public TransformComponent(GameObject _parent, Vector2 pos) {
-        super(_parent);
-        position = pos;
-    }
-
-    public TransformComponent(Vector2 pos) {
+    //Initializam obiectul la pozitia (0,0)
+    public TransformComponent() {
         super();
     }
 
+    @Override
+    public void componentInit() {
+
+    }
+
+    //Initializam obiectul la o pozitie data.
+    public TransformComponent(Vector2 pos) {
+        super();
+        position = pos;
+    }
 
     @Override
     public void componentUpdate(double fT) {
-
     }
 
     @Override
     public void componentRender() {
-
     }
 
     //__________________FLUF____________________

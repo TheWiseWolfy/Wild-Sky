@@ -2,7 +2,8 @@ package com.apetrei.engine.renderer;
 
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.physics.primitives.Box2D;
+import com.apetrei.engine.physics.primitives.colliders.Box2DCollider;
+import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 
@@ -65,16 +66,20 @@ public class Renderer {
 
     public void drawLine(Line line){
         graphics.setColor(Color.BLACK);
-        graphics.drawLine((int) line.getStart().x,(int) line.getStart().y ,(int) line.getEnd().x,(int) line.getEnd().y);
+        graphics.drawLine((int) line.getA().x,(int) line.getA().y ,(int) line.getB().x,(int) line.getB().y);
     }
 
     public void drawLine(Line line, Color col){
         graphics.setColor(col);
-        graphics.drawLine((int) line.getStart().x,(int) line.getStart().y ,(int) line.getEnd().x,(int) line.getEnd().y);
+        graphics.drawLine((int) line.getA().x,(int) line.getA().y ,(int) line.getB().x,(int) line.getB().y);
     }
 
     public void drawLine(Vector2 a,  Vector2 b){
         graphics.setColor(Color.BLACK);
+        graphics.drawLine((int)a.x,(int)a.y ,(int)b.x,(int)b.y);
+    }
+    public void drawLine(Vector2 a,  Vector2 b,Color col){
+        graphics.setColor(col);
         graphics.drawLine((int)a.x,(int)a.y ,(int)b.x,(int)b.y);
     }
 
@@ -113,7 +118,7 @@ public class Renderer {
 
     //BOX
 
-    public void drawBox(Box2D box){
+    public void drawBox(Box2DCollider box){
 
         Vector2[] vertices = box.getVertices();
 
@@ -123,6 +128,28 @@ public class Renderer {
         //graphics.drawRect(x,y ,wight,height,6);
     }
 
+
+    //ConvexPolygon2D
+
+    public void drawPoligon(ConvexPolygon2D poly){
+        graphics.setColor(Color.BLACK);
+
+        Vector2[] vertices = poly.vertices;
+
+        for (int i = 0; i < vertices.length ; ++i) {
+            drawLine(vertices[i], vertices[(i + 1) % vertices.length]);
+        }
+        //graphics.drawRect(x,y ,wight,height,6);
+    }
+
+    public void drawPoligon(ConvexPolygon2D poly,Color col){
+        Vector2[] vertices = poly.vertices;
+
+        for (int i = 0; i < vertices.length ; ++i) {
+            drawLine(vertices[i], vertices[(i + 1) % vertices.length],col);
+        }
+        //graphics.drawRect(x,y ,wight,height,6);
+    }
     //SPRITES
     public void drawSprite(double x, double y, BufferedImage img){
         graphics.drawImage(img,(int)x,(int)y,200,200,null);

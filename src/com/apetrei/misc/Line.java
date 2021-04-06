@@ -3,24 +3,24 @@ package com.apetrei.misc;
 import com.apetrei.misc.Vector2;
 
 public class Line {
-    private Vector2 from;
-    private Vector2 to;
+    private Vector2 A;
+    private Vector2 B;
 
-    public Line(Vector2 _from, Vector2 _to) {
-        this.from = _from;
-        this.to = _to;
+    public Line(Vector2 A, Vector2 B) {
+        this.A = A;
+        this.B = B;
     }
 
-    public Vector2 getStart() {
-        return this.from;
+    public Vector2 getA() {
+        return this.A;
     }
 
-    public Vector2 getEnd() {
-        return this.to;
+    public Vector2 getB() {
+        return this.B;
     }
 
     public float lenghtSquared(){
-        return new Vector2(to).sub(from).lenghtSquared();
+        return new Vector2(B).sub(A).lenghtSquared();
     }
 
 }

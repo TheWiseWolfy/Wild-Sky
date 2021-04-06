@@ -21,7 +21,6 @@ public class Vector2 {
         this.x = x;
         this.y = y;
     }
-
     //Actually useful fuctions
 
     public void normalize(){
@@ -33,6 +32,10 @@ public class Vector2 {
        if( x == Float.NEGATIVE_INFINITY ||  x == Float.POSITIVE_INFINITY ) {
            throw new ArithmeticException();   //you screwed up
        }
+    }
+
+    public float dot(Vector2 v) {
+        return this.x * v.x + this.y * v.y;
     }
 
     public Vector2 add(Vector2 v){
@@ -83,9 +86,31 @@ public class Vector2 {
 
     //____________________FLUF______________________
 
+    public float get(int i){
+        if (i == 0){
+            return x;
+        }else if(i == 1) {
+            return y;
+        }
+        return 0;
+    }
+
+    public void set(int x,int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public void set(Vector2 v) {
         this.x = v.x;
         this.y = v.y;
+    }
+
+    public void setComponent(int i, float val) {
+        if (i == 0){
+           x = val;
+        }else if(i == 1) {
+           y = val;
+        }
     }
 
     @Override
@@ -99,8 +124,6 @@ public class Vector2 {
             return false;
         }
         Vector2 v = (Vector2) obj;
-        return v.x == this.x && v.y == this.y;
+        return ExtraMath.compare(v.x, this.x) && ExtraMath.compare(v.y, this.y);
     }
-
-
 }
