@@ -53,8 +53,8 @@ public class Vector2 {
     }
 
     public Vector2 mul(float s){
-        this.x -= this.x  * s;
-        this.y -= this.y  * s;
+        this.x = this.x  * s;
+        this.y = this.y  * s;
 
         return this;
     }

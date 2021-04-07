@@ -4,6 +4,8 @@ import com.apetrei.engine.components.TransformComponent;
 import com.apetrei.engine.components.Collider2D;
 import com.apetrei.misc.Vector2;
 
+import static java.lang.Math.*;
+
 public class Rigidbody2D extends TransformComponent {
 
     private float mass = 1.0f;
@@ -14,23 +16,27 @@ public class Rigidbody2D extends TransformComponent {
     private float linearDamping = 0.0f;
     private float cor = 1.0f;       //Coeficient of restitution ??
 
+    private Vector2 forward = new Vector2();
+
     private Collider2D collider2D = null;
 
     public Rigidbody2D() {
         super();
-
-        collider2D = (Collider2D) parent.getComponent( Collider2D.class);
     }
 
     public Rigidbody2D(Vector2 pos) {
         super(pos);
-
-
     }
 
 
     @Override
     public void componentInit() {
+
+        try{
+            collider2D = (Collider2D) parent.getComponent( Collider2D.class);
+        }catch (Exception e){
+
+        }
     }
 
     @Override
@@ -91,12 +97,12 @@ public class Rigidbody2D extends TransformComponent {
     public void setCor(float cor) {
         this.cor = cor;
     }
+
     //________________________________GETTERS_________________
 
     public float getCor() {
         return cor;
     }
-
 
     public float getRotation() {
         return super.rotation;
@@ -113,6 +119,13 @@ public class Rigidbody2D extends TransformComponent {
     public Vector2 getLinearVelocity(){
         return linearVelocity;
     }
+
+    public Vector2 getForward() {
+        forward.x = (float)cos(rotation);
+        forward.y = (float)sin(rotation);
+        forward.normalize();
+        return forward;
+    }   //Vectorul asta o sa fie indreptat intodeauna in fata jucatorului
 
     public Collider2D getCollider2D() {
         return collider2D;

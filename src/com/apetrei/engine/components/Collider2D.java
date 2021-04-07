@@ -2,11 +2,13 @@ package com.apetrei.engine.components;
 
 import com.apetrei.engine.components.Component;
 import com.apetrei.engine.GameObject;
+import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
 import com.apetrei.misc.Vector2;
 
 public class Collider2D extends Component {
-    protected Vector2 offset = new Vector2();
-    protected TransformComponent transform = null;
+
+
+    protected Rigidbody2D rigidbody = null;
 
     //TODO: IMPLEMENT THIS
     //public abstract  double getInertiaTensor(double mass);
@@ -18,7 +20,7 @@ public class Collider2D extends Component {
     @Override
     public void componentInit() {
         try {
-            transform = (TransformComponent) parent.getComponent(TransformComponent.class);
+            rigidbody = (Rigidbody2D) parent.getComponent(Rigidbody2D.class);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -33,5 +35,15 @@ public class Collider2D extends Component {
     @Override
     public void componentRender() {
 
+    }
+
+    //______________________GETTER_AND_SETTER_______________________
+
+    public Rigidbody2D getRigidbody() {
+        return rigidbody;
+    }
+
+    public void setRigidbody(Rigidbody2D rigidbody) {
+        this.rigidbody = rigidbody;
     }
 }

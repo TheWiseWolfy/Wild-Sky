@@ -10,6 +10,7 @@ import com.apetrei.misc.Vector2;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class PlayerComponent extends Component {
     private Rigidbody2D rigidbody;
@@ -34,59 +35,37 @@ public class PlayerComponent extends Component {
         Vector2 newVelocity = new Vector2(rigidbody.getLinearVelocity() );
 
 
-        if(parent.getGameContainer().getInput().isKeyPressed(65)) {
-            newVelocity.y = -1;
-            System.out.print(  newVelocity.x );
-            rigidbody.setLinearVelocity(newVelocity);
+        if(parent.getGameContainer().getInput().isKeyPressed(KeyEvent.VK_W)) {
+            newVelocity = rigidbody.getForward().mul(2f);
+            System.out.print(  newVelocity );
+            rigidbody.setLinearVelocity(newVelocity.add(rigidbody.getLinearVelocity()));
         }
-        if(parent.getGameContainer().getInput().isKeyPressed(68)) {
-            newVelocity.y = 1;
+        if(parent.getGameContainer().getInput().isKeyPressed(KeyEvent.VK_S)) {
+            Vector2 fecdfewjm = rigidbody.getForward();
+            newVelocity = fecdfewjm.mul(-2f);
             System.out.print(  newVelocity.x );
-            rigidbody.setLinearVelocity(newVelocity);
+            rigidbody.setLinearVelocity(newVelocity.add(rigidbody.getLinearVelocity()));
         }
-
-        if(parent.getGameContainer().getInput().isKeyPressed(87)) {
-            newVelocity.x = -1;
-            System.out.print(  newVelocity.x );
-            rigidbody.setLinearVelocity(newVelocity);
-         }
-        if(parent.getGameContainer().getInput().isKeyPressed(83)) {
-            newVelocity.x = 1 ;
-            System.out.print(  newVelocity.x );
-            rigidbody.setLinearVelocity(newVelocity);
-        }else {
+        else {
             newVelocity.x = 0;
         }
+
+        if(parent.getGameContainer().getInput().isKeyPressed(KeyEvent.VK_D)) {
+            rigidbody.setRotation(rigidbody.getRotation() + 0.01f);
+
+        }
+        if(parent.getGameContainer().getInput().isKeyPressed(KeyEvent.VK_A)) {
+            rigidbody.setRotation(rigidbody.getRotation() - 0.01f);
+
+        }
+        //Ration test
 
     }
     @Override
     public void componentRender() {
 
-        Vector2[] waka = {
-                new Vector2(0, 0),
-                new Vector2(200, 200),
-                new Vector2(300, 400),
-                new Vector2(100, 600)
-        };
-        ConvexPolygon2D wa = new ConvexPolygon2D(waka);
-
-         parent.getGameContainer().getRenderer().drawPoligon(wa);
-
-        int x =-180;
-        int y =0;
-        Vector2[] waka2 = {
-                new Vector2(370+x, 400+y),
-                new Vector2(600+x, 500+y),
-                new Vector2(620+x, 740+y),
-                new Vector2(310+x, 720+y)
-        };
-        ConvexPolygon2D wa2 = new ConvexPolygon2D(waka2);
-
-         parent.getGameContainer().getRenderer().drawPoligon(wa2);
-
-        Vector2[] waka3 = IntersectionDetector2D.GetIntersectionOfPolygons(wa,wa2);
-        ConvexPolygon2D wa3 = new ConvexPolygon2D( waka3 );
-
-         parent.getGameContainer().getRenderer().drawPoligon(wa3, Color.RED);
+         Vector2 wac = rigidbody.getForward();
+         Vector2 result = new Vector2(rigidbody.getPosition()).add(wac.mul(100f));
+         parent.getGameContainer().getRenderer().drawLine( new Line( rigidbody.position,result ));
     }
 }

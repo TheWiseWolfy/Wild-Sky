@@ -134,7 +134,7 @@ public class Renderer {
     public void drawPoligon(ConvexPolygon2D poly){
         graphics.setColor(Color.BLACK);
 
-        Vector2[] vertices = poly.vertices;
+        Vector2[] vertices = poly.getVertices();
 
         for (int i = 0; i < vertices.length ; ++i) {
             drawLine(vertices[i], vertices[(i + 1) % vertices.length]);
@@ -143,7 +143,7 @@ public class Renderer {
     }
 
     public void drawPoligon(ConvexPolygon2D poly,Color col){
-        Vector2[] vertices = poly.vertices;
+        Vector2[] vertices = poly.getVertices();
 
         for (int i = 0; i < vertices.length ; ++i) {
             drawLine(vertices[i], vertices[(i + 1) % vertices.length],col);

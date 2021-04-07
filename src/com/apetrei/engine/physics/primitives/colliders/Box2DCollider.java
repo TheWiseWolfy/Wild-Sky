@@ -2,6 +2,7 @@ package com.apetrei.engine.physics.primitives.colliders;
 
 import com.apetrei.engine.components.Collider2D;
 import com.apetrei.engine.components.TransformComponent;
+import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
 import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.Vector2;
 import static com.apetrei.misc.ExtraMath.compare;
@@ -34,10 +35,10 @@ public class Box2DCollider extends Collider2D {
                 new Vector2(min.x, max.y)
         };
 
-        boolean aligned = compare(transform.getRotation(),0);
+        boolean aligned = compare(rigidbody.getRotation(),0);
         if (!aligned  ) {
             for (Vector2 vert : vertices) {
-                ExtraMath.rotateVec(vert, this.getTransform().getRotation(), this.getTransform().getPosition());
+                ExtraMath.rotateVec(vert, this.getRidigbody2D().getRotation(), this.getRidigbody2D().getPosition());
             }
         }
 
@@ -53,15 +54,15 @@ public class Box2DCollider extends Collider2D {
     }
 
     public Vector2 getMin() {
-        return new Vector2(this.transform.getPosition()).sub(this.halfSize);
+        return new Vector2(this.rigidbody.getPosition()).sub(this.halfSize);
     }
 
     public Vector2 getMax() {
-        return new Vector2(this.transform.getPosition()).add(this.halfSize);
+        return new Vector2(this.rigidbody.getPosition()).add(this.halfSize);
     }
 
-    public TransformComponent getTransform() {
-        return transform;
+    public Rigidbody2D getRidigbody2D() {
+        return rigidbody;
     }
 
 }

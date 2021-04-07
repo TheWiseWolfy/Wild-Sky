@@ -260,10 +260,10 @@ public class IntersectionDetector2D {
 
    static  public List<Vector2> GetIntersectionPoints(Line line1, ConvexPolygon2D poly) {
         List<Vector2> intersectionPoints = new ArrayList<Vector2>();
-        for (int i = 0; i < poly.vertices.length; i++) {
-            int next = (i + 1 == poly.vertices.length) ? 0 : i + 1;  //TODO Poate module e mai rapid ca asta ??
+        for (int i = 0; i < poly.getVertices().length; i++) {
+            int next = (i + 1 == poly.getVertices().length) ? 0 : i + 1;  //TODO Poate module e mai rapid ca asta ??
 
-            Vector2 ip = GetIntersectionPoint(line1, new Line(poly.vertices[i], poly.vertices[next]));
+            Vector2 ip = GetIntersectionPoint(line1, new Line(poly.getVertices()[i], poly.getVertices()[next]));
 
             if (ip != null) intersectionPoints.add(ip);
         }
@@ -310,10 +310,10 @@ public class IntersectionDetector2D {
         int i;
         int j;
         boolean result = false;
-        for (i = 0, j = poly.vertices.length - 1; i < poly.vertices.length; j = i++)
+        for (i = 0, j = poly.getVertices().length - 1; i < poly.getVertices().length; j = i++)
         {
-            float value = (poly.vertices[j].x - poly.vertices[i].x) * (test.y - poly.vertices[i].y) / (poly.vertices[j].y - poly.vertices[i].y) + poly.vertices[i].x;
-            if ((poly.vertices[i].y > test.y) != (poly.vertices[j].y > test.y) && test.x < value ) {
+            float value = (poly.getVertices()[j].x - poly.getVertices()[i].x) * (test.y - poly.getVertices()[i].y) / (poly.getVertices()[j].y - poly.getVertices()[i].y) + poly.getVertices()[i].x;
+            if ((poly.getVertices()[i].y > test.y) != (poly.getVertices()[j].y > test.y) && test.x < value ) {
                 result = !result;
             }
         }
@@ -324,25 +324,25 @@ public class IntersectionDetector2D {
         List<Vector2> clippedCorners = new ArrayList<Vector2>();
 
         //Add  the corners of poly1 which are inside poly2
-        for (int i = 0; i < poly1.vertices.length; i++)
+        for (int i = 0; i < poly1.getVertices().length; i++)
         {
-            if (IsPointInsidePoly(poly1.vertices[i], poly2))
-                addVectorToList(clippedCorners, new Vector2[] { poly1.vertices[i] });
+            if (IsPointInsidePoly(poly1.getVertices()[i], poly2))
+                addVectorToList(clippedCorners, new Vector2[] { poly1.getVertices()[i] });
         }
 
         //Add the corners of poly2 which are inside poly1
-        for (int i = 0; i < poly2.vertices.length; i++)
+        for (int i = 0; i < poly2.getVertices().length; i++)
         {
-            if (IsPointInsidePoly(poly2.vertices[i],poly1))
-                addVectorToList(clippedCorners, new Vector2[]{ poly2.vertices[i]});
+            if (IsPointInsidePoly(poly2.getVertices()[i],poly1))
+                addVectorToList(clippedCorners, new Vector2[]{ poly2.getVertices()[i]});
         }
 
         List<Vector2> foundPoints = null;
 
         //Add  the intersection points
-        for (int i = 0, next = 1; i < poly1.vertices.length; i++, next = (i + 1 == poly1.vertices.length) ? 0 : i + 1)
+        for (int i = 0, next = 1; i < poly1.getVertices().length; i++, next = (i + 1 == poly1.getVertices().length) ? 0 : i + 1)
         {
-            Line line1 = new Line( poly1.vertices[i], poly1.vertices[next] );
+            Line line1 = new Line( poly1.getVertices()[i], poly1.getVertices()[next] );
 
             foundPoints = GetIntersectionPoints(line1, poly2);
 
