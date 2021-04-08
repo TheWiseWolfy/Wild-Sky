@@ -22,8 +22,9 @@ public class Rigidbody2D extends TransformComponent {
         super();
     }
 
-    public Rigidbody2D(Vector2 pos) {
+    public Rigidbody2D(Vector2 pos,float mass) {
         super(pos);
+        this.mass = mass;
     }
 
 
@@ -39,10 +40,10 @@ public class Rigidbody2D extends TransformComponent {
 
         // Calculate linear velocity
         Vector2 acceleration = new Vector2(forceAccum).mul(this.inverseMass);
-        linearVelocity.add(acceleration.mul((float)fT));
+        linearVelocity = linearVelocity.add(acceleration.mul((float)fT));
 
         // Update the linear position
-        super.position.add(new Vector2(linearVelocity).mul((float)fT));
+        super.position = super.position.add(new Vector2(linearVelocity).mul((float)fT));
 
         clearAccumulators();
     }
@@ -51,15 +52,12 @@ public class Rigidbody2D extends TransformComponent {
     public void componentRender() {
 
     }
-
-
-
     public void clearAccumulators() {
         this.forceAccum.set(0,0);
     }
 
     public void addForce(Vector2 force) {
-        this.forceAccum.add(force);
+        this.forceAccum = this.forceAccum.add(force);
     }
 
     public boolean hasInfiniteMass() {
@@ -115,7 +113,7 @@ public class Rigidbody2D extends TransformComponent {
     public Vector2 getForward() {
         forward.x = (float)cos(rotation);
         forward.y = (float)sin(rotation);
-        forward.normalize();
+        forward = forward.normalized();
         return forward;
     }   //Vectorul asta o sa fie indreptat intodeauna in fata jucatorului
 

@@ -25,19 +25,9 @@ public class Collisions {
 
         if ( intersectie.size() >= 2){    //Am recuperat puctele de care aveam nevoie
 
-          //  IntersectionDetector2D.OrderClockwise(intersectie);
-            //This is bad, so bad in fact that I have no idea how bad it is
            colisionFront = new Line( intersectie.get(0), intersectie.get(1) );
-
-            //System.out.println(colisionFront.toString());
-            //System.out.println(colisionFront.findNormal().toString());
-
-            //Vector2 normal = new Vector2( c2.getRigidbody().getPosition()).sub(c1.getRigidbody().getPosition());
-            //normal.normalize();
-
-            Vector2 normal = colisionFront.findNormal();
-
-            Vector2 relPoz = new Vector2( c1.getRigidbody().getPosition()) .sub( c2.getRigidbody().getPosition());
+           Vector2 normal = colisionFront.findNormal();
+           Vector2 relPoz = new Vector2(c1.getRigidbody().getPosition()).sub( c2.getRigidbody().getPosition());
 
             if (normal.dot(  relPoz  ) > 0f )
                 normal.mul (-1);

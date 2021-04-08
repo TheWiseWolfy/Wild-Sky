@@ -244,6 +244,11 @@ title __SKEWED ENGINE's Class Diagram__\n
   }
   
 
+  namespace com.apetrei.misc {
+    class com.apetrei.misc.Vector2 {
+    }
+  }
+  
 
   com.apetrei.engine.GameContainer .up.|> java.lang.Runnable
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.Input : input
@@ -274,7 +279,6 @@ title __SKEWED ENGINE's Class Diagram__\n
   com.apetrei.engine.physics.primitives.colliders.ConvexCollider o-- com.apetrei.misc.ConvexPolygon2D : collider
   com.apetrei.engine.physics.primitives.colliders.ConvexCollider o-- com.apetrei.misc.ConvexPolygon2D : transformedCollider
   com.apetrei.engine.physics.rigidbody.Rigidbody2D -up-|> com.apetrei.engine.components.TransformComponent
-
   com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.GameContainer : gc
 
 

@@ -24,7 +24,7 @@ public class Line {
 
         normal.x = dy;
         normal.y = -dx;
-        normal.normalize();
+        normal = normal.normalized();
         return normal;
     }
 

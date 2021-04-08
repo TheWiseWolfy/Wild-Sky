@@ -10,7 +10,7 @@ public class Ray2D {
     public Ray2D(Vector2 origin, Vector2 direction) {
         this.origin = origin;
         this.direction = direction;
-        this.direction.normalize();
+        this.direction = this.direction.normalized();
     }
 
     public Vector2 getOrigin() {

@@ -28,9 +28,12 @@ title __MISC's Class Diagram__\n
   namespace com.apetrei.misc {
     class com.apetrei.misc.Line {
         + Line()
+        + Line()
+        + findNormal()
         + getA()
         + getB()
         + lenghtSquared()
+        + toString()
     }
   }
   
@@ -51,7 +54,7 @@ title __MISC's Class Diagram__\n
         + min()
         + mul()
         + mul()
-        + normalize()
+        + normalized()
         + set()
         + set()
         + setComponent()

@@ -23,15 +23,19 @@ public class Vector2 {
     }
     //Actually useful fuctions
 
-    public void normalize(){
+    public Vector2 normalized(){
+
+        Vector2 temp = new Vector2();
+
         float magnitude = (float)Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
 
-            x = x/magnitude;
-            y = y/magnitude;
+        temp.x = x/magnitude;
+        temp.y = y/magnitude;
 
-       if( x == Float.NEGATIVE_INFINITY ||  x == Float.POSITIVE_INFINITY ) {
+       if( temp.x == Float.NEGATIVE_INFINITY || temp.y == Float.POSITIVE_INFINITY ) {
            throw new ArithmeticException();   //you screwed up
        }
+       return temp;
     }
 
     public float dot(Vector2 v) {

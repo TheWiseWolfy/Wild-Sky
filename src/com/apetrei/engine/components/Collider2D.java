@@ -1,17 +1,11 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.components.Component;
-import com.apetrei.engine.GameObject;
 import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
-import com.apetrei.misc.Vector2;
 
+//Aici doar stocam informatie despre tipul de coliziuni suportate de obiect
 public class Collider2D extends Component {
 
-
     protected Rigidbody2D rigidbody = null;
-
-    //TODO: IMPLEMENT THIS
-    //public abstract  double getInertiaTensor(double mass);
 
     public Collider2D() {
         super();
@@ -29,12 +23,10 @@ public class Collider2D extends Component {
 
     @Override
     public void componentUpdate(double fT) {
-
     }
 
     @Override
     public void componentRender() {
-
     }
 
     //______________________GETTER_AND_SETTER_______________________

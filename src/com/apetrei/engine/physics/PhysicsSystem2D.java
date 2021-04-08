@@ -64,7 +64,7 @@ public class PhysicsSystem2D {
             }
         }
         //Update forces
-      //  forceRegistry.updateForces(fixedUpdate);
+        //forceRegistry.updateForces(fixedUpdate);
 
         //Resolve the colisions vis iterative impuse resolution
         //iterate a certaim amount of times to get an approximate solution
@@ -116,7 +116,7 @@ public class PhysicsSystem2D {
         Vector2 newVelA =  new Vector2( a.getLinearVelocity() ).add( new Vector2( impulse ).mul(invMass1).mul( -1f ) );
         Vector2 newVelB = new Vector2( b.getLinearVelocity() ).add( new Vector2( impulse ).mul(invMass2).mul( 1f ) );
 
-        a.setLinearVelocity(newVelA );
+        a.setLinearVelocity( newVelA );
         b.setLinearVelocity( newVelB );
     }
 

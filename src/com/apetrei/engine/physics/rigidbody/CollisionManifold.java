@@ -7,9 +7,9 @@ import java.util.List;
 
 public class CollisionManifold {
 
-    private boolean isColliding;
-    private Vector2 normal;
-    private float depth;
+    private final boolean isColliding;
+    private final Vector2 normal;
+    private final float depth;
     private List<Vector2> contactPoints;
 
     public CollisionManifold() {

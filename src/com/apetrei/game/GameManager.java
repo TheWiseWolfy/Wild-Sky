@@ -18,13 +18,15 @@ public class GameManager {
 
         GameObject gameObject1 = new GameObject(gameContainer);
 
-        gameObject1.addComponent(new Rigidbody2D( new Vector2(800,800)) );
+        gameObject1.addComponent(new Rigidbody2D( new Vector2(800,800),1) );
 
         Vector2[] waka = {
-                new Vector2(-50, 50),
-                new Vector2(50, 50),
-                new Vector2(50, -50),
-                new Vector2(-50, -50)
+                new Vector2(-20 , 50),
+                new Vector2(30 +100, 50),
+                new Vector2(70 +100, 0),
+                new Vector2(30 +100, -50),
+                new Vector2(-30, -50),
+                new Vector2(-70, 0)
         };
         ConvexPolygon2D wa = new ConvexPolygon2D(waka);
 
@@ -41,7 +43,8 @@ public class GameManager {
 
         GameObject gameObject2 = new GameObject(gameContainer);
 
-        gameObject2.addComponent(new Rigidbody2D( new Vector2(600,600)) );
+        gameObject2.addComponent(new Rigidbody2D( new Vector2(600,600) ,5) );
+
         Collider2D colider2 = new ConvexCollider( wa);
         gameObject2.addComponent(colider2);
 
