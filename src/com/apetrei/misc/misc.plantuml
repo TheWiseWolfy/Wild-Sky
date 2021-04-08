@@ -3,7 +3,19 @@
 title __MISC's Class Diagram__\n
 
   namespace com.apetrei.misc {
+    class com.apetrei.misc.ConvexPolygon2D {
+        - vertices : Vector2[]
+        + ConvexPolygon2D()
+        + ConvexPolygon2D()
+        + getVertices()
+        + setVertices()
+    }
+  }
+  
+
+  namespace com.apetrei.misc {
     class com.apetrei.misc.ExtraMath {
+        {static} + compare()
         {static} + compare()
         {static} + compare()
         {static} + compareVectors()
@@ -16,8 +28,8 @@ title __MISC's Class Diagram__\n
   namespace com.apetrei.misc {
     class com.apetrei.misc.Line {
         + Line()
-        + getEnd()
-        + getStart()
+        + getA()
+        + getB()
         + lenghtSquared()
     }
   }
@@ -49,8 +61,8 @@ title __MISC's Class Diagram__\n
   }
   
 
-  com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : from
-  com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : to
+  com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : A
+  com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : B
 
 
 right footer

@@ -148,7 +148,6 @@ public class Renderer {
         for (int i = 0; i < vertices.length ; ++i) {
             drawLine(vertices[i], vertices[(i + 1) % vertices.length],col);
         }
-        //graphics.drawRect(x,y ,wight,height,6);
     }
     //SPRITES
     public void drawSprite(double x, double y, BufferedImage img){

@@ -21,14 +21,16 @@ public class GameManager {
         gameObject1.addComponent(new Rigidbody2D( new Vector2(800,800)) );
 
         Vector2[] waka = {
-                new Vector2(0, 0),
-                new Vector2(20, 20),
-                new Vector2(30, 40),
-                new Vector2(10, 60)
+                new Vector2(-50, 50),
+                new Vector2(50, 50),
+                new Vector2(50, -50),
+                new Vector2(-50, -50)
         };
         ConvexPolygon2D wa = new ConvexPolygon2D(waka);
 
-        gameObject1.addComponent(new ConvexCollider( wa));
+        Collider2D colider1 = new ConvexCollider( wa);
+
+        gameObject1.addComponent(colider1);
         gameObject1.addComponent(new PlayerComponent());
 
      //   gameObject1.addComponent(new SpriteComponent("C:\\Users\\Lucian\\Desktop\\Projects\\Git\\Wild-Sky\\src\\com\\resources\\79HAmr4.jpg")  );
@@ -39,9 +41,12 @@ public class GameManager {
 
         GameObject gameObject2 = new GameObject(gameContainer);
 
-        gameObject2.addComponent(new Rigidbody2D( new Vector2(700,700)) );
+        gameObject2.addComponent(new Rigidbody2D( new Vector2(600,600)) );
+        Collider2D colider2 = new ConvexCollider( wa);
+        gameObject2.addComponent(colider2);
 
-        gameObject2.addComponent(new ConvexCollider( wa));
+        gameContainer.getPhysicsSystem().addRigidbodies(colider2 );
+        gameContainer.getPhysicsSystem().addRigidbodies(colider1 );
 
         //   gameObject1.addComponent(new SpriteComponent("C:\\Users\\Lucian\\Desktop\\Projects\\Git\\Wild-Sky\\src\\com\\resources\\79HAmr4.jpg")  );
         gameContainer.getObjectManager().addGameObject(gameObject2);

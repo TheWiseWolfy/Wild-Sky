@@ -18,8 +18,6 @@ public class Rigidbody2D extends TransformComponent {
 
     private Vector2 forward = new Vector2();
 
-    private Collider2D collider2D = null;
-
     public Rigidbody2D() {
         super();
     }
@@ -32,11 +30,6 @@ public class Rigidbody2D extends TransformComponent {
     @Override
     public void componentInit() {
 
-        try{
-            collider2D = (Collider2D) parent.getComponent( Collider2D.class);
-        }catch (Exception e){
-
-        }
     }
 
     @Override
@@ -85,9 +78,6 @@ public class Rigidbody2D extends TransformComponent {
 
     public void setMass(float mass) {
         this.mass = mass;
-        if (this.mass != 0.0f) {
-            this.inverseMass = 1.0f / this.mass;
-        }
     }
 
     public void setLinearVelocity(Vector2 vel){
@@ -113,9 +103,11 @@ public class Rigidbody2D extends TransformComponent {
     }
 
     public float getInverseMass() {
+        if (this.mass != 0.0f) {
+            this.inverseMass = 1.0f / this.mass;
+        }
         return inverseMass;
     }
-
     public Vector2 getLinearVelocity(){
         return linearVelocity;
     }
@@ -126,9 +118,5 @@ public class Rigidbody2D extends TransformComponent {
         forward.normalize();
         return forward;
     }   //Vectorul asta o sa fie indreptat intodeauna in fata jucatorului
-
-    public Collider2D getCollider2D() {
-        return collider2D;
-    }
 
 }

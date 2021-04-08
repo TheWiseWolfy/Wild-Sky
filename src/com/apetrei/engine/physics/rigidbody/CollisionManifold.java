@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollisionManifold {
+
     private boolean isColliding;
     private Vector2 normal;
-    private List<Vector2> contactPoints;
     private float depth;
+    private List<Vector2> contactPoints;
 
     public CollisionManifold() {
         normal = new Vector2();
@@ -17,10 +18,10 @@ public class CollisionManifold {
         isColliding = false;
     }
 
-    public CollisionManifold(Vector2 normal, float depth) {
+    public CollisionManifold(Vector2 normal, float depth,List<Vector2> contactPoints ) {
         this.normal = normal;
-        this.contactPoints = new ArrayList<>();
         this.depth = depth;
+        this.contactPoints = contactPoints;
         isColliding = true;
     }
 
@@ -32,7 +33,7 @@ public class CollisionManifold {
         return isColliding;
     }
 
-    //____________________________________________GETTERS_____________
+    //____________________________________________GETTERS_________________________________
     public Vector2 getNormal() {
         return normal;
     }
@@ -44,4 +45,5 @@ public class CollisionManifold {
     public float getDepth() {
         return depth;
     }
+
 }

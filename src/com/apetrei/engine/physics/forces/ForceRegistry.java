@@ -9,6 +9,7 @@ import java.util.List;
 
 
 public class ForceRegistry {
+    //O lista unde stocam toate fortele care trebuiesc aplicate
     private List<ForceRegistration> registry;
 
     public ForceRegistry() {

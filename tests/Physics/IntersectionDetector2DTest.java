@@ -17,15 +17,6 @@ public class IntersectionDetector2DTest  {
 
 
     @Test
-    public void pointOnLine2D_Test(){
-
-        Line line = new Line( new Vector2(), new Vector2(0,10));
-        Vector2 point = new Vector2(0,5);
-
-        assertTrue(IntersectionDetector2D.pointOnLine(point,line));
-
-    }
-    @Test
     public void GetIntersectionPoint_Test(){
 
 
@@ -70,8 +61,8 @@ public class IntersectionDetector2DTest  {
 
        // parent.getGameContainer().getRenderer().drawPoligon(wa2);
 
-        Vector2[] waka3 = IntersectionDetector2D.GetIntersectionOfPolygons(wa,wa2);
-        ConvexPolygon2D wa3 = new ConvexPolygon2D( waka3 );
+      //  Vector2[] waka3 = IntersectionDetector2D.GetIntersectionOfPolygons(wa,wa2);
+        //ConvexPolygon2D wa3 = new ConvexPolygon2D( waka3 );
 
        // parent.getGameContainer().getRenderer().drawPoligon(wa3, Color.RED);
 

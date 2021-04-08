@@ -37,13 +37,13 @@ public class PlayerComponent extends Component {
 
         if(parent.getGameContainer().getInput().isKeyPressed(KeyEvent.VK_W)) {
             newVelocity = rigidbody.getForward().mul(2f);
-            System.out.print(  newVelocity );
+          //  System.out.print(  newVelocity );
             rigidbody.setLinearVelocity(newVelocity.add(rigidbody.getLinearVelocity()));
         }
         if(parent.getGameContainer().getInput().isKeyPressed(KeyEvent.VK_S)) {
             Vector2 fecdfewjm = rigidbody.getForward();
             newVelocity = fecdfewjm.mul(-2f);
-            System.out.print(  newVelocity.x );
+          //  System.out.print(  newVelocity.x );
             rigidbody.setLinearVelocity(newVelocity.add(rigidbody.getLinearVelocity()));
         }
         else {

@@ -7,7 +7,7 @@ public class ConvexPolygon2D {
     private Vector2[] vertices;
 
     public ConvexPolygon2D( Vector2[] vertices ){
-        this.vertices = vertices;
+        this.vertices = vertices.clone();
     }
 
     public ConvexPolygon2D( ConvexPolygon2D poligon ){

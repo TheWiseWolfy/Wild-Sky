@@ -1,5 +1,8 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.components.Collider2D;
+import com.apetrei.engine.physics.PhysicsSystem2D;
+
 import java.util.ArrayList;
 
 public class ObjectManager {
@@ -21,6 +24,8 @@ public class ObjectManager {
             if(current.isActive() ) {
                 current.update( fT);
             }
+
+
         }
     }
 

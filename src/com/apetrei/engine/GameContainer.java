@@ -1,5 +1,6 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.physics.PhysicsSystem2D;
 import com.apetrei.engine.renderer.Renderer;
 
 public class GameContainer implements Runnable {
@@ -11,6 +12,7 @@ public class GameContainer implements Runnable {
     private Renderer renderer;
     private Input input;
     private ObjectManager objectManager;
+    private PhysicsSystem2D physicsSystem;
 
     private  boolean running = false;
 
@@ -22,6 +24,7 @@ public class GameContainer implements Runnable {
         renderer = new Renderer(this);
         input = new Input(this);
         objectManager = new ObjectManager();
+        physicsSystem = new PhysicsSystem2D();
     }
 
     public void start(){
@@ -59,6 +62,8 @@ public class GameContainer implements Runnable {
 
             unprocessedTime += frameTime;
 
+            //PHYSICS UPDAT
+            physicsSystem.Update((float)frameTime);
             //UPDATE
             objectManager.updateObjects(frameTime);
 
@@ -101,5 +106,10 @@ public class GameContainer implements Runnable {
     public Renderer getRenderer() {
         return renderer;
     }
+
+    public PhysicsSystem2D getPhysicsSystem() {
+        return physicsSystem;
+    }
+
 
 }

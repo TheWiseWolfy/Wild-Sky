@@ -37,9 +37,6 @@ public class ExtraMath {
 
     }
 
-
-
-
     public static boolean compareVectors(Vector2 vec1,Vector2 vec2){
         return compare(vec1.x, vec2.x) &&  compare(vec1.y, vec2.y);
 

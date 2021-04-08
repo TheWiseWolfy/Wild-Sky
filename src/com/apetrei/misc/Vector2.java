@@ -126,4 +126,5 @@ public class Vector2 {
         Vector2 v = (Vector2) obj;
         return ExtraMath.compare(v.x, this.x) && ExtraMath.compare(v.y, this.y);
     }
+
 }
