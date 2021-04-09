@@ -88,36 +88,6 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace physics {
-      namespace forces {
-        interface com.apetrei.engine.physics.forces.ForceGenerator {
-        }
-      }
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
-    namespace physics {
-      namespace forces {
-        class com.apetrei.engine.physics.forces.ForceRegistration {
-        }
-      }
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
-    namespace physics {
-      namespace forces {
-        class com.apetrei.engine.physics.forces.ForceRegistry {
-        }
-      }
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
-    namespace physics {
       namespace primitives {
         class com.apetrei.engine.physics.primitives.Ray2D {
         }
@@ -140,7 +110,7 @@ title __SKEWED ENGINE's Class Diagram__\n
     namespace physics {
       namespace primitives {
         namespace colliders {
-          class com.apetrei.engine.physics.primitives.colliders.AABBCollider {
+          class com.apetrei.engine.physics.primitives.colliders.AABB {
           }
         }
       }
@@ -244,11 +214,7 @@ title __SKEWED ENGINE's Class Diagram__\n
   }
   
 
-  namespace com.apetrei.misc {
-    class com.apetrei.misc.Vector2 {
-    }
-  }
-  
+
 
   com.apetrei.engine.GameContainer .up.|> java.lang.Runnable
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.Input : input
@@ -270,16 +236,13 @@ title __SKEWED ENGINE's Class Diagram__\n
   com.apetrei.engine.components.SpriteComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.SpriteComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
   com.apetrei.engine.components.TransformComponent -up-|> com.apetrei.engine.components.Component
-  com.apetrei.engine.physics.PhysicsSystem2D o-- com.apetrei.engine.physics.forces.ForceRegistry : forceRegistry
-  com.apetrei.engine.physics.forces.ForceRegistration o-- com.apetrei.engine.physics.forces.ForceGenerator : fg
-  com.apetrei.engine.physics.forces.ForceRegistration o-- com.apetrei.engine.physics.rigidbody.Rigidbody2D : rb
-  com.apetrei.engine.physics.primitives.colliders.AABBCollider -up-|> com.apetrei.engine.components.Collider2D
+
   com.apetrei.engine.physics.primitives.colliders.Box2DCollider -up-|> com.apetrei.engine.components.Collider2D
   com.apetrei.engine.physics.primitives.colliders.ConvexCollider -up-|> com.apetrei.engine.components.Collider2D
   com.apetrei.engine.physics.primitives.colliders.ConvexCollider o-- com.apetrei.misc.ConvexPolygon2D : collider
-  com.apetrei.engine.physics.primitives.colliders.ConvexCollider o-- com.apetrei.misc.ConvexPolygon2D : transformedCollider
   com.apetrei.engine.physics.rigidbody.Rigidbody2D -up-|> com.apetrei.engine.components.TransformComponent
   com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.GameContainer : gc
+
 
 
 right footer

@@ -1,7 +1,5 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.components.Component;
-import com.apetrei.engine.GameObject;
 import com.apetrei.misc.Vector2;
 
 public class TransformComponent extends Component {

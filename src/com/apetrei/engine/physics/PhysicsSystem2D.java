@@ -1,6 +1,5 @@
 package com.apetrei.engine.physics;
 
-import com.apetrei.engine.physics.forces.ForceRegistry;
 import com.apetrei.engine.components.Collider2D;
 import com.apetrei.engine.physics.rigidbody.CollisionManifold;
 import com.apetrei.engine.physics.rigidbody.Collisions;
@@ -11,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhysicsSystem2D {
-    private ForceRegistry forceRegistry;
-    private int impulseIterations = 6;
+    private int impulseIterations = 5;
     //Force generators:
     //private Wind wind;
 
@@ -23,14 +21,13 @@ public class PhysicsSystem2D {
 
 
     public PhysicsSystem2D(){
-        forceRegistry = new ForceRegistry();
         colliders = new ArrayList<>();
         bodies1 = new ArrayList<>();
         bodies2 = new ArrayList<>();
         collisions = new ArrayList<>();
     }
 
-    public void Update( float fixedUpdate){
+    public void updatePhysics( float fixedUpdate){
         bodies1.clear();
         bodies2.clear();
         collisions.clear();
@@ -63,65 +60,64 @@ public class PhysicsSystem2D {
                 }
             }
         }
-        //Update forces
-        //forceRegistry.updateForces(fixedUpdate);
 
-        //Resolve the colisions vis iterative impuse resolution
-        //iterate a certaim amount of times to get an approximate solution
 
-        for(int k =0; k < impulseIterations; k++){
+
+       // for(int k =0; k < impulseIterations; k++){
             for (int i = 0; i < collisions.size(); i++){
-
-               int jSize = collisions.get(i).getContactPoints().size();
+              int jSize = collisions.get(i).getContactPoints().size();
 
                for( int j = 0; j < jSize; j ++){
-
                    Rigidbody2D r1 = bodies1.get(i);
                    Rigidbody2D r2 = bodies2.get(i);
                    applyImpluse(r1,r2,collisions.get(i));
-               }
-            }
-        }
-        //Update the velocities of all ridigbodies
+                }
+           }
+     // }
     }
 
-    private void applyImpluse(Rigidbody2D a, Rigidbody2D b, CollisionManifold m){
+    private void applyImpluse(Rigidbody2D a, Rigidbody2D b, CollisionManifold manifold){
         //Linear velocity
 
         float invMass1 = a.getInverseMass();
         float invMass2 = b.getInverseMass();
         float invMassSum = invMass1 + invMass2;
 
+
         assert (invMassSum > 0);
 
-        //Relative velocity
+       //Viteza relativa dintre 2 obiect
+        Vector2 relativeVel = new Vector2( b.getLinearVelocity()).sub(a.getLinearVelocity()) ;
 
-        Vector2 relativeVel = new Vector2(b.getLinearVelocity()).sub(a.getLinearVelocity());
-        Vector2 relativeNormal = new Vector2(m.getNormal());
+        //Vectorul normal al coliziuni, intodeanua indreptat spre inafara obiectului
+        Vector2 relativeNormal = new Vector2(manifold.getNormal());
 
-        if(relativeVel.dot(relativeNormal) > 0.0f){   //Daca obiectele se departeaza (aka produsul vectorial e mai mare ca 0) atunci nu facem nimic
+        //Daca obiectele se departeaza (aka produsul vectorial e mai mare ca 0) atunci nu facem nimic
+        if(relativeVel.dot(relativeNormal) > 0.0f){
            return;
        }
 
-       // float e = Math.min(a.getCor(),b.getCor());
-        float numerator = (-1.0f  * relativeVel.dot(relativeNormal));
-        float j = numerator / invMassSum;
+        //Colisiunea va respecta principile obiectului mai elastic dintre cele 2 ( nu e realistic dar csf)
+        float e = Math.min(a.getCor(),b.getCor());
 
-        if (m.getContactPoints().size() > 0 && j != 0.0f) {
-            j /= (float)m.getContactPoints().size();    //Distribuim impulsul calculat asupra tuturor puctelor de contact pe care le-am inregistrat
+        float numerator = ( -(1.0f + e)   * relativeVel.dot(relativeNormal));
+        float forceStrenght = numerator / invMassSum;
+
+        if (manifold.getContactPoints().size() > 0 && forceStrenght != 0.0f) {
+        //   forceStrenght /= (float)manifold.getContactPoints().size();    //Distribuim impulsul calculat asupra tuturor puctelor de contact pe care le-am inregistrat
         }
+        forceStrenght *= manifold.getDepth();
 
-        Vector2 impulse = new Vector2(relativeNormal).mul(j);
+        Vector2 impulse = new Vector2(relativeNormal).mul(forceStrenght);
 
-        Vector2 newVelA =  new Vector2( a.getLinearVelocity() ).add( new Vector2( impulse ).mul(invMass1).mul( -1f ) );
-        Vector2 newVelB = new Vector2( b.getLinearVelocity() ).add( new Vector2( impulse ).mul(invMass2).mul( 1f ) );
+        a.addForce( impulse.mul( -1.0f) );
+        b.addForce( impulse.mul( -1.0f) );
 
-        a.setLinearVelocity( newVelA );
-        b.setLinearVelocity( newVelB );
+
     }
 
     //O fuctie prin care adaugem obiecte in sistemul de fizica TODO Make this automatic after a set criteria
-    public void addRigidbodies(Collider2D body){
+    public void addColliders(Collider2D body){
         this.colliders.add(body);
     }
 }

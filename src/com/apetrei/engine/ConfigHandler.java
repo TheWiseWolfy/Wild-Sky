@@ -3,7 +3,7 @@ package com.apetrei.engine;
 public class ConfigHandler {
 
     //Propietatile jocului
-    private static final double UPDATE_CAP= 1.0/60.0;
+    private static final double UPDATE_CAP= 1/60.0f;
     private static int width = 640;
     private static int height =480;
 

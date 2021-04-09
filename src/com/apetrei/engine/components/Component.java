@@ -11,6 +11,8 @@ public abstract class Component {
     public Component(){
     }
 
+    //Lazi contructor - proceduri care trebuiesc facute odata ce mai multe componente au fost introduse in game object
+    //Ex: Daca pui un rigidbody , si apoi un sprite, ultimul pas e sa le dai bind inpreuna dupa ce ambele contructoare au rulat deja
     public abstract void componentInit();
 
     public abstract void componentUpdate( double fT);

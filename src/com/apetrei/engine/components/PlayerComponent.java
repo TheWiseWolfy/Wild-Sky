@@ -1,15 +1,9 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.*;
-import com.apetrei.engine.physics.primitives.colliders.Box2DCollider;
-import com.apetrei.engine.physics.rigidbody.IntersectionDetector2D;
 import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
-import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class PlayerComponent extends Component {
@@ -50,7 +44,7 @@ public class PlayerComponent extends Component {
             newVelocity.x = 0;
         }
 
-        if(parent.getGameContainer().getInput().isKeyPressed(KeyEvent.VK_D)) {
+        if(parent.getGameContainer().getInput().isKeyPressed(KeyEvent.VK_D ) ) {
             rigidbody.setRotation(rigidbody.getRotation() + 0.01f);
 
         }

@@ -1,8 +1,5 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.GameObject;
-import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,6 +21,7 @@ public class SpriteComponent  extends Component {
 
     @Override
     public void componentInit() {
+
         try {
             transformComponent = (TransformComponent) parent.getComponent(TransformComponent.class);
         }
@@ -38,8 +36,8 @@ public class SpriteComponent  extends Component {
     }
     @Override
     public void componentRender( ) {
-        parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition().y,transformComponent.getPosition().x,sprite);
+        parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition().x,transformComponent.getPosition().y,1f,transformComponent.getRotation(),sprite);
+
+            //  parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition().x,transformComponent.getPosition().y,sprite);
     }
-
-
 }

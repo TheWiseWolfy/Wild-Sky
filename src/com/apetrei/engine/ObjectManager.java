@@ -18,7 +18,7 @@ public class ObjectManager {
 
     //Update fuctions
 
-    public void updateObjects(double fT){
+    public void updateObjects(float fT){
 
         for( GameObject current : gameObjects ){
             if(current.isActive() ) {

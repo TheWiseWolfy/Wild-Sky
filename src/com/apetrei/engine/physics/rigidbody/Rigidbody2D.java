@@ -11,10 +11,11 @@ public class Rigidbody2D extends TransformComponent {
     private float mass = 1.0f;
     private float inverseMass = 0.0f;
 
-    private Vector2 forceAccum = new Vector2();
+    private Vector2 forceAccumulation = new Vector2();
+
     private Vector2 linearVelocity = new Vector2();
     private float linearDamping = 0.0f;
-    private float cor = 1.0f;       //Coeficient of restitution ??
+    private float cor = 1f;       //Coeficient of restitution ??
 
     private Vector2 forward = new Vector2();
 
@@ -39,7 +40,8 @@ public class Rigidbody2D extends TransformComponent {
         if (this.mass == 0.0f) return;
 
         // Calculate linear velocity
-        Vector2 acceleration = new Vector2(forceAccum).mul(this.inverseMass);
+        Vector2 acceleration = new Vector2(forceAccumulation).mul(this.inverseMass);
+
         linearVelocity = linearVelocity.add(acceleration.mul((float)fT));
 
         // Update the linear position
@@ -53,11 +55,11 @@ public class Rigidbody2D extends TransformComponent {
 
     }
     public void clearAccumulators() {
-        this.forceAccum.set(0,0);
+        this.forceAccumulation.set(0,0);
     }
 
     public void addForce(Vector2 force) {
-        this.forceAccum = this.forceAccum.add(force);
+        this.forceAccumulation.add(force);
     }
 
     public boolean hasInfiniteMass() {
@@ -70,14 +72,6 @@ public class Rigidbody2D extends TransformComponent {
         super.rotation = rotation;
     }
 
-    public void setTransform(Vector2 position) {
-        super.position.set(position);
-    }
-
-    public void setMass(float mass) {
-        this.mass = mass;
-    }
-
     public void setLinearVelocity(Vector2 vel){
         linearVelocity.set(vel);
     }
@@ -86,7 +80,11 @@ public class Rigidbody2D extends TransformComponent {
         this.cor = cor;
     }
 
-    //________________________________GETTERS_________________
+    public void setMass(float mass) {
+        this.mass = mass;
+    }
+
+    //________________________________GETTERS___________________
 
     public float getCor() {
         return cor;
@@ -106,6 +104,7 @@ public class Rigidbody2D extends TransformComponent {
         }
         return inverseMass;
     }
+
     public Vector2 getLinearVelocity(){
         return linearVelocity;
     }

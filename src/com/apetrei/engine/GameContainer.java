@@ -46,24 +46,24 @@ public class GameContainer implements Runnable {
         boolean render = true;
 
         //Monitorizare performanta
-        double firstTime = 0;
-        double lastTime = System.nanoTime() / 10.0e8;
-        double frameTime = 0;
-        double unprocessedTime = 0;
+        float firstTime = 0;
+        float lastTime = (float) ( System.nanoTime() / 10.0e8) ;
+        float frameTime = 0;
+        float unprocessedTime = 0;
 
         while(running) {
 
             //Presupunem ca nu trebuie sa redesenam jocul
             render = false;
 
-            firstTime = System.nanoTime() / 10.0e8;
+            firstTime = (float) (System.nanoTime() / 10.0e8);
             frameTime = firstTime - lastTime;
             lastTime = firstTime;
 
             unprocessedTime += frameTime;
 
             //PHYSICS UPDAT
-            physicsSystem.Update((float)frameTime);
+            physicsSystem.updatePhysics(frameTime);
             //UPDATE
             objectManager.updateObjects(frameTime);
 

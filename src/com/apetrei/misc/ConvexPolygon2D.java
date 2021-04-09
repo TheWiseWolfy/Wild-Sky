@@ -1,29 +1,26 @@
 package com.apetrei.misc;
 
-import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ConvexPolygon2D {
 
-    private Vector2[] vertices;
+    private List<Vector2> vertices;
 
-    public ConvexPolygon2D( Vector2[] vertices ){
-        this.vertices = vertices.clone();
+    public ConvexPolygon2D( ConvexPolygon2D con){
+        this.vertices = new ArrayList<Vector2>(con.vertices);
     }
 
-    public ConvexPolygon2D( ConvexPolygon2D poligon ){
-        this.vertices = poligon.vertices.clone();
+    public ConvexPolygon2D( List ver){
+        this.vertices = new ArrayList<Vector2>(ver);
     }
 
 
     //___________________GETTER__AND__SETTER
 
-    public Vector2[] getVertices() {
+    public List<Vector2> getVertices() {
         return vertices;
     }
-
-    public void setVertices(Vector2[] vertices) {
-        this.vertices = vertices;
-    }
-
 
 }

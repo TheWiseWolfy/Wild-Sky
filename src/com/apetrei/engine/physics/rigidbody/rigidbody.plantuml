@@ -37,13 +37,13 @@ title __RIGIDBODY's Class Diagram__\n
     namespace physics {
       namespace rigidbody {
         class com.apetrei.engine.physics.rigidbody.IntersectionDetector2D {
+            {static} + AABBAndAABBB()
             {static} + GetIntersectionPoint()
             {static} + GetIntersectionPoints()
             {static} + IsPointInsidePoly()
-            {static} + OrderClockwise()
             {static} + getPointsInColision()
             {static} + getPointsOfIntersectionFront()
-            {static} - addVectorToList()
+            {static} - containsPoint()
         }
       }
     }

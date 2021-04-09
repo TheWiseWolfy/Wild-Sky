@@ -39,12 +39,13 @@ title __ENGINE's Class Diagram__\n
   namespace com.apetrei.engine {
     class com.apetrei.engine.GameObject {
         + active : boolean
-        # components : ArrayList<Component>
+        ~ components : HashMap<String, Component>
         - uniqueTag : String
         + GameObject()
         + addComponent()
         + getComponent()
         + getGameContainer()
+        + hasComponent()
         + isActive()
         + render()
         + update()

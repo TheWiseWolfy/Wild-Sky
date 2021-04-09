@@ -6,9 +6,8 @@ title __COLLIDERS's Class Diagram__\n
     namespace physics {
       namespace primitives {
         namespace colliders {
-          class com.apetrei.engine.physics.primitives.colliders.AABBCollider {
-              + AABBCollider()
-              + AABBCollider()
+          class com.apetrei.engine.physics.primitives.colliders.AABB {
+              + AABB()
               + getMax()
               + getMin()
           }
@@ -55,16 +54,14 @@ title __COLLIDERS's Class Diagram__\n
   }
   
 
-  com.apetrei.engine.physics.primitives.colliders.AABBCollider -up-|> com.apetrei.engine.components.Collider2D
-  com.apetrei.engine.physics.primitives.colliders.AABBCollider o-- com.apetrei.misc.Vector2 : center
-  com.apetrei.engine.physics.primitives.colliders.AABBCollider o-- com.apetrei.misc.Vector2 : halfSize
-  com.apetrei.engine.physics.primitives.colliders.AABBCollider o-- com.apetrei.misc.Vector2 : size
+  com.apetrei.engine.physics.primitives.colliders.AABB o-- com.apetrei.misc.Vector2 : halfSize
+  com.apetrei.engine.physics.primitives.colliders.AABB o-- com.apetrei.misc.Vector2 : position
+  com.apetrei.engine.physics.primitives.colliders.AABB o-- com.apetrei.misc.Vector2 : size
   com.apetrei.engine.physics.primitives.colliders.Box2DCollider -up-|> com.apetrei.engine.components.Collider2D
   com.apetrei.engine.physics.primitives.colliders.Box2DCollider o-- com.apetrei.misc.Vector2 : halfSize
   com.apetrei.engine.physics.primitives.colliders.Box2DCollider o-- com.apetrei.misc.Vector2 : size
   com.apetrei.engine.physics.primitives.colliders.ConvexCollider -up-|> com.apetrei.engine.components.Collider2D
   com.apetrei.engine.physics.primitives.colliders.ConvexCollider o-- com.apetrei.misc.ConvexPolygon2D : collider
-  com.apetrei.engine.physics.primitives.colliders.ConvexCollider o-- com.apetrei.misc.ConvexPolygon2D : transformedCollider
 
 
 right footer

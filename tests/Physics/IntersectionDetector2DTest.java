@@ -38,7 +38,7 @@ public class IntersectionDetector2DTest  {
 
     @Test
     public void SteliIsStupid_Test(){
-
+        /*
         Vector2[] waka = {
                 new Vector2(0, 0),
                 new Vector2(200, 200),
@@ -65,7 +65,7 @@ public class IntersectionDetector2DTest  {
         //ConvexPolygon2D wa3 = new ConvexPolygon2D( waka3 );
 
        // parent.getGameContainer().getRenderer().drawPoligon(wa3, Color.RED);
-
+*/
     }
 
 

@@ -28,6 +28,7 @@ title __RENDERER's Class Diagram__\n
           + drawRectangle()
           + drawRectangle()
           + drawSprite()
+          + drawSprite()
           + setPixel()
       }
     }

@@ -19,7 +19,6 @@ title __PHYSICS's Class Diagram__\n
   }
   
 
-  com.apetrei.engine.physics.PhysicsSystem2D o-- com.apetrei.engine.physics.forces.ForceRegistry : forceRegistry
 
 
 right footer

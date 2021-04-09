@@ -4,11 +4,10 @@ title __MISC's Class Diagram__\n
 
   namespace com.apetrei.misc {
     class com.apetrei.misc.ConvexPolygon2D {
-        - vertices : Vector2[]
+        - vertices : List<Vector2>
         + ConvexPolygon2D()
         + ConvexPolygon2D()
         + getVertices()
-        + setVertices()
     }
   }
   
@@ -28,9 +27,12 @@ title __MISC's Class Diagram__\n
   namespace com.apetrei.misc {
     class com.apetrei.misc.Line {
         + Line()
+        + Line()
+        + findNormal()
         + getA()
         + getB()
         + lenghtSquared()
+        + toString()
     }
   }
   
@@ -51,7 +53,7 @@ title __MISC's Class Diagram__\n
         + min()
         + mul()
         + mul()
-        + normalize()
+        + normalized()
         + set()
         + set()
         + setComponent()
