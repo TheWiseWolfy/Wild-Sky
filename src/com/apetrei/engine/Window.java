@@ -3,22 +3,25 @@ package com.apetrei.engine;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 //Clasa care gestioneaza fereastra care contine joculs
 public class Window {
 
     private JFrame frame;
-    private BufferedImage image;
     private Canvas canvas;
     private BufferStrategy bufferStrategy;
     private Graphics graphics;
 
     //Initializam clase si interfate inportante pentru randarea jocului
-    public Window(GameContainer gc){
+    public Window(){
       canvas = new Canvas();
 
-      Dimension s = new Dimension((int)(gc.getWidth()* gc.getScale()),(int)(gc.getHeight() * gc.getScale()));
+
+        int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
+        int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
+
+
+        Dimension s = new Dimension(realSizeX,realSizeY);
 
        //Setari canvas
       canvas.setPreferredSize(s);
@@ -26,7 +29,7 @@ public class Window {
       canvas.setMinimumSize(s);
 
       //Setari pentru fereastra
-      frame = new JFrame(gc.getTitle());
+      frame = new JFrame(ConfigHandler.getTitle());
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setLayout(new BorderLayout());
       frame.add(canvas,BorderLayout.CENTER);
@@ -41,26 +44,30 @@ public class Window {
       graphics = bufferStrategy.getDrawGraphics();
 
       //Aici avem imaginea pe care o vom desena pe ecran
-      image = new BufferedImage(gc.getWidth(),gc.getHeight(),BufferedImage.TYPE_INT_RGB);
     }
+
 
     //Chemat in GameContainer
-    public void Update(){
-        graphics.drawImage(image,0,0,canvas.getWidth(),canvas.getHeight(),null);
+    public void UpdateWindow(){
         bufferStrategy.show();
     }
-    //___________________________________________________________________________________________
+    //________________________________GETTERS__________________________________________________
 
+    /*
     public BufferedImage getImage() {
         return image;
     }
-
+    */
     public Canvas getCanvas() {
         return canvas;
     }
 
     public JFrame getFrame() {
         return frame;
+    }
+
+    public Graphics getGraphics() {
+        return graphics;
     }
 }
 

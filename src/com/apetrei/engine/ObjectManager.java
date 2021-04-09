@@ -1,34 +1,40 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.components.Collider2D;
+import com.apetrei.engine.physics.PhysicsSystem2D;
+
 import java.util.ArrayList;
 
 public class ObjectManager {
     protected ArrayList<GameObject> gameObjects;
-    GameContainer gameContainer;
 
-    ObjectManager(GameContainer _gameContainer){
-        gameContainer = _gameContainer;
+    ObjectManager(){
         gameObjects = new ArrayList<>();
     }
 
-    void addGameObject(GameObject created){
+   public void addGameObject(GameObject created){
         gameObjects.add(created);
     }
 
+    //Update fuctions
 
-    void updateObjects(){
+    public void updateObjects(float fT){
 
         for( GameObject current : gameObjects ){
-            current.update(gameContainer);
+            if(current.isActive() ) {
+                current.update( fT);
+            }
+
 
         }
     }
 
-    void renderObjects(){
+    public void renderObjects(){
         for( GameObject current : gameObjects ){
             if(current.isActive() ) {
-                current.render(gameContainer);
+                current.render();
             }
+
         }
     }
 
