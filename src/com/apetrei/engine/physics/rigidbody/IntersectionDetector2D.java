@@ -1,12 +1,12 @@
 package com.apetrei.engine.physics.rigidbody;
 
+import com.apetrei.misc.AABB;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.Vector2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class IntersectionDetector2D {
@@ -57,28 +57,30 @@ public class IntersectionDetector2D {
    static  public List<Vector2> GetIntersectionPoints(Line line1, ConvexPolygon2D poly) {
         List<Vector2> intersectionPoints = new ArrayList<Vector2>();
 
-        for (int i = 0; i < poly.getVertices().length; i++) {
-            int next = (i + 1 == poly.getVertices().length) ? 0 : i + 1;  //TODO Poate module e mai rapid ca asta ??
+        for (int i = 0; i < poly.getVertices().size(); i++) {
+            int next = (i + 1 == poly.getVertices().size()) ? 0 : i + 1;  //TODO Poate module e mai rapid ca asta ??
 
-            Vector2 ip = GetIntersectionPoint(line1, new Line(poly.getVertices()[i], poly.getVertices()[next]) );
+            Vector2 ip = GetIntersectionPoint(line1, new Line(poly.getVertices().get(i), poly.getVertices().get(next)) );
 
             if (ip != null) intersectionPoints.add(ip);
         }
-
         return intersectionPoints;
     }
 
-
-
    static public boolean IsPointInsidePoly(Vector2 test, ConvexPolygon2D poly)
     {
-        int i;
-        int j;
+        int i,j;
         boolean result = false;
-        for (i = 0, j = poly.getVertices().length - 1; i < poly.getVertices().length; j = i++)
+        List<Vector2> vertices = poly.getVertices();
+
+        for (i = 0, j = vertices.size() - 1; i < vertices.size(); j = i++)
         {
-            float value = (poly.getVertices()[j].x - poly.getVertices()[i].x) * (test.y - poly.getVertices()[i].y) / (poly.getVertices()[j].y - poly.getVertices()[i].y) + poly.getVertices()[i].x;
-            if ((poly.getVertices()[i].y > test.y) != (poly.getVertices()[j].y > test.y) && test.x < value ) {
+            float value = ( vertices.get(j).x - vertices.get(i).x ) *
+                          ( test.y - vertices.get(i).y ) /
+                          ( vertices.get(j).y - vertices.get(i).y ) +
+                           vertices.get(i).x;
+
+            if ( ( vertices.get(i).y > test.y) != ( vertices.get(j).y > test.y) && test.x < value ) {
                 result = !result;
             }
         }
@@ -90,19 +92,21 @@ public class IntersectionDetector2D {
         List<Vector2> clippedCorners = new ArrayList<Vector2>();
 
         //Add  the corners of poly1 which are inside poly2
-        for (int i = 0; i < poly1.getVertices().length; i++)
-        {
-            if (IsPointInsidePoly(poly1.getVertices()[i], poly2))
-                addVectorToList(clippedCorners, new Vector2[] { poly1.getVertices()[i] });
-        }
+        for (int i = 0; i < poly1.getVertices().size(); i++) {
 
+            Vector2 point = poly1.getVertices().get(i);
+            if (IsPointInsidePoly(point , poly2)  && !containsPoint(clippedCorners, point  ) ) {
+                clippedCorners.add( point );
+            }
+        }
         //Add the corners of poly2 which are inside poly1
-        for (int i = 0; i < poly2.getVertices().length; i++)
-        {
-            if (IsPointInsidePoly(poly2.getVertices()[i],poly1))
-                addVectorToList(clippedCorners, new Vector2[]{ poly2.getVertices()[i]});
-        }
+        for (int i = 0; i < poly2.getVertices().size(); i++) {
 
+            Vector2 point = poly2.getVertices().get(i);
+            if (IsPointInsidePoly(point,poly1) && !containsPoint(clippedCorners, point  ) ) {
+                clippedCorners.add( point );
+            }
+        }
         return (clippedCorners);
     }
 
@@ -111,8 +115,8 @@ public class IntersectionDetector2D {
         List<Vector2> intersectionPoint = new ArrayList<Vector2>();
 
         //Add  the intersection points
-        for (int i = 0, next = 1; i < poly1.getVertices().length; i++, next = (i + 1 == poly2.getVertices().length) ? 0 : i + 1) {
-            Line line1 = new Line( poly1.getVertices()[i], poly1.getVertices()[next] );
+        for (int i = 0, next = 1; i < poly1.getVertices().size(); i++, next = (i + 1 == poly2.getVertices().size()) ? 0 : i + 1) {
+            Line line1 = new Line( poly1.getVertices().get(i), poly1.getVertices().get(next));
 
             List<Vector2> foundPoints =  GetIntersectionPoints(line1, poly2);
             if( !foundPoints.isEmpty() )
@@ -121,56 +125,23 @@ public class IntersectionDetector2D {
         return intersectionPoint;
     }
 
-    //UTILITY FUCTIONS
 
-    private static void addVectorToList(List<Vector2> pool, Vector2[] newPoints) {
-        for (Vector2 newPoint : newPoints) {
-            boolean found = false;
+    //O fuctie menita pentru optimizare
+    public static boolean AABBAndAABBB(AABB b1, AABB b2) {
+            //TODO This is needed for optimization
+        return true;
+    }
+
+
+    //UTILITY FUCTIONS
+    private static boolean containsPoint(List<Vector2> pool, Vector2 point) {
             for (Vector2 poolPoint : pool) {
                 {
-                    if (newPoint.equals(poolPoint)) {
-                        found = true;
-                        break;
+                    if (point.equals(poolPoint)) {
+                        return true;
                     }
                 }
-                //Aici e nevoie de o optimizare cu disperare, dar asteptam;
-
             }
-            if (!found) pool.add(newPoint);
-        }
+        return false;
     }
-
-    public static List<Vector2> OrderClockwise(List<Vector2> points) {
-
-        Vector2[] tempVec = new Vector2[points.size()];
-        double mx = 0;
-        double my = 0;
-
-        for(int i = 0; i < points.size(); ++i)
-        {
-            mx += points.get(i).x;
-            my += points.get(i).y;
-
-            tempVec[i] = points.get(i);
-        }
-        mx /= points.size();
-        my /= points.size();
-
-        boolean sorted = false;
-        while (!sorted) {
-            sorted = true;
-            for (int i = 0; i < points.size() - 1; ++i) {
-                if (Math.atan2(tempVec[i].y - my, tempVec[i].x - mx) > Math.atan2(tempVec[i + 1].y - my, tempVec[i + 1].x - mx)) {
-                    Vector2 temp = tempVec[i];
-                    tempVec[i] = tempVec[i + 1];
-                    tempVec[i + 1] = temp;
-                    sorted = false;
-                }
-            }
-        }
-        points.clear();
-        addVectorToList(points, tempVec);
-        return points;
-    }
-
 }

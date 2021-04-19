@@ -16,7 +16,6 @@ public class ConvexPolygon2D {
         this.vertices = new ArrayList<Vector2>(ver);
     }
 
-
     //___________________GETTER__AND__SETTER
 
     public List<Vector2> getVertices() {

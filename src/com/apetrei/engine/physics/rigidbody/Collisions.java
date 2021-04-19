@@ -32,7 +32,7 @@ public class Collisions {
             if (normal.dot(  relPoz  ) > 0f )
                 normal.mul (-1);
 
-            return new CollisionManifold(normal,10f, intersectie  );
+            return new CollisionManifold(normal,100f, intersectie  );
         }else {
             return  new CollisionManifold();
         }

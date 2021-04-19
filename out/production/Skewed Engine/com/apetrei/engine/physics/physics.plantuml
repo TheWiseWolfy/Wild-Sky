@@ -11,8 +11,8 @@ title __PHYSICS's Class Diagram__\n
           - collisions : List<CollisionManifold>
           - impulseIterations : int
           + PhysicsSystem2D()
-          + Update()
-          + addRigidbodies()
+          + addColliders()
+          + updatePhysics()
           - applyImpluse()
       }
     }

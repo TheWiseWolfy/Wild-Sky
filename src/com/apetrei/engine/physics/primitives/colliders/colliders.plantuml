@@ -6,21 +6,6 @@ title __COLLIDERS's Class Diagram__\n
     namespace physics {
       namespace primitives {
         namespace colliders {
-          class com.apetrei.engine.physics.primitives.colliders.AABB {
-              + AABB()
-              + getMax()
-              + getMin()
-          }
-        }
-      }
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
-    namespace physics {
-      namespace primitives {
-        namespace colliders {
           class com.apetrei.engine.physics.primitives.colliders.Box2DCollider {
               + Box2DCollider()
               + Box2DCollider()
@@ -54,9 +39,6 @@ title __COLLIDERS's Class Diagram__\n
   }
   
 
-  com.apetrei.engine.physics.primitives.colliders.AABB o-- com.apetrei.misc.Vector2 : halfSize
-  com.apetrei.engine.physics.primitives.colliders.AABB o-- com.apetrei.misc.Vector2 : position
-  com.apetrei.engine.physics.primitives.colliders.AABB o-- com.apetrei.misc.Vector2 : size
   com.apetrei.engine.physics.primitives.colliders.Box2DCollider -up-|> com.apetrei.engine.components.Collider2D
   com.apetrei.engine.physics.primitives.colliders.Box2DCollider o-- com.apetrei.misc.Vector2 : halfSize
   com.apetrei.engine.physics.primitives.colliders.Box2DCollider o-- com.apetrei.misc.Vector2 : size

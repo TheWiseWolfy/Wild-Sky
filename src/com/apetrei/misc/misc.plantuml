@@ -3,6 +3,15 @@
 title __MISC's Class Diagram__\n
 
   namespace com.apetrei.misc {
+    class com.apetrei.misc.AABB {
+        + AABB()
+        + getMax()
+        + getMin()
+    }
+  }
+  
+
+  namespace com.apetrei.misc {
     class com.apetrei.misc.ConvexPolygon2D {
         - vertices : List<Vector2>
         + ConvexPolygon2D()
@@ -63,6 +72,9 @@ title __MISC's Class Diagram__\n
   }
   
 
+  com.apetrei.misc.AABB o-- com.apetrei.misc.Vector2 : halfSize
+  com.apetrei.misc.AABB o-- com.apetrei.misc.Vector2 : position
+  com.apetrei.misc.AABB o-- com.apetrei.misc.Vector2 : size
   com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : A
   com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : B
 

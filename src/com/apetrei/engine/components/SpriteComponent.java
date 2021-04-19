@@ -1,5 +1,9 @@
 package com.apetrei.engine.components;
 
+import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.renderer.Camera;
+import com.apetrei.misc.Vector2;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -29,15 +33,14 @@ public class SpriteComponent  extends Component {
             e.printStackTrace();
         }
     }
-
     @Override
     public void componentUpdate( double fT) {
 
     }
     @Override
     public void componentRender( ) {
-        parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition().x,transformComponent.getPosition().y,1f,transformComponent.getRotation(),sprite);
+        Vector2 destRect = new Vector2();
 
-            //  parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition().x,transformComponent.getPosition().y,sprite);
+        parent.getGameContainer().getRenderer().drawSprite(  transformComponent.getPosition(),1f,transformComponent.getRotation(),sprite);
     }
 }

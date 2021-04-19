@@ -1,16 +1,24 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.input.Input;
+import com.apetrei.engine.input.InputQueue;
 import com.apetrei.engine.physics.PhysicsSystem2D;
 import com.apetrei.engine.renderer.Renderer;
+import com.apetrei.engine.renderer.Window;
+
+import java.util.concurrent.TimeUnit;
 
 public class GameContainer implements Runnable {
 
 
     //Thread pe care va rula enginul
     private Thread thread;
+    private Thread inputThread;
+
     private Window window;
     private Renderer renderer;
     private Input input;
+    private InputQueue inputQueue;
     private ObjectManager objectManager;
     private PhysicsSystem2D physicsSystem;
 
@@ -20,16 +28,24 @@ public class GameContainer implements Runnable {
     public GameContainer(){
         //Initializari importante
         thread = new Thread(this);
+      //  thread2 = new Thread(input);
+
         window = new Window();
         renderer = new Renderer(this);
         input = new Input(this);
+        inputQueue = new InputQueue();
         objectManager = new ObjectManager();
         physicsSystem = new PhysicsSystem2D();
+
+        inputThread = new Thread(input);
     }
 
     public void start(){
         //Pornim un thread separat
+        inputThread.start();
+
         thread.run();
+
     }
 
     public void stop(){
@@ -62,16 +78,30 @@ public class GameContainer implements Runnable {
 
             unprocessedTime += frameTime;
 
-            //PHYSICS UPDAT
+
+
+            //PHYSICS UPDATE
             physicsSystem.updatePhysics(frameTime);
             //UPDATE
             objectManager.updateObjects(frameTime);
+            //IMPUT UPDATE
+            inputQueue.nextEvent();
+
+            try {
+               TimeUnit.MICROSECONDS.sleep( 8666);
+            }catch (Exception e){
+
+            }
+            if(ConfigHandler.isDebugMode()    )
+                 System.out.println("Current FPS:" + 1/ frameTime );
+
 
             //RENDERING
             while (unprocessedTime >= ConfigHandler.getUpdateCap()) {
                 unprocessedTime -= ConfigHandler.getUpdateCap();
                 render = true;
             }
+
             if (render) {
                 renderer.Render();
                 renderer.Display();
@@ -103,6 +133,10 @@ public class GameContainer implements Runnable {
         return input;
     }
 
+    public InputQueue getInputQueue() {
+        return inputQueue;
+    }
+
     public Renderer getRenderer() {
         return renderer;
     }
@@ -110,6 +144,5 @@ public class GameContainer implements Runnable {
     public PhysicsSystem2D getPhysicsSystem() {
         return physicsSystem;
     }
-
 
 }

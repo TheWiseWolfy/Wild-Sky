@@ -33,10 +33,12 @@ title __COMPONENTS's Class Diagram__\n
   namespace com.apetrei.engine {
     namespace components {
       class com.apetrei.engine.components.PlayerComponent {
+          - engineLevel : int
           + PlayerComponent()
           + componentInit()
           + componentRender()
           + componentUpdate()
+          + getEngineLevel()
       }
     }
   }
@@ -47,6 +49,19 @@ title __COMPONENTS's Class Diagram__\n
       class com.apetrei.engine.components.SpriteComponent {
           - sprite : BufferedImage
           + SpriteComponent()
+          + componentInit()
+          + componentRender()
+          + componentUpdate()
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace components {
+      class com.apetrei.engine.components.StaticSpriteComponent {
+          - sprite : BufferedImage
+          + StaticSpriteComponent()
           + componentInit()
           + componentRender()
           + componentUpdate()
@@ -80,6 +95,8 @@ title __COMPONENTS's Class Diagram__\n
   com.apetrei.engine.components.PlayerComponent o-- com.apetrei.engine.physics.rigidbody.Rigidbody2D : rigidbody
   com.apetrei.engine.components.SpriteComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.SpriteComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
+  com.apetrei.engine.components.StaticSpriteComponent -up-|> com.apetrei.engine.components.Component
+  com.apetrei.engine.components.StaticSpriteComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
   com.apetrei.engine.components.TransformComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.TransformComponent o-- com.apetrei.misc.Vector2 : position
 

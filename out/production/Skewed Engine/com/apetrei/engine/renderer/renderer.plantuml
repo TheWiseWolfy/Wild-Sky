@@ -4,6 +4,18 @@ title __RENDERER's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace renderer {
+      class com.apetrei.engine.renderer.Camera {
+          + centerCameraOn()
+          + getCameraPosition()
+          + setCameraPosition()
+          + vector2CameraSpace()
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace renderer {
       class com.apetrei.engine.renderer.Renderer {
           - graphics : Graphics
           - image : BufferedImage
@@ -14,27 +26,41 @@ title __RENDERER's Class Diagram__\n
           + Render()
           + Renderer()
           + clear()
-          + drawBox()
-          + drawLine()
-          + drawLine()
-          + drawLine()
-          + drawLine()
           + drawLine()
           + drawLine()
           + drawPoligon()
-          + drawPoligon()
-          + drawRectangle()
-          + drawRectangle()
           + drawRectangle()
           + drawRectangle()
           + drawSprite()
           + drawSprite()
+          + getCamera()
+          + placeCameraAt()
+          {static} + rotate()
           + setPixel()
       }
     }
   }
   
 
+  namespace com.apetrei.engine {
+    namespace renderer {
+      class com.apetrei.engine.renderer.Window {
+          - bufferStrategy : BufferStrategy
+          - canvas : Canvas
+          - frame : JFrame
+          - graphics : Graphics
+          + UpdateWindow()
+          + Window()
+          + getCanvas()
+          + getFrame()
+          + getGraphics()
+      }
+    }
+  }
+  
+
+  com.apetrei.engine.renderer.Camera o-- com.apetrei.misc.Vector2 : cameraPosition
+  com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.renderer.Camera : camera
   com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.GameContainer : gc
 
 

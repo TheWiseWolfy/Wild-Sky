@@ -4,12 +4,14 @@ public class ConfigHandler {
 
     //Propietatile jocului
     private static final double UPDATE_CAP= 1/60.0f;
-    private static int width = 640;
-    private static int height =480;
+    private static int width = 800;
+    private static int height =600;
 
-    private static float scale = 2f;
+    private static float scale = 1f;
     private static String title = "Engine v1.0";
 
+
+    private static boolean debugMode = false;
 
     public static double getUpdateCap() {
         return UPDATE_CAP;
@@ -31,5 +33,26 @@ public class ConfigHandler {
         return title;
     }
 
+    public static boolean isDebugMode() {
+        return debugMode;
+    }
+
+
+    //Player information
+
+    private static float enginePower = 2000;
+    private static float maneuverability = 100f;
+
+    public static float getManeuverability() {
+        return maneuverability;
+    }
+
+    public static void setManeuverability(float maneuverability) {
+        ConfigHandler.maneuverability = maneuverability;
+    }
+
+    public static float getEnginePower() {
+        return enginePower;
+    }
 
 }

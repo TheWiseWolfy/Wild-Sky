@@ -2,19 +2,13 @@ package com.apetrei.engine.renderer;
 
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.physics.primitives.colliders.Box2DCollider;
 import com.apetrei.misc.ConvexPolygon2D;
-import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.awt.image.WritableRaster;
 import java.util.List;
 
 public class Renderer {
@@ -25,9 +19,13 @@ public class Renderer {
     private int pixelsW, pixelsH;
     private int[] pixels;
 
+    //Aici stocam pozitia camerei
+    private Camera camera;
+
     public Renderer(GameContainer _gameContainer){
         gc = _gameContainer;
         graphics = gc.getWindow().getGraphics();
+        camera = new Camera();
 
         pixelsW = ConfigHandler.getWidth();
         pixelsH = ConfigHandler.getHeight();
@@ -40,15 +38,12 @@ public class Renderer {
 
         int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
         int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
-
         //Sprite
          graphics.clearRect(0,0,realSizeX,realSizeY);
 
          pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
          gc.getObjectManager().renderObjects();
-
-
     }
 
     public void Display(){
@@ -61,36 +56,32 @@ public class Renderer {
         gc.getWindow().UpdateWindow();
     }
 
-    //Fuction using the graphics class
+    public void placeCameraAt( Vector2 newPoz){
+        Vector2 newCameraPoz = new Vector2( newPoz ).mul( -1f ).add( new Vector2( ConfigHandler.getWidth()/2, ConfigHandler.getHeight()/2) );
 
-    //LINE
-    public void drawLine(int x1, int y1, int x2, int y2){
-        graphics.setColor(Color.BLACK);
-        graphics.drawLine(x1,y1 ,x2,y2);
+        camera.setCameraPosition(newCameraPoz);
     }
+    //_____________________________________HERE WE DRAW____________________________
+    //Fuction using the graphics class
 
     public void drawLine(Line line){
         graphics.setColor(Color.BLACK);
-        graphics.drawLine((int) line.getA().x,(int) line.getA().y ,(int) line.getB().x,(int) line.getB().y);
-    }
 
-    public void drawLine(Line line, Color col){
-        graphics.setColor(col);
-        graphics.drawLine((int) line.getA().x,(int) line.getA().y ,(int) line.getB().x,(int) line.getB().y);
+        int Ax = (int)( line.getA().x + camera.getCameraPosition().x );
+        int Ay = (int)( line.getA().y + camera.getCameraPosition().y );
+        int Bx = (int)( line.getB().x  + camera.getCameraPosition().x );
+        int By = (int)( line.getB().y  + camera.getCameraPosition().y ) ;
+
+        graphics.drawLine( Ax, Ay , Bx, By);
     }
 
     public void drawLine(Vector2 a,  Vector2 b){
         graphics.setColor(Color.BLACK);
-        graphics.drawLine((int)a.x,(int)a.y ,(int)b.x,(int)b.y);
-    }
-    public void drawLine(Vector2 a,  Vector2 b,Color col){
-        graphics.setColor(col);
-        graphics.drawLine((int)a.x,(int)a.y ,(int)b.x,(int)b.y);
-    }
 
-    public void drawLine(int x1, int y1, int x2, int y2,Color col){
-        graphics.setColor(col);
-        graphics.drawLine(x1,y1 ,x2,y2);
+        a = camera.vector2CameraSpace(a);
+        b = camera.vector2CameraSpace(b);
+
+        graphics.drawLine((int) a.x, (int)a.y,(int)b.x  ,(int) b.y ) ;
     }
 
     //RECTANGLE
@@ -108,19 +99,6 @@ public class Renderer {
         graphics.drawRect((int)min.x,(int) min.y ,wight,height);
     }
 
-    public void drawRectangle(Vector2 min, Vector2 max,Color col){
-        graphics.setColor(col);
-
-        int wight =(int) (max.x - min.x);
-        int height =(int) (max.y - min.y);
-
-        graphics.drawRect((int)min.x,(int) min.y ,wight,height);
-    }
-    public void drawRectangle(int x, int y, int wight, int height, Color col){
-        graphics.setColor(col);
-        graphics.drawRect(x,y ,wight,height);
-    }
-
     //ConvexPolygon2D
 
     public void drawPoligon(ConvexPolygon2D poly){
@@ -131,38 +109,15 @@ public class Renderer {
         for (int i = 0; i < vertices.size() ; ++i) {
             drawLine(vertices.get(i), vertices.get( (i + 1) % vertices.size()) );
         }
-        //graphics.drawRect(x,y ,wight,height,6);
-    }
-
-    public void drawPoligon(ConvexPolygon2D poly,Color col){
-        List<Vector2> vertices = poly.getVertices();
-
-        for (int i = 0; i < vertices.size() ; ++i) {
-            drawLine(vertices.get(i), vertices.get ((i + 1) % vertices.size() ),col);
-        }
     }
 
     //SPRITES
-    public void drawSprite(float x, float y,float scale, BufferedImage img){
+    public void drawSprite(Vector2 poz,float scale, BufferedImage img, float scrollfactor){
 
-        /////////
-        int possitionX =(int) (x  -  img.getWidth() * 0.5f  * scale  ) ;
-        int possitionY= (int) (y  -  img.getHeight() * 0.5f * scale ) ;
+        Vector2 ajustedPoz =  camera.vector2CameraSpace( poz, scrollfactor);
 
-        int sizeX =(int) (img.getWidth() * scale ) ;
-        int sizeY =(int) (img.getHeight() * scale ) ;
-
-        graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
-    }
-
-    public void drawSprite(float x, float y,float scale,float rotation, BufferedImage img){
-
-            img = rotate(img,rotation, (float)Math.PI /2);
-
-
-            /////////
-        int possitionX =(int) (x  -  img.getWidth() * 0.5f  * scale  ) ;
-        int possitionY= (int) (y  -  img.getHeight() * 0.5f * scale ) ;
+        int possitionX = (int) (ajustedPoz.x  -  img.getWidth() * 0.5f  * scale ) ;
+        int possitionY = (int) (ajustedPoz.y  -  img.getHeight() * 0.5f * scale ) ;
 
         int sizeX =(int) (img.getWidth() * scale ) ;
         int sizeY =(int) (img.getHeight() * scale ) ;
@@ -170,6 +125,33 @@ public class Renderer {
         graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
     }
 
+    public void drawSprite(Vector2 poz,float scale, BufferedImage img){
+
+        Vector2 ajustedPoz =  camera.vector2CameraSpace( poz);
+
+        int possitionX = (int) (ajustedPoz.x  -  img.getWidth() * 0.5f  * scale ) ;
+        int possitionY = (int) (ajustedPoz.y  -  img.getHeight() * 0.5f * scale ) ;
+
+        int sizeX =(int) (img.getWidth() * scale ) ;
+        int sizeY =(int) (img.getHeight() * scale ) ;
+
+        graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
+    }
+
+    public void drawSprite( Vector2 poz,float scale,float rotation, BufferedImage img){
+
+        img = rotate(img,rotation, (float)Math.PI /2);
+
+        Vector2 ajustedPoz =  camera.vector2CameraSpace( poz);
+
+        int possitionX = (int) (ajustedPoz.x  -  img.getWidth() * 0.5f  * scale ) ;
+        int possitionY = (int) (ajustedPoz.y  -  img.getHeight() * 0.5f * scale ) ;
+
+        int sizeX =(int) (img.getWidth() * scale ) ;
+        int sizeY =(int) (img.getHeight() * scale ) ;
+
+        graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
+    }
 
     //Fuctions operating on pixel array
 
@@ -191,6 +173,12 @@ public class Renderer {
         g.rotate(radians + offset, imgOld.getWidth()/2, imgOld.getHeight()/2);                                    //configure rotation
         g.drawImage(imgOld, 0, 0, null);                                                                                //draw rotated image
         return imgNew;                                                                                                  //return rotated image
+    }
+
+    //___________________________________GETTER_________________
+
+    public Camera getCamera() {
+        return camera;
     }
 
 }
