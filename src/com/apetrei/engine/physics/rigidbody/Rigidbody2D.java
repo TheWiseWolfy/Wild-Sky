@@ -35,6 +35,13 @@ public class Rigidbody2D extends TransformComponent {
         this.inverseMass = 1.0f / this.mass;
 
     }
+    public Rigidbody2D(Vector2 pos,Vector2 vel,float mass) {
+        super(pos);
+        this.linearVelocity = vel;
+        this.mass = mass;
+        this.inverseMass = 1.0f / this.mass;
+
+    }
 
 
     @Override
@@ -55,7 +62,7 @@ public class Rigidbody2D extends TransformComponent {
         angularVelocity = angularVelocity * (1 - angularDamping * (float) fT  ) ;
 
         //Rotational behaviour
-        angularAcceleration = angularForceAcumulator * this.inverseMass * (float) fT;
+        angularAcceleration = angularForceAcumulator * this.inverseMass;
 
         angularVelocity += angularAcceleration * (float) fT;
 
@@ -69,7 +76,7 @@ public class Rigidbody2D extends TransformComponent {
         linearVelocity = linearVelocity.mul(1 - linearDamping * (float) fT );
 
         //Calculate acceleration
-        Vector2 acceleration = new Vector2(forceAccumulation).mul(this.inverseMass * (float) fT);
+        Vector2 acceleration = new Vector2(forceAccumulation).mul(this.inverseMass );
 
         // Calculate linear velocity
         linearVelocity = linearVelocity.add(acceleration.mul((float)fT));

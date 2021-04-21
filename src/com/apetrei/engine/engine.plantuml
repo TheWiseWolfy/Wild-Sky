@@ -5,17 +5,22 @@ title __ENGINE's Class Diagram__\n
   namespace com.apetrei.engine {
     class com.apetrei.engine.ConfigHandler {
         {static} - UPDATE_CAP : double
+        {static} - debugMode : boolean
         {static} - enginePower : float
         {static} - height : int
+        {static} - maneuverability : float
         {static} - scale : float
         {static} - title : String
         {static} - width : int
         {static} + getEnginePower()
         {static} + getHeight()
+        {static} + getManeuverability()
         {static} + getScale()
         {static} + getTitle()
         {static} + getUpdateCap()
         {static} + getWidth()
+        {static} + isDebugMode()
+        {static} + setManeuverability()
     }
   }
   
@@ -56,45 +61,9 @@ title __ENGINE's Class Diagram__\n
   
 
   namespace com.apetrei.engine {
-    class com.apetrei.engine.Input {
-        - NUM_KEYS : int
-        - NUM_MOUSE_KEYS : int
-        - keys : boolean[]
-        - keysPast : boolean[]
-        - mouseKeys : boolean[]
-        - mouseKeysPast : boolean[]
-        - mouseX : int
-        - mouseY : int
-        - scroll : int
-        + Input()
-        + getMouseX()
-        + getMouseY()
-        + getScroll()
-        + isKeyDown()
-        + isKeyPressed()
-        + isKeyUp()
-        + isMouseKeyDown()
-        + isMouseKeyPressed()
-        + isMouseKeyUp()
-        + keyPressed()
-        + keyReleased()
-        + keyTyped()
-        + mouseClicked()
-        + mouseDragged()
-        + mouseEntered()
-        + mouseExited()
-        + mouseMoved()
-        + mousePressed()
-        + mouseReleased()
-        + mouseWheelMoved()
-        + updateImput()
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
     class com.apetrei.engine.ObjectManager {
         # gameObjects : ArrayList<GameObject>
+        # objectsOnHold : ArrayList<GameObject>
         + addGameObject()
         + renderObjects()
         + updateObjects()
@@ -104,17 +73,12 @@ title __ENGINE's Class Diagram__\n
   
 
   com.apetrei.engine.GameContainer .up.|> java.lang.Runnable
-  com.apetrei.engine.GameContainer o-- com.apetrei.engine.Input : input
+  com.apetrei.engine.GameContainer o-- com.apetrei.engine.input.Input : input
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.ObjectManager : objectManager
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.physics.PhysicsSystem2D : physicsSystem
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.renderer.Renderer : renderer
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.renderer.Window : window
   com.apetrei.engine.GameObject o-- com.apetrei.engine.GameContainer : gameContainer
-  com.apetrei.engine.Input .up.|> java.awt.event.KeyListener
-  com.apetrei.engine.Input .up.|> java.awt.event.MouseListener
-  com.apetrei.engine.Input .up.|> java.awt.event.MouseMotionListener
-  com.apetrei.engine.Input .up.|> java.awt.event.MouseWheelListener
-  com.apetrei.engine.Input o-- com.apetrei.engine.GameContainer : gameContainer
 
 
 right footer

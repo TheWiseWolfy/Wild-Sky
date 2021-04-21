@@ -54,17 +54,25 @@ title __RIGIDBODY's Class Diagram__\n
     namespace physics {
       namespace rigidbody {
         class com.apetrei.engine.physics.rigidbody.Rigidbody2D {
+            - angularAcceleration : float
+            - angularDamping : float
+            - angularForceAcumulator : float
+            - angularVelocity : float
             - cor : float
             - inverseMass : float
             - linearDamping : float
             - mass : float
             + Rigidbody2D()
             + Rigidbody2D()
+            + addAngularForce()
             + addForce()
             + clearAccumulators()
             + componentInit()
             + componentRender()
             + componentUpdate()
+            + getAngularAcceleration()
+            + getAngularDamping()
+            + getAngularVelocity()
             + getCor()
             + getForward()
             + getInverseMass()
@@ -72,6 +80,9 @@ title __RIGIDBODY's Class Diagram__\n
             + getMass()
             + getRotation()
             + hasInfiniteMass()
+            + setAngularAcceleration()
+            + setAngularDamping()
+            + setAngularVelocity()
             + setCor()
             + setLinearVelocity()
             + setMass()

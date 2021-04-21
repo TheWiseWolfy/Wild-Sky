@@ -40,8 +40,8 @@ public class ConfigHandler {
 
     //Player information
 
-    private static float enginePower = 2000;
-    private static float maneuverability = 100f;
+    private static float enginePower = 50;
+    private static float maneuverability = 5f;
 
     public static float getManeuverability() {
         return maneuverability;

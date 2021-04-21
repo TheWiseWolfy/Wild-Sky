@@ -4,6 +4,19 @@ title __COMPONENTS's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace components {
+      class com.apetrei.engine.components.BackgroundSprite {
+          - sprite : BufferedImage
+          + BackgroundSprite()
+          + componentInit()
+          + componentRender()
+          + componentUpdate()
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace components {
       class com.apetrei.engine.components.Collider2D {
           + Collider2D()
           + componentInit()
@@ -59,19 +72,6 @@ title __COMPONENTS's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace components {
-      class com.apetrei.engine.components.StaticSpriteComponent {
-          - sprite : BufferedImage
-          + StaticSpriteComponent()
-          + componentInit()
-          + componentRender()
-          + componentUpdate()
-      }
-    }
-  }
-  
-
-  namespace com.apetrei.engine {
-    namespace components {
       class com.apetrei.engine.components.TransformComponent {
           # rotation : float
           + TransformComponent()
@@ -88,17 +88,33 @@ title __COMPONENTS's Class Diagram__\n
   }
   
 
+  namespace com.apetrei.engine {
+    namespace components {
+      class com.apetrei.engine.components.TurretComponent {
+          + componentInit()
+          + componentRender()
+          + componentUpdate()
+          + fireProjectile()
+      }
+    }
+  }
+  
+
+  com.apetrei.engine.components.BackgroundSprite -up-|> com.apetrei.engine.components.Component
+  com.apetrei.engine.components.BackgroundSprite o-- com.apetrei.engine.components.TransformComponent : transformComponent
   com.apetrei.engine.components.Collider2D -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.Collider2D o-- com.apetrei.engine.physics.rigidbody.Rigidbody2D : rigidbody
   com.apetrei.engine.components.Component o-- com.apetrei.engine.GameObject : parent
   com.apetrei.engine.components.PlayerComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.PlayerComponent o-- com.apetrei.engine.physics.rigidbody.Rigidbody2D : rigidbody
+  com.apetrei.engine.components.PlayerComponent o-- com.apetrei.misc.Vector2 : temptemp
+  com.apetrei.engine.components.PlayerComponent o-- com.apetrei.engine.components.TurretComponent : turretComponent
   com.apetrei.engine.components.SpriteComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.SpriteComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
-  com.apetrei.engine.components.StaticSpriteComponent -up-|> com.apetrei.engine.components.Component
-  com.apetrei.engine.components.StaticSpriteComponent o-- com.apetrei.engine.components.TransformComponent : transformComponent
   com.apetrei.engine.components.TransformComponent -up-|> com.apetrei.engine.components.Component
   com.apetrei.engine.components.TransformComponent o-- com.apetrei.misc.Vector2 : position
+  com.apetrei.engine.components.TurretComponent -up-|> com.apetrei.engine.components.Component
+  com.apetrei.engine.components.TurretComponent o-- com.apetrei.engine.physics.rigidbody.Rigidbody2D : rigidbody
 
 
 right footer

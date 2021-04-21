@@ -175,7 +175,7 @@ public class Renderer {
         return imgNew;                                                                                                  //return rotated image
     }
 
-    //___________________________________GETTER_________________
+    //___________________________________GETTER_______________________________
 
     public Camera getCamera() {
         return camera;

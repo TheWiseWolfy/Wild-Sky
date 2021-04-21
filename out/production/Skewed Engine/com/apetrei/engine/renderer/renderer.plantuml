@@ -7,7 +7,9 @@ title __RENDERER's Class Diagram__\n
       class com.apetrei.engine.renderer.Camera {
           + centerCameraOn()
           + getCameraPosition()
+          + getMousePozInWorld()
           + setCameraPosition()
+          + vector2CameraSpace()
           + vector2CameraSpace()
       }
     }
@@ -31,6 +33,7 @@ title __RENDERER's Class Diagram__\n
           + drawPoligon()
           + drawRectangle()
           + drawRectangle()
+          + drawSprite()
           + drawSprite()
           + drawSprite()
           + getCamera()

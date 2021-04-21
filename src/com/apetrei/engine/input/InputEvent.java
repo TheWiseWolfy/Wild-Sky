@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 
 public class InputEvent {
 
-    KeyEvent event;
-    InputType inputType;
+    private KeyEvent event;
+    private InputType inputType;
 
     InputEvent( ){
         this.inputType = InputType.NULL;

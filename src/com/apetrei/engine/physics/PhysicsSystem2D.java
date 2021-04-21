@@ -112,8 +112,6 @@ public class PhysicsSystem2D {
 
         a.addForce( impulse.mul( -1.0f) );
         b.addForce( impulse.mul( -1.0f) );
-
-
     }
 
     //O fuctie prin care adaugem obiecte in sistemul de fizica TODO Make this automatic after a set criteria

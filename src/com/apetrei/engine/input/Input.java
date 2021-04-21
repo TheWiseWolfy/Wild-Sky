@@ -4,12 +4,15 @@ import com.apetrei.engine.GameContainer;
 import com.google.inject.Key;
 
 import java.awt.event.*;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
 
-public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, Runnable {
+public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
     private GameContainer gameContainer;
+
 
     Set<Integer> pressedKeys = new TreeSet<Integer>();
     Set<Integer> pressedMouseKeys = new TreeSet<Integer>();
@@ -29,16 +32,24 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
         gameContainer.getWindow().getCanvas().addMouseListener(this);
         gameContainer.getWindow().getCanvas().addMouseMotionListener(this);
         gameContainer.getWindow().getCanvas().addMouseWheelListener(this);
-
-    }
-    @Override
-    public void run() {
-
     }
 
-    //Gestionam daca un buton e apasat, ect
-    public boolean isKeyPressed(int keyCode){
-        return pressedKeys.contains(keyCode);
+    //The bread and butter of this class
+    public Boolean isKey(int code, InputType type){
+
+        switch (type){
+            case CONTINUOUS:
+               return pressedKeys.contains(code);
+
+            case DOWN:
+                if (getInput() != null ){
+                    if( getInput().getEvent().getKeyCode() == code) {
+                        return true;
+                    }
+                }
+                break;
+        }
+        return false;
     }
 
     //Gestionam butoanele de pe mouse
@@ -46,6 +57,17 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
         return pressedMouseKeys.contains(keyCode);
     }
 
+    //_________________INPUT QUEUE___________________
+
+    private Queue<InputEvent> inputEventQueue = new LinkedList<>();
+
+    synchronized public void addInput( InputEvent inputEvent){
+        inputEventQueue.add( inputEvent);
+    }
+
+    public void nextEvent(){
+        inputEventQueue.poll();
+    }
 
     //____________________________________________EVENTS________________________________________________
     @Override
@@ -57,15 +79,13 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     public void keyPressed(KeyEvent e) {
 
         int code = e.getKeyCode();
-        Integer val = Integer.valueOf(code);
 
-        if (pressedKeys.contains(val)) {
+        if (pressedKeys.contains(code)) {
             return;
         }
         else {
-
             InputEvent event = new InputEvent(e , InputType.DOWN);
-            gameContainer.getInputQueue().addInput( event );
+            gameContainer.getInput().addInput( event );
             pressedKeys.add( code);
         }
 
@@ -84,9 +104,8 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     @Override
     public void mousePressed(MouseEvent e) {
         int code = e.getButton();
-        Integer val = Integer.valueOf(code);
 
-        if (pressedMouseKeys.contains(val)) {
+        if (pressedMouseKeys.contains(code)) {
             return;
         }
         else {
@@ -131,12 +150,19 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     }
 
     //_______________________________________________________GETTER_____________________________
+
     public int getMouseX() {
         return mouseX;
     }
 
     public int getMouseY() {
         return mouseY;
+    }
+
+    public InputEvent getInput( ){
+        if ( inputEventQueue.isEmpty() )
+            return null;
+        return inputEventQueue.peek();
     }
 
     public int getScroll() {
