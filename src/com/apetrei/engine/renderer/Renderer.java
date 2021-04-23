@@ -150,7 +150,7 @@ public class Renderer {
         int sizeX =(int) (img.getWidth() * scale ) ;
         int sizeY =(int) (img.getHeight() * scale ) ;
 
-        graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
+        graphics.drawImage(img ,possitionX,possitionY ,sizeX ,sizeY,null);
     }
 
     //Fuctions operating on pixel array
@@ -172,7 +172,7 @@ public class Renderer {
         Graphics2D g = (Graphics2D) imgNew.getGraphics();                                                               //create new graphics
         g.rotate(radians + offset, imgOld.getWidth()/2, imgOld.getHeight()/2);                                    //configure rotation
         g.drawImage(imgOld, 0, 0, null);                                                                                //draw rotated image
-        return imgNew;                                                                                                  //return rotated image
+        return imgNew;                                                                                                 //return rotated image
     }
 
     //___________________________________GETTER_______________________________

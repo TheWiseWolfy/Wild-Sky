@@ -11,13 +11,17 @@ import java.io.IOException;
 
 public class SpriteComponent  extends Component {
     private BufferedImage sprite = null;
+
+    private float spriteScale = 1f;
     private TransformComponent transformComponent;
 
     public SpriteComponent(String path){
         super();
 
         try {
+        //    sprite = new BufferedImage(100,100  ,BufferedImage.TYPE_INT_ARGB);
             sprite = ImageIO.read(new File(path));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,6 +45,13 @@ public class SpriteComponent  extends Component {
     public void componentRender( ) {
         Vector2 destRect = new Vector2();
 
-        parent.getGameContainer().getRenderer().drawSprite(  transformComponent.getPosition(),1f,transformComponent.getRotation(),sprite);
+        parent.getGameContainer().getRenderer().drawSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
     }
+
+    //____________________________SETTERS_______________
+
+    public void setSpriteScale(float spriteScale) {
+        this.spriteScale = spriteScale;
+    }
+
 }

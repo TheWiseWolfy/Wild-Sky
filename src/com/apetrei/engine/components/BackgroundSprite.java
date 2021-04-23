@@ -8,6 +8,10 @@ import java.io.IOException;
 public class BackgroundSprite extends Component {
     private BufferedImage sprite = null;
     private TransformComponent transformComponent;
+    private float spriteScale = 1f;
+
+
+    private float scrollFactor = 1f;
 
     public BackgroundSprite(String path){
         super();
@@ -36,6 +40,17 @@ public class BackgroundSprite extends Component {
 
     @Override
     public void componentRender( ) {
-        parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition(),0.7f,sprite, 0.1f);
+        parent.getGameContainer().getRenderer().drawSprite(transformComponent.getPosition(),spriteScale,sprite, scrollFactor);
     }
+
+    //__________________SETTER______________
+
+    public void setSpriteScale(float spriteScale) {
+        this.spriteScale = spriteScale;
+    }
+
+    public void setScrollFactor(float scrollFactor) {
+        this.scrollFactor = scrollFactor;
+    }
+
 }

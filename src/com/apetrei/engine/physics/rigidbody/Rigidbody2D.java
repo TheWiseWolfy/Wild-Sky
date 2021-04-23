@@ -9,7 +9,7 @@ import static java.lang.Math.*;
 public class Rigidbody2D extends TransformComponent {
 
     private float mass = 1.0f;
-    private float inverseMass = 0.0f;
+    private float inverseMass = -1f;
 
     private Vector2 forceAccumulation = new Vector2();
 
@@ -32,15 +32,19 @@ public class Rigidbody2D extends TransformComponent {
     public Rigidbody2D(Vector2 pos,float mass) {
         super(pos);
         this.mass = mass;
-        this.inverseMass = 1.0f / this.mass;
 
+        if (this.mass != 0.0f) {
+            this.inverseMass = 1.0f / this.mass;
+        }
     }
     public Rigidbody2D(Vector2 pos,Vector2 vel,float mass) {
         super(pos);
         this.linearVelocity = vel;
         this.mass = mass;
-        this.inverseMass = 1.0f / this.mass;
 
+        if (this.mass != 0.0f) {
+            this.inverseMass = 1.0f / this.mass;
+        }
     }
 
 
@@ -106,6 +110,8 @@ public class Rigidbody2D extends TransformComponent {
         return this.mass == 0.0f;
     }
 
+
+
     //___________________________SETTERS_____________________
 
     public void setAngularAcceleration(float angularAcceleration) {
@@ -158,9 +164,6 @@ public class Rigidbody2D extends TransformComponent {
     }
 
     public float getInverseMass() {
-        if (this.mass != 0.0f) {
-            this.inverseMass = 1.0f / this.mass;
-        }
         return inverseMass;
     }
 

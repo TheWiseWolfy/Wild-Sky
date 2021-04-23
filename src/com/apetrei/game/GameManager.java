@@ -28,7 +28,9 @@ public class GameManager {
         //BACKGROUND
         GameObject background = new GameObject(gameContainer);
         background.addComponent( new TransformComponent(new Vector2(600,600)));
-        background.addComponent( new BackgroundSprite("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Level 1.png"));
+        BackgroundSprite backSprite =  new BackgroundSprite("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Level 1.png");
+        backSprite.setScrollFactor(0.2f);
+        background.addComponent( backSprite);
         gameContainer.getObjectManager().addGameObject(background);
 
         //PLAYER
@@ -58,6 +60,32 @@ public class GameManager {
         gameObject3.addComponent(new SpriteComponent("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Plazer Airship 1_1.png")  );
         gameContainer.getObjectManager().addGameObject(gameObject3);
 
+
+        //map element
+        /////////
+        GameObject dock = new GameObject(gameContainer);
+        dock.addComponent(new Rigidbody2D( new Vector2(400,50) ,0));
+
+        List<Vector2> waka2 =  new ArrayList<Vector2>();
+
+        waka2.add( new Vector2(-720 , 200))  ;
+        waka2.add( new Vector2(630 , 200) );
+        waka2.add( new Vector2(630 , 0) ) ;
+        waka2.add( new Vector2(630 , -300) ) ;
+        waka2.add( new Vector2(-720, -300) ) ;
+        waka2.add( new Vector2(-720, 0) );
+
+        ConvexPolygon2D wa2 = new ConvexPolygon2D(waka2);
+
+        Collider2D colider4 = new ConvexCollider( wa2);
+        dock.addComponent(colider4);
+        BackgroundSprite sprite = new BackgroundSprite("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Port Noul Bucuresti.png");
+        sprite.setSpriteScale(1f);
+        dock.addComponent(sprite );
+
+        gameContainer.getObjectManager().addGameObject(dock);
+
+        gameContainer.getPhysicsSystem().addColliders(colider4 );
         gameContainer.getPhysicsSystem().addColliders(colider3 );
         gameContainer.getPhysicsSystem().addColliders(colider2 );
         gameContainer.getPhysicsSystem().addColliders(colider1 );

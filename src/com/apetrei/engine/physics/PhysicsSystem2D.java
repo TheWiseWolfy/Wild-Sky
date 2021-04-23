@@ -48,7 +48,7 @@ public class PhysicsSystem2D {
                 Rigidbody2D r1 = c1.getRigidbody();
                 Rigidbody2D r2 = c2.getRigidbody();
 
-                if( c1 != null && c2 != null && !r1.hasInfiniteMass() && !r2.hasInfiniteMass()){
+                if( c1 != null && c2 != null ){
                     result = Collisions.findCollisionFeatures(c1,c2);
                 }
 
@@ -79,8 +79,8 @@ public class PhysicsSystem2D {
     private void applyImpluse(Rigidbody2D a, Rigidbody2D b, CollisionManifold manifold){
         //Linear velocity
 
-        float invMass1 = a.getInverseMass();
-        float invMass2 = b.getInverseMass();
+        float invMass1 = a.getInverseMass() != -1 ? a.getInverseMass() :0;
+        float invMass2 = b.getInverseMass() != -1 ? b.getInverseMass() :0;
         float invMassSum = invMass1 + invMass2;
 
 
