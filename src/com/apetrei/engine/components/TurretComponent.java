@@ -30,9 +30,9 @@ public class TurretComponent extends Component{
 
         Rigidbody2D rigid = new Rigidbody2D( new Vector2(rigidbody.getPosition()) ,tranjectory,5);
 
-        rigid.setRotation(   (float)Math.atan2(tranjectory.x, tranjectory.y) );
+        rigid.setRotation( - (float)Math.atan2(tranjectory.x, tranjectory.y) );
         projectile.addComponent(rigid);
-        projectile.addComponent(new SpriteComponent("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\FB004.png")  );
+        projectile.addComponent(new SpriteComponent("Projectile.png")  );
 
 
         getParent().getGameContainer().getObjectManager().addGameObject(projectile);

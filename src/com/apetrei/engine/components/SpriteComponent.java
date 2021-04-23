@@ -1,7 +1,9 @@
 package com.apetrei.engine.components;
 
 import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.exceptions.SpriteNotFoundException;
 import com.apetrei.engine.renderer.Camera;
+import com.apetrei.engine.renderer.ImageLoader;
 import com.apetrei.misc.Vector2;
 
 import javax.imageio.ImageIO;
@@ -15,14 +17,13 @@ public class SpriteComponent  extends Component {
     private float spriteScale = 1f;
     private TransformComponent transformComponent;
 
-    public SpriteComponent(String path){
+    public SpriteComponent(String name){
         super();
 
         try {
-        //    sprite = new BufferedImage(100,100  ,BufferedImage.TYPE_INT_ARGB);
-            sprite = ImageIO.read(new File(path));
+            sprite = ImageLoader.getInstance().getSprite(name);
 
-        } catch (IOException e) {
+        } catch ( SpriteNotFoundException e) {
             e.printStackTrace();
         }
     }

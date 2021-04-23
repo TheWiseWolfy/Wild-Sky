@@ -1,5 +1,8 @@
 package com.apetrei.engine.components;
 
+import com.apetrei.engine.exceptions.SpriteNotFoundException;
+import com.apetrei.engine.renderer.ImageLoader;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,12 +16,13 @@ public class BackgroundSprite extends Component {
 
     private float scrollFactor = 1f;
 
-    public BackgroundSprite(String path){
+    public BackgroundSprite(String name){
         super();
 
         try {
-            sprite = ImageIO.read(new File(path));
-        } catch (IOException e) {
+            sprite = ImageLoader.getInstance().getSprite(name);
+
+        } catch ( SpriteNotFoundException e) {
             e.printStackTrace();
         }
     }

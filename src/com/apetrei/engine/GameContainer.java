@@ -2,6 +2,7 @@ package com.apetrei.engine;
 
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.physics.PhysicsSystem2D;
+import com.apetrei.engine.renderer.ImageLoader;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.engine.renderer.Window;
 
@@ -36,6 +37,7 @@ public class GameContainer implements Runnable {
     public void start(){
         //Pornim un thread separat
 
+        ImageLoader.getInstance();
         thread.run();
 
     }

@@ -28,7 +28,7 @@ public class GameManager {
         //BACKGROUND
         GameObject background = new GameObject(gameContainer);
         background.addComponent( new TransformComponent(new Vector2(600,600)));
-        BackgroundSprite backSprite =  new BackgroundSprite("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Level 1.png");
+        BackgroundSprite backSprite =  new BackgroundSprite("Level1_background.png");
         backSprite.setScrollFactor(0.2f);
         background.addComponent( backSprite);
         gameContainer.getObjectManager().addGameObject(background);
@@ -40,7 +40,7 @@ public class GameManager {
         gameObject1.addComponent(colider1);
         gameObject1.addComponent(new TurretComponent());
         gameObject1.addComponent(new PlayerComponent());
-        gameObject1.addComponent(new SpriteComponent("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Plazer Airship 1_1.png")  );
+        gameObject1.addComponent(new SpriteComponent("Airship.png")  );
         gameContainer.getObjectManager().addGameObject(gameObject1);
 
         /////////
@@ -49,7 +49,7 @@ public class GameManager {
         gameObject2.addComponent(new Rigidbody2D( new Vector2(600,600) ,5) );
         Collider2D colider2 = new ConvexCollider( wa);
         gameObject2.addComponent(colider2);
-        gameObject2.addComponent(new SpriteComponent("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Plazer Airship 1_1.png")  );
+        gameObject2.addComponent(new SpriteComponent("Airship.png")  );
         gameContainer.getObjectManager().addGameObject(gameObject2);
 
         /////////
@@ -57,7 +57,7 @@ public class GameManager {
         gameObject3.addComponent(new Rigidbody2D( new Vector2(600,300) ,5));
         Collider2D colider3 = new ConvexCollider( wa);
         gameObject3.addComponent(colider3);
-        gameObject3.addComponent(new SpriteComponent("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Plazer Airship 1_1.png")  );
+        gameObject3.addComponent(new SpriteComponent("Airship.png")  );
         gameContainer.getObjectManager().addGameObject(gameObject3);
 
 
@@ -79,7 +79,7 @@ public class GameManager {
 
         Collider2D colider4 = new ConvexCollider( wa2);
         dock.addComponent(colider4);
-        BackgroundSprite sprite = new BackgroundSprite("C:\\Users\\Lucian\\Desktop\\Wild-Sky\\Wild-Sky\\src\\com\\resources\\Port Noul Bucuresti.png");
+        BackgroundSprite sprite = new BackgroundSprite("Port.png");
         sprite.setSpriteScale(1f);
         dock.addComponent(sprite );
 
