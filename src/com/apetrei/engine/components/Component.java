@@ -2,9 +2,11 @@ package com.apetrei.engine.components;
 
 import com.apetrei.engine.GameObject;
 
+import java.io.Serializable;
+
 //Asta e o reprezentare generica a unei componente, care atunci cand este imperecheata cu un gameObject, incapsuleaza perfect logica
 //de suprafata a jocului
-public abstract class Component {
+public abstract class Component implements Serializable {
 
     protected GameObject parent = null;
 

@@ -1,6 +1,8 @@
 package com.apetrei.misc;
 
-public class Vector2 {
+import java.io.Serializable;
+
+public class Vector2 implements Serializable {
 
     // Variables
     public float x;

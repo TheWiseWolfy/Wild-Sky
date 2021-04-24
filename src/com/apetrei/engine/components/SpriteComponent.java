@@ -1,6 +1,7 @@
 package com.apetrei.engine.components;
 
 import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.exceptions.SpriteNotFoundException;
 import com.apetrei.engine.renderer.Camera;
 import com.apetrei.engine.renderer.ImageLoader;
@@ -12,20 +13,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class SpriteComponent  extends Component {
-    private BufferedImage sprite = null;
 
     private float spriteScale = 1f;
     private TransformComponent transformComponent;
-
+    String name;
     public SpriteComponent(String name){
         super();
-
-        try {
-            sprite = ImageLoader.getInstance().getSprite(name);
-
-        } catch ( SpriteNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.name = name;
     }
 
     @Override
@@ -45,8 +39,17 @@ public class SpriteComponent  extends Component {
     @Override
     public void componentRender( ) {
         Vector2 destRect = new Vector2();
+        BufferedImage sprite = null;
 
-        parent.getGameContainer().getRenderer().drawSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
+        try {
+            sprite = ImageLoader.getInstance().getSprite(name);
+
+        } catch ( SpriteNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        GameContainer.getInstance().getRenderer().drawSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
     }
 
     //____________________________SETTERS_______________

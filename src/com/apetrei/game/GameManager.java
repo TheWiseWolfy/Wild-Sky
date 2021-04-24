@@ -14,7 +14,8 @@ import java.util.List;
 public class GameManager {
 
     public static void main(String[] args) {
-        GameContainer gameContainer = new GameContainer();
+        GameContainer gameContainer = GameContainer.getInstance();
+
 
         List<Vector2> waka =  new ArrayList<Vector2>();
         waka.add( new Vector2(-20 , 50))  ;
@@ -26,7 +27,7 @@ public class GameManager {
         ConvexPolygon2D wa = new ConvexPolygon2D(waka);
 
         //BACKGROUND
-        GameObject background = new GameObject(gameContainer);
+        GameObject background = new GameObject();
         background.addComponent( new TransformComponent(new Vector2(600,600)));
         BackgroundSprite backSprite =  new BackgroundSprite("Level1_background.png");
         backSprite.setScrollFactor(0.2f);
@@ -34,7 +35,7 @@ public class GameManager {
         gameContainer.getObjectManager().addGameObject(background);
 
         //PLAYER
-        GameObject gameObject1 = new GameObject(gameContainer);
+        GameObject gameObject1 = new GameObject();
         gameObject1.addComponent(new Rigidbody2D( new Vector2(400,400),1) );
         Collider2D colider1 = new ConvexCollider( wa);
         gameObject1.addComponent(colider1);
@@ -45,7 +46,7 @@ public class GameManager {
 
         /////////
 
-        GameObject gameObject2 = new GameObject(gameContainer);
+        GameObject gameObject2 = new GameObject();
         gameObject2.addComponent(new Rigidbody2D( new Vector2(600,600) ,5) );
         Collider2D colider2 = new ConvexCollider( wa);
         gameObject2.addComponent(colider2);
@@ -53,7 +54,7 @@ public class GameManager {
         gameContainer.getObjectManager().addGameObject(gameObject2);
 
         /////////
-        GameObject gameObject3 = new GameObject(gameContainer);
+        GameObject gameObject3 = new GameObject();
         gameObject3.addComponent(new Rigidbody2D( new Vector2(600,300) ,5));
         Collider2D colider3 = new ConvexCollider( wa);
         gameObject3.addComponent(colider3);
@@ -63,7 +64,7 @@ public class GameManager {
 
         //map element
         /////////
-        GameObject dock = new GameObject(gameContainer);
+        GameObject dock = new GameObject();
         dock.addComponent(new Rigidbody2D( new Vector2(400,50) ,0));
 
         List<Vector2> waka2 =  new ArrayList<Vector2>();
@@ -85,12 +86,12 @@ public class GameManager {
 
         gameContainer.getObjectManager().addGameObject(dock);
 
+        //TODO: Automate this
         gameContainer.getPhysicsSystem().addColliders(colider4 );
         gameContainer.getPhysicsSystem().addColliders(colider3 );
         gameContainer.getPhysicsSystem().addColliders(colider2 );
         gameContainer.getPhysicsSystem().addColliders(colider1 );
 
         gameContainer.start();
-
     }
 }

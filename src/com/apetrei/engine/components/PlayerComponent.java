@@ -39,7 +39,7 @@ public class PlayerComponent extends Component  {
     @Override
     public void componentUpdate(double fT) {
 
-        GameContainer gameContainer = parent.getGameContainer();
+        GameContainer gameContainer =  GameContainer.getInstance();
         //Deplasare fata spate
         Vector2 forceToBeAplied = new Vector2( );
 
@@ -100,8 +100,8 @@ public class PlayerComponent extends Component  {
         Vector2 forward = new Vector2( rigidbody.getForward() );
         Vector2 result = new Vector2( rigidbody.getPosition() ).add( forward.mul(100f ) );
 
-        parent.getGameContainer().getRenderer().drawLine( new Line( new Vector2( rigidbody.position),new Vector2(result ) ));
-        parent.getGameContainer().getRenderer().drawLine( new Line( new Vector2( rigidbody.position),temptemp ));
+        GameContainer.getInstance().getRenderer().drawLine( new Line( new Vector2( rigidbody.position),new Vector2(result ) ));
+        GameContainer.getInstance().getRenderer().drawLine( new Line( new Vector2( rigidbody.position),temptemp ));
 
     }
 

@@ -2,24 +2,24 @@ package com.apetrei.engine;
 
 import com.apetrei.engine.components.Component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 //O clasa care incapsuleaza componente, care constau in informatie si logica care colaboreaza intre ele in mod modular.
-public class GameObject {
+public class GameObject implements Serializable {
 
     //protected LinkedList<GameObject> children;
     //protected ArrayList<Component> components;
     HashMap<String, Component> components;
 
-    protected GameContainer gameContainer;
+    //protected GameContainer gameContainer;
 
     public boolean active = false;
     private String uniqueTag;
 
-    public GameObject(GameContainer _gameContainer){
-        gameContainer = _gameContainer;
+    public GameObject(){
         active = true;
         //components = new ArrayList<Component>();
         components = new HashMap<String, Component>();
@@ -32,8 +32,8 @@ public class GameObject {
         //components.add(newComponent);
     }
 
-    public boolean hasComponent(Component component){
-        return  components.containsKey( component.getClass().getSimpleName() );
+    public boolean hasComponent(Class component){
+        return  components.containsKey( component.getSimpleName() );
     }
 
     //Update fuctions
@@ -91,8 +91,5 @@ public class GameObject {
         throw new ClassNotFoundException();
     }
 
-    public GameContainer getGameContainer() {
-        return gameContainer;
-    }
 
 }

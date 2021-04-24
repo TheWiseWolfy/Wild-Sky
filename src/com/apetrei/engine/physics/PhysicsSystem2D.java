@@ -1,6 +1,9 @@
 package com.apetrei.engine.physics;
 
+import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.GameObject;
 import com.apetrei.engine.components.Collider2D;
+import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
 import com.apetrei.engine.physics.rigidbody.CollisionManifold;
 import com.apetrei.engine.physics.rigidbody.Collisions;
 import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
@@ -117,6 +120,25 @@ public class PhysicsSystem2D {
     //O fuctie prin care adaugem obiecte in sistemul de fizica TODO Make this automatic after a set criteria
     public void addColliders(Collider2D body){
         this.colliders.add(body);
+    }
+
+    public void clear(){
+        this.colliders.clear();
+    }
+
+    public void physicsRefrsh(ArrayList<GameObject>  gameObjects){
+
+        clear();
+        try {
+            for (GameObject object : gameObjects) {
+                if (object.hasComponent(ConvexCollider.class)) {
+                    GameContainer.getInstance().getPhysicsSystem().addColliders((Collider2D) object.getComponent(Collider2D.class));
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 

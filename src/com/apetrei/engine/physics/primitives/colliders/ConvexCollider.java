@@ -1,5 +1,6 @@
 package com.apetrei.engine.physics.primitives.colliders;
 
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.components.Collider2D;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
@@ -50,7 +51,7 @@ public class ConvexCollider extends Collider2D {
 
     public void showColider(){
         ConvexPolygon2D local = getLocalPoligon();
-        parent.getGameContainer().getRenderer().drawPoligon(local);
+        GameContainer.getInstance().getRenderer().drawPoligon(local);
 
     }
 

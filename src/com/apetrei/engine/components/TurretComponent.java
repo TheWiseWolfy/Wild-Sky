@@ -1,5 +1,6 @@
 package com.apetrei.engine.components;
 
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.GameObject;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
 import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
@@ -20,7 +21,7 @@ public class TurretComponent extends Component{
     }
 
     public void fireProjectile( Vector2 target){
-        GameObject projectile = new GameObject(getParent().getGameContainer()) ;
+        GameObject projectile = new GameObject() ;
         projectile.addComponent( new Rigidbody2D() );
 
 
@@ -35,7 +36,7 @@ public class TurretComponent extends Component{
         projectile.addComponent(new SpriteComponent("Projectile.png")  );
 
 
-        getParent().getGameContainer().getObjectManager().addGameObject(projectile);
+        GameContainer.getInstance().getObjectManager().addGameObject(projectile);
 
     }
 

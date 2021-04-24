@@ -1,15 +1,18 @@
 package com.apetrei.engine;
 
 import com.apetrei.engine.input.Input;
+import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.physics.PhysicsSystem2D;
 import com.apetrei.engine.renderer.ImageLoader;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.engine.renderer.Window;
 
+import java.awt.event.KeyEvent;
 import java.util.concurrent.TimeUnit;
 
 public class GameContainer implements Runnable {
 
+    static private GameContainer gameContainer;
 
     //Thread pe care va rula enginul
     private Thread thread;
@@ -22,17 +25,28 @@ public class GameContainer implements Runnable {
     private  boolean running = false;
 
 
-    public GameContainer(){
+    private GameContainer(){
         //Initializari importante
         thread = new Thread(this);
 
         window = new Window();
         renderer = new Renderer(this);
         input = new Input(this);
-        objectManager = new ObjectManager();
+        objectManager = new ObjectManager(this);
         physicsSystem = new PhysicsSystem2D();
 
     }
+
+    static public  GameContainer getInstance(){
+        if (gameContainer == null) {
+            gameContainer = new GameContainer();
+            return  gameContainer;
+        }
+        else {
+            return  gameContainer;
+        }
+    }
+
 
     public void start(){
         //Pornim un thread separat
@@ -74,10 +88,24 @@ public class GameContainer implements Runnable {
 
 
 
+
+
             //PHYSICS UPDATE
             physicsSystem.updatePhysics(frameTime);
             //UPDATE
             objectManager.updateObjects(frameTime);
+
+
+            //TESTING ZONE
+
+            if(this.getInput().isKey( KeyEvent.VK_F1 , InputType.DOWN)) {
+                objectManager.saveGame();
+            }
+            if(this.getInput().isKey( KeyEvent.VK_F2 , InputType.DOWN)) {
+                objectManager.restoreGame();
+                System.out.println("wa");
+            }
+
             //IMPUT UPDATE
             input.nextEvent();
 
@@ -86,9 +114,9 @@ public class GameContainer implements Runnable {
             }catch (Exception e){
 
             }
-            if(ConfigHandler.isDebugMode()    )
-                 System.out.println("Current FPS:" + 1/ frameTime );
-
+            if(ConfigHandler.isDebugMode()    ) {
+                System.out.println("Current FPS:" + 1 / frameTime);
+            }
 
             //RENDERING
             while (unprocessedTime >= ConfigHandler.getUpdateCap()) {
