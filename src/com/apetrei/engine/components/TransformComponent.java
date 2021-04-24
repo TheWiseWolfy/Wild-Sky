@@ -1,7 +1,9 @@
 package com.apetrei.engine.components;
 
 import com.apetrei.misc.Vector2;
-
+/*!
+ * Componenta simpla care retine pozitia tuturor obiectelor din joc si rotatia lor
+ */
 public class TransformComponent extends Component {
     protected Vector2 position = new Vector2();
     protected float rotation = 0.0f;
@@ -30,7 +32,7 @@ public class TransformComponent extends Component {
     public void componentRender() {
     }
 
-    //__________________FLUF____________________
+    //_________________________________GETTERS_AND_SETTERS__________________________
 
     public Vector2 getPosition() {
         return position;

@@ -10,11 +10,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/*!
+ * O componenta metita sa reprezinte obiecte statice, si care nu are fuctionalitate de rotatie ca sa salveze resurse.
+ */
 public class BackgroundSprite extends Component {
     private TransformComponent transformComponent;
     private float spriteScale = 1f;
+
+    //Numele imagini folosite
     String name;
 
+    //TODO: BufferedImage is a buffered streaming implementation. To serialize,
+    // the data must be flushed out to a static object like a byte[] array and then THAT object may be serialized/deserialized
+    //private BufferedImage sprite;
+
+    //Rata de miscare a obictului in relatie cu miscarea camerei, folosit pentru efectul de paralax
     private float scrollFactor = 1f;
 
     public BackgroundSprite(String name){
@@ -40,6 +50,8 @@ public class BackgroundSprite extends Component {
 
     @Override
     public void componentRender( ) {
+
+        //TODO this is inneficient and must be replaced
         BufferedImage sprite = null;
         try {
             sprite = ImageLoader.getInstance().getSprite(name);
@@ -47,10 +59,12 @@ public class BackgroundSprite extends Component {
         } catch ( SpriteNotFoundException e) {
             e.printStackTrace();
         }
+
+        //Aici se afiseaza imaginea pe ecran
         GameContainer.getInstance().getRenderer().drawSprite(transformComponent.getPosition(),spriteScale,sprite, scrollFactor);
     }
 
-    //__________________SETTER______________
+    //__________________SETTERS______________________
 
     public void setSpriteScale(float spriteScale) {
         this.spriteScale = spriteScale;

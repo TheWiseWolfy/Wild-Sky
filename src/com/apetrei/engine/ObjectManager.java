@@ -1,61 +1,33 @@
 package com.apetrei.engine;
 
-import com.apetrei.engine.components.*;
-import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
-import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
-import com.apetrei.misc.ConvexPolygon2D;
-import com.apetrei.misc.Vector2;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
+
+/*!
+O clasa care mentine o lista de obicte din joc, si are abilitatea de a le serializa intr-un document, si de a le
+restaora dintr-un document. In felul asta, starea interna a jocului poate fi capturat si stocat a.k.a quick save fuctionality
+ */
 public class ObjectManager {
     protected ArrayList<GameObject> gameObjects;
-    protected ArrayList<GameObject> objectsOnHold;
+    protected ArrayList<GameObject> objectsOnHold;   //Obicte introduse in runtime care vor fi mutate in gameObjects intre cadre.
     protected GameContainer gameContainer;
+
     ObjectManager(GameContainer gameContainer){
         gameObjects = new ArrayList<>();
         objectsOnHold = new ArrayList<>();
         this.gameContainer = gameContainer;
     }
 
+    //TODO: Extend fuctionality of loading system, create a level manager/ level editor mode.
     public void saveGame() {
         try {
             FileOutputStream fout = new FileOutputStream("src/com/resources/levels/level1.save");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fout);
-            //TEST SETUP
-              /*
-           ArrayList<GameObject> testList = new ArrayList<>()
 
-            GameObject test = new GameObject();
-            test.addComponent( new TransformComponent(new Vector2(600,600)));
-            BackgroundSprite backSprite =  new BackgroundSprite("Level1_background.png");
-            test.addComponent( backSprite);
-
-            List<Vector2> waka =  new ArrayList<Vector2>();
-            waka.add( new Vector2(-20 , 50))  ;
-            waka.add( new Vector2(30 , 50) );
-            waka.add( new Vector2(70 , 0) ) ;
-            waka.add( new Vector2(30 , -50) ) ;
-            waka.add( new Vector2(-30, -50) ) ;
-            waka.add( new Vector2(-70, 0) );
-            ConvexPolygon2D wa = new ConvexPolygon2D(waka);
-
-            GameObject gameObject1 = new GameObject();
-            gameObject1.addComponent(new Rigidbody2D( new Vector2(400,400),1) );
-            Collider2D colider1 = new ConvexCollider( wa);
-            gameObject1.addComponent(colider1);
-            gameObject1.addComponent(new TurretComponent());
-            gameObject1.addComponent(new PlayerComponent());
-            gameObject1.addComponent(new SpriteComponent("Airship.png")  );
-            gameContainer.getObjectManager().addGameObject(gameObject1);
-
-
-            testList.add( test);
-*/
-            ///
             objectOutputStream.writeObject(gameObjects);
+
+            System.out.println("Game saved successfully");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,6 +41,7 @@ public class ObjectManager {
 
             GameContainer.getInstance().getPhysicsSystem().physicsRefrsh(gameObjects);
 
+            System.out.println("Game restored successfully");
         } catch (Exception e) {
             e.printStackTrace();
         }

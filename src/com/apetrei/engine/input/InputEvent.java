@@ -2,6 +2,9 @@ package com.apetrei.engine.input;
 
 import java.awt.event.KeyEvent;
 
+/*!
+ * O clasa menita sa stocheze diferite tipuri de evenimente care vin din partea utilizatorului
+ */
 public class InputEvent {
 
     private KeyEvent event;

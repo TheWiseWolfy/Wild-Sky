@@ -2,8 +2,6 @@ package com.apetrei.engine.components;
 
 import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.GameObject;
-import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
-import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
 import com.apetrei.misc.Vector2;
 
 public class TurretComponent extends Component{

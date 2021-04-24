@@ -12,11 +12,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/*!
+ * Acelasi lucru ca la Background sprite, dar cu suport pentru rotatie in loc de paralax scrolling
+ */
 public class SpriteComponent  extends Component {
 
     private float spriteScale = 1f;
     private TransformComponent transformComponent;
     String name;
+
     public SpriteComponent(String name){
         super();
         this.name = name;
@@ -36,9 +40,9 @@ public class SpriteComponent  extends Component {
     public void componentUpdate( double fT) {
 
     }
+
     @Override
     public void componentRender( ) {
-        Vector2 destRect = new Vector2();
         BufferedImage sprite = null;
 
         try {
@@ -47,7 +51,6 @@ public class SpriteComponent  extends Component {
         } catch ( SpriteNotFoundException e) {
             e.printStackTrace();
         }
-
 
         GameContainer.getInstance().getRenderer().drawSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
     }

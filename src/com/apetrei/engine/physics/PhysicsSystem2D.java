@@ -6,16 +6,21 @@ import com.apetrei.engine.components.Collider2D;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
 import com.apetrei.engine.physics.rigidbody.CollisionManifold;
 import com.apetrei.engine.physics.rigidbody.Collisions;
-import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
+import com.apetrei.engine.components.Rigidbody2D;
 import com.apetrei.misc.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*!
+ * Aceasta clasa mentine momentan 3 responsabilitati.
+ *      - Gestioneaza ce obiecte o sa fie monitorizate in cazul verificarilor de coliziune
+ *      - Monitorizeaza un set de obicte in scopul detectari unei coliziuni
+ *      - Atunci cand o coliziune este detectata, in aceasta fuctie va fi calculata si transmisa consecinta aceste coliziuni.
+ */
 public class PhysicsSystem2D {
     private int impulseIterations = 5;
-    //Force generators:
-    //private Wind wind;
 
     private List<Collider2D> colliders;
     private List<Rigidbody2D> bodies1;
@@ -63,8 +68,6 @@ public class PhysicsSystem2D {
                 }
             }
         }
-
-
 
        // for(int k =0; k < impulseIterations; k++){
             for (int i = 0; i < collisions.size(); i++){
@@ -117,7 +120,8 @@ public class PhysicsSystem2D {
         b.addForce( impulse.mul( -1.0f) );
     }
 
-    //O fuctie prin care adaugem obiecte in sistemul de fizica TODO Make this automatic after a set criteria
+    //TODO Make this automatic after a set criteria
+    //O fuctie prin care adaugem obiecte in sistemul de fizica
     public void addColliders(Collider2D body){
         this.colliders.add(body);
     }

@@ -1,5 +1,7 @@
 package com.apetrei.engine;
-
+/*!
+ * O clasa care incapsuleaza mai multe variabile de interes global, si care in viitor le va gestiona cu o baza de date.
+ */
 public class ConfigHandler {
 
     //Propietatile jocului
@@ -11,7 +13,7 @@ public class ConfigHandler {
     private static String title = "Engine v1.0";
 
 
-    private static boolean debugMode = false;
+    private static boolean debugMode = true;
 
     public static double getUpdateCap() {
         return UPDATE_CAP;

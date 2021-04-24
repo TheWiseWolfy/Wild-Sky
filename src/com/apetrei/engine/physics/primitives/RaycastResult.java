@@ -2,6 +2,9 @@ package com.apetrei.engine.physics.primitives;
 
 import com.apetrei.misc.Vector2;
 
+/*!
+ * Incapsulare date pentru process raycasting, unused
+ */
 public class RaycastResult {
     private Vector2 point;    //Point at witch the raycast hit an object
     private Vector2 normal;    //Normala suprafetei in puctul lovit

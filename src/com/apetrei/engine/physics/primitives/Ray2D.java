@@ -2,6 +2,10 @@ package com.apetrei.engine.physics.primitives;
 
 import com.apetrei.misc.Vector2;
 
+
+/*!
+ * TODO Reycasting system maybe
+ */
 public class Ray2D {
     private Vector2 origin;
     private Vector2 direction;

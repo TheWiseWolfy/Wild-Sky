@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/*!
+ * Casa care gestioneaza un colider complex cu multiple pucte
+ */
 public class ConvexCollider extends Collider2D {
 
     final private ConvexPolygon2D collider;

@@ -9,10 +9,11 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
-
+/*!
+ * Aici sunt gestionate toate inputurile primite de joc printr-o metoda hybrid
+ */
 public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
     private GameContainer gameContainer;
-
 
     Set<Integer> pressedKeys = new TreeSet<Integer>();
     Set<Integer> pressedMouseKeys = new TreeSet<Integer>();
@@ -42,12 +43,17 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
                return pressedKeys.contains(code);
 
             case DOWN:
+            case UP:
                 if (getInput() != null ){
-                    if( getInput().getEvent().getKeyCode() == code) {
+                    if( getInput().getEvent().getKeyCode() == code && getInput().getInputType() == type ) {
                         return true;
                     }
                 }
                 break;
+
+            default:
+                return false;
+
         }
         return false;
     }
@@ -55,18 +61,26 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     //Gestionam butoanele de pe mouse
     public boolean isMouseKeyPressed(int keyCode){
         return pressedMouseKeys.contains(keyCode);
+
+        //TODO: Finish implementation for mouse imputs
     }
 
     //_________________INPUT QUEUE___________________
 
     private Queue<InputEvent> inputEventQueue = new LinkedList<>();
 
-    synchronized public void addInput( InputEvent inputEvent){
+     public void addInput( InputEvent inputEvent){
         inputEventQueue.add( inputEvent);
     }
 
     public void nextEvent(){
         inputEventQueue.poll();
+    }
+
+    public InputEvent getInput( ){
+        if ( inputEventQueue.isEmpty() )
+            return null;
+        return inputEventQueue.peek();
     }
 
     //____________________________________________EVENTS________________________________________________
@@ -93,6 +107,10 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+        InputEvent event = new InputEvent(e , InputType.UP);
+        gameContainer.getInput().addInput( event );
+
         pressedKeys.remove(e.getKeyCode());
     }
 
@@ -157,12 +175,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     public int getMouseY() {
         return mouseY;
-    }
-
-    public InputEvent getInput( ){
-        if ( inputEventQueue.isEmpty() )
-            return null;
-        return inputEventQueue.peek();
     }
 
     public int getScroll() {

@@ -1,6 +1,6 @@
 package com.apetrei.engine.exceptions;
 
-public class SpriteNotFoundException extends Throwable{
+public class SpriteNotFoundException extends Exception{
 
     String name;
     public SpriteNotFoundException(String name){

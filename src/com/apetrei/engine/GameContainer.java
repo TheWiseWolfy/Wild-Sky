@@ -15,20 +15,18 @@ public class GameContainer implements Runnable {
     static private GameContainer gameContainer;
 
     //Thread pe care va rula enginul
-    private Thread thread;
-    private Window window;
-    private Renderer renderer;
-    private Input input;
-    private ObjectManager objectManager;
-    private PhysicsSystem2D physicsSystem;
+    private final Thread thread;
+    private final Window window;
+    private final Renderer renderer;
+    private final Input input;
+    private final ObjectManager objectManager;
+    private final PhysicsSystem2D physicsSystem;
 
     private  boolean running = false;
-
 
     private GameContainer(){
         //Initializari importante
         thread = new Thread(this);
-
         window = new Window();
         renderer = new Renderer(this);
         input = new Input(this);
@@ -37,6 +35,7 @@ public class GameContainer implements Runnable {
 
     }
 
+    //Nu consider ca un singleton e ideal aici, dar e o scurtatura usoara pentru a permite serializarea catorva obiecte.
     static public  GameContainer getInstance(){
         if (gameContainer == null) {
             gameContainer = new GameContainer();
@@ -47,13 +46,9 @@ public class GameContainer implements Runnable {
         }
     }
 
-
     public void start(){
-        //Pornim un thread separat
-
-        ImageLoader.getInstance();
+        ImageLoader.getInstance();      //Pre initializare
         thread.run();
-
     }
 
     public void stop(){
@@ -86,36 +81,31 @@ public class GameContainer implements Runnable {
 
             unprocessedTime += frameTime;
 
-
-
-
-
             //PHYSICS UPDATE
             physicsSystem.updatePhysics(frameTime);
             //UPDATE
             objectManager.updateObjects(frameTime);
 
-
             //TESTING ZONE
-
             if(this.getInput().isKey( KeyEvent.VK_F1 , InputType.DOWN)) {
                 objectManager.saveGame();
             }
             if(this.getInput().isKey( KeyEvent.VK_F2 , InputType.DOWN)) {
                 objectManager.restoreGame();
-                System.out.println("wa");
+            }
+
+            //Imita performanta proasta pentru teste
+            try {
+                //   TimeUnit.MICROSECONDS.sleep( 8666);
+            }catch (Exception e){
             }
 
             //IMPUT UPDATE
             input.nextEvent();
 
-            try {
-               TimeUnit.MICROSECONDS.sleep( 8666);
-            }catch (Exception e){
 
-            }
             if(ConfigHandler.isDebugMode()    ) {
-                System.out.println("Current FPS:" + 1 / frameTime);
+             //   System.out.println("Current FPS:" + 1 / frameTime + "\r");
             }
 
             //RENDERING
@@ -139,9 +129,10 @@ public class GameContainer implements Runnable {
     }
 
     private void dispose(){
+        //don't know
     }
 
-    //_______________________Fluff________________________________
+    //______________________GETTERS__________________________
 
     public ObjectManager getObjectManager() {
         return objectManager;
@@ -162,5 +153,4 @@ public class GameContainer implements Runnable {
     public PhysicsSystem2D getPhysicsSystem() {
         return physicsSystem;
     }
-
 }

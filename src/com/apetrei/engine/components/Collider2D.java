@@ -1,8 +1,11 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
+/*!
+ * Interfata generica pentru toate tipurile de colider din joc:
+ * Poligon - o forma de colider custom.
+ * AABB - Un colider primitiv care incadreaza obiectul intr-un patrat aliniat la axe.
+ */
 
-//Aici doar stocam informatie despre tipul de coliziuni suportate de obiect
 public class Collider2D extends Component {
 
     protected Rigidbody2D rigidbody = null;

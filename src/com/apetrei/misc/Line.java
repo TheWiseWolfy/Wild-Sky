@@ -4,6 +4,9 @@ import com.apetrei.misc.Vector2;
 
 import java.io.Serializable;
 
+/*!
+ * E o linie
+ */
 public class Line implements Serializable {
     private Vector2 A;
     private Vector2 B;

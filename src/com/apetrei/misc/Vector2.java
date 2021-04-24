@@ -2,6 +2,9 @@ package com.apetrei.misc;
 
 import java.io.Serializable;
 
+/*!
+ * O clasa care are un x si un y, si multe fuctii scrise teribil.
+ */
 public class Vector2 implements Serializable {
 
     // Variables

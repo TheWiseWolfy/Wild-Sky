@@ -1,18 +1,23 @@
-package com.apetrei.engine.physics.rigidbody;
+package com.apetrei.engine.components;
 
 import com.apetrei.engine.components.TransformComponent;
-import com.apetrei.engine.components.Collider2D;
 import com.apetrei.misc.Vector2;
 
 import static java.lang.Math.*;
 
+/*!
+ * Rigidbody este o extensie a "TransformComponent" care nu numai ca retine pozitia unui obiect, dar retine si viteza si aceleratia.
+ * Desi asta nu era intentia initial, acum rigidbody gestioneaza in totalitate relatia intre forta - aceleratie - viteza - pozitie
+ * Si este o incapsulare a sistemului de fizica din joc. Atunci cand vrei sa interactioneazi cu un obiect, cel mai recomandat ar fi
+ * sa chemi "AddForce()" din Rigidbody-ul respectivului obiect.
+ */
 public class Rigidbody2D extends TransformComponent {
 
     private float mass = 1.0f;
     private float inverseMass = -1f;
 
     private Vector2 forceAccumulation = new Vector2();
-
+    private Vector2 acceleration = new Vector2();
     private Vector2 linearVelocity = new Vector2();
     private float linearDamping = 0.2f;
 
@@ -47,13 +52,9 @@ public class Rigidbody2D extends TransformComponent {
         }
     }
 
-
     @Override
     public void componentInit() {
-
-
     }
-
 
     @Override
     public void componentUpdate(double fT) {
@@ -72,7 +73,6 @@ public class Rigidbody2D extends TransformComponent {
 
         rotation += angularVelocity * (float) fT;
 
-        angularForceAcumulator = 0;
 
         //LINEAR BEHAVIOUR
 
@@ -80,7 +80,7 @@ public class Rigidbody2D extends TransformComponent {
         linearVelocity = linearVelocity.mul(1 - linearDamping * (float) fT );
 
         //Calculate acceleration
-        Vector2 acceleration = new Vector2(forceAccumulation).mul(this.inverseMass );
+        acceleration = new Vector2(forceAccumulation).mul(this.inverseMass );
 
         // Calculate linear velocity
         linearVelocity = linearVelocity.add(acceleration.mul((float)fT));
@@ -88,6 +88,7 @@ public class Rigidbody2D extends TransformComponent {
         // Update the linear position
         super.position = super.position.add(new Vector2(linearVelocity).mul((float)fT));
 
+        //FINALLY
         clearAccumulators();
     }
 
@@ -96,6 +97,8 @@ public class Rigidbody2D extends TransformComponent {
 
     public void clearAccumulators() {
         this.forceAccumulation.set(0,0);
+        angularForceAcumulator = 0;
+
     }
 
     public void addForce(Vector2 force) {
@@ -106,26 +109,12 @@ public class Rigidbody2D extends TransformComponent {
          this.angularForceAcumulator +=force;
     }
 
-    public boolean hasInfiniteMass() {
+    public boolean isStaticObject() {
         return this.mass == 0.0f;
     }
 
-
-
     //___________________________SETTERS_____________________
 
-    public void setAngularAcceleration(float angularAcceleration) {
-        this.angularAcceleration = angularAcceleration;
-    }
-
-    public void setTransform(Vector2 position, float rotation) {
-        super.position.set(position);
-        super.rotation = rotation;
-    }
-
-    public void setLinearVelocity(Vector2 vel){
-        linearVelocity.set(vel);
-    }
 
     public void setCor(float cor) {
         this.cor = cor;
@@ -146,7 +135,6 @@ public class Rigidbody2D extends TransformComponent {
     //________________________________GETTERS___________________
 
 
-
     public float getCor() {
         return cor;
     }
@@ -164,6 +152,9 @@ public class Rigidbody2D extends TransformComponent {
     }
 
     public float getInverseMass() {
+        if (this.mass != 0.0f) {
+            this.inverseMass = 1.0f / this.mass;
+        }
         return inverseMass;
     }
 

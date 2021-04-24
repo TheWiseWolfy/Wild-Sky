@@ -1,12 +1,15 @@
 package com.apetrei.engine.physics.primitives.colliders;
 
 import com.apetrei.engine.components.Collider2D;
-import com.apetrei.engine.components.TransformComponent;
-import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
+import com.apetrei.engine.components.Rigidbody2D;
 import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.Vector2;
+
 import static com.apetrei.misc.ExtraMath.compare;
 
+/*!
+ * Deprecated
+ */
 public class Box2DCollider extends Collider2D {
 
     private Vector2 size = new Vector2();

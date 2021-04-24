@@ -4,18 +4,26 @@ import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.GameObject;
 import com.apetrei.engine.components.*;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
-import com.apetrei.engine.physics.rigidbody.Rigidbody2D;
+import com.apetrei.engine.components.Rigidbody2D;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//!MAIN
 public class GameManager {
 
     public static void main(String[] args) {
-        GameContainer gameContainer = GameContainer.getInstance();
 
+        initializeGame( GameContainer.getInstance()) ;
+        GameContainer.getInstance().start();
+    }
+
+    //Aici e o fuctie de testare care demonstreaza cum sunt create initial nivelele din joc.
+    //Odata ce obiectele astea sunt serializate in ObjectManager, pot fi incarcate direct de pe disk
+    //fara sa fie nevoie de vreo metoda de genul asta.
+    static public void initializeGame(GameContainer gameContainer){
 
         List<Vector2> waka =  new ArrayList<Vector2>();
         waka.add( new Vector2(-20 , 50))  ;
@@ -55,7 +63,7 @@ public class GameManager {
 
         /////////
         GameObject gameObject3 = new GameObject();
-        gameObject3.addComponent(new Rigidbody2D( new Vector2(600,300) ,5));
+        gameObject3.addComponent(new Rigidbody2D( new Vector2(600,350) ,5));
         Collider2D colider3 = new ConvexCollider( wa);
         gameObject3.addComponent(colider3);
         gameObject3.addComponent(new SpriteComponent("Airship.png")  );
@@ -71,10 +79,8 @@ public class GameManager {
 
         waka2.add( new Vector2(-720 , 200))  ;
         waka2.add( new Vector2(630 , 200) );
-        waka2.add( new Vector2(630 , 0) ) ;
         waka2.add( new Vector2(630 , -300) ) ;
         waka2.add( new Vector2(-720, -300) ) ;
-        waka2.add( new Vector2(-720, 0) );
 
         ConvexPolygon2D wa2 = new ConvexPolygon2D(waka2);
 
@@ -92,6 +98,5 @@ public class GameManager {
         gameContainer.getPhysicsSystem().addColliders(colider2 );
         gameContainer.getPhysicsSystem().addColliders(colider1 );
 
-        gameContainer.start();
     }
 }
