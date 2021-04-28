@@ -22,6 +22,7 @@ import java.util.List;
 public class PhysicsSystem2D {
     private int impulseIterations = 5;
 
+
     private List<Collider2D> colliders;
     private List<Rigidbody2D> bodies1;
     private List<Rigidbody2D> bodies2;
@@ -130,13 +131,14 @@ public class PhysicsSystem2D {
         this.colliders.clear();
     }
 
+    /*
     public void physicsRefrsh(ArrayList<GameObject>  gameObjects){
 
         clear();
         try {
             for (GameObject object : gameObjects) {
                 if (object.hasComponent(ConvexCollider.class)) {
-                    GameContainer.getInstance().getPhysicsSystem().addColliders((Collider2D) object.getComponent(Collider2D.class));
+                    gameContainer.getPhysicsSystem().addColliders((Collider2D) object.getComponent(Collider2D.class));
                 }
             }
         }
@@ -144,6 +146,8 @@ public class PhysicsSystem2D {
             e.printStackTrace();
         }
     }
+
+     */
 }
 
 

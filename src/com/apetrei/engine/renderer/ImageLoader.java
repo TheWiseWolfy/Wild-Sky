@@ -1,6 +1,6 @@
 package com.apetrei.engine.renderer;
 
-import com.apetrei.engine.exceptions.SpriteNotFoundException;
+import com.apetrei.misc.exceptions.SpriteNotFoundException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

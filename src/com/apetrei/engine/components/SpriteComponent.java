@@ -1,16 +1,9 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.exceptions.SpriteNotFoundException;
-import com.apetrei.engine.renderer.Camera;
+import com.apetrei.misc.exceptions.SpriteNotFoundException;
 import com.apetrei.engine.renderer.ImageLoader;
-import com.apetrei.misc.Vector2;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /*!
  * Acelasi lucru ca la Background sprite, dar cu suport pentru rotatie in loc de paralax scrolling
@@ -52,7 +45,7 @@ public class SpriteComponent  extends Component {
             e.printStackTrace();
         }
 
-        GameContainer.getInstance().getRenderer().drawSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
+        this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
     }
 
     //____________________________SETTERS_______________

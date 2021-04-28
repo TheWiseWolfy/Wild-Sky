@@ -19,7 +19,7 @@ public class TurretComponent extends Component{
     }
 
     public void fireProjectile( Vector2 target){
-        GameObject projectile = new GameObject() ;
+        GameObject projectile = new GameObject(    this.getParent().getGameContainer() );
         projectile.addComponent( new Rigidbody2D() );
 
 
@@ -34,7 +34,7 @@ public class TurretComponent extends Component{
         projectile.addComponent(new SpriteComponent("Projectile.png")  );
 
 
-        GameContainer.getInstance().getObjectManager().addGameObject(projectile);
+        this.getParent().getGameContainer().getObjectManager().addGameObject(projectile);
 
     }
 

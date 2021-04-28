@@ -15,9 +15,9 @@ import java.util.List;
 public class GameManager {
 
     public static void main(String[] args) {
-
-        initializeGame( GameContainer.getInstance()) ;
-        GameContainer.getInstance().start();
+        GameContainer gameContainer = new GameContainer();
+        initializeGame(gameContainer ) ;
+        gameContainer.start();
     }
 
     //Aici e o fuctie de testare care demonstreaza cum sunt create initial nivelele din joc.
@@ -35,7 +35,7 @@ public class GameManager {
         ConvexPolygon2D wa = new ConvexPolygon2D(waka);
 
         //BACKGROUND
-        GameObject background = new GameObject();
+        GameObject background = new GameObject(gameContainer);
         background.addComponent( new TransformComponent(new Vector2(600,600)));
         BackgroundSprite backSprite =  new BackgroundSprite("Level1_background.png");
         backSprite.setScrollFactor(0.2f);
@@ -43,7 +43,8 @@ public class GameManager {
         gameContainer.getObjectManager().addGameObject(background);
 
         //PLAYER
-        GameObject gameObject1 = new GameObject();
+        GameObject gameObject1 = new GameObject(gameContainer);
+        gameObject1.addTag("player");
         gameObject1.addComponent(new Rigidbody2D( new Vector2(400,400),1) );
         Collider2D colider1 = new ConvexCollider( wa);
         gameObject1.addComponent(colider1);
@@ -54,7 +55,7 @@ public class GameManager {
 
         /////////
 
-        GameObject gameObject2 = new GameObject();
+        GameObject gameObject2 = new GameObject(gameContainer);
         gameObject2.addComponent(new Rigidbody2D( new Vector2(600,600) ,5) );
         Collider2D colider2 = new ConvexCollider( wa);
         gameObject2.addComponent(colider2);
@@ -62,7 +63,7 @@ public class GameManager {
         gameContainer.getObjectManager().addGameObject(gameObject2);
 
         /////////
-        GameObject gameObject3 = new GameObject();
+        GameObject gameObject3 = new GameObject(gameContainer);
         gameObject3.addComponent(new Rigidbody2D( new Vector2(600,350) ,5));
         Collider2D colider3 = new ConvexCollider( wa);
         gameObject3.addComponent(colider3);
@@ -72,7 +73,7 @@ public class GameManager {
 
         //map element
         /////////
-        GameObject dock = new GameObject();
+        GameObject dock = new GameObject(gameContainer);
         dock.addComponent(new Rigidbody2D( new Vector2(400,50) ,0));
 
         List<Vector2> waka2 =  new ArrayList<Vector2>();

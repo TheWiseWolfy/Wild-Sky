@@ -1,12 +1,13 @@
 package com.apetrei.engine;
 
 import com.apetrei.engine.components.Component;
-import com.apetrei.engine.exceptions.ComponentMissingException;
+import com.apetrei.misc.exceptions.ComponentMissingException;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /*!
  * O clasa care abstractizeaza toate obiectele din joc sub forma unor colectii de componente interconectate.
@@ -16,20 +17,23 @@ import java.util.Map;
 
 public class GameObject implements Serializable {
 
+    Set<String> tags = new TreeSet<String>();
+
     //protected LinkedList<GameObject> children;
-    //protected ArrayList<Component> components;
     HashMap<String, Component> components;
 
-    //protected GameContainer gameContainer;
+    protected GameContainer gameContainer;
 
     public boolean active = false;
     private String uniqueTag;
 
-    public GameObject(){
+    public GameObject(GameContainer gameContainer){
         active = true;
-        //components = new ArrayList<Component>();
         components = new HashMap<String, Component>();
+        this.gameContainer = gameContainer;
     }
+
+
 
     public void addComponent(Component newComponent ){
         newComponent.setParent(this);
@@ -59,6 +63,16 @@ public class GameObject implements Serializable {
             componentEntry.getValue().componentRender();
         }
     }
+    //_______________________________TAGS____________________________
+
+    public void addTag(String string){
+        tags.add(string);
+    }
+
+    public boolean hasTag(String tag){
+        return tags.contains( tag);
+    }
+
 
     //_______________________________GETTER__________________________
 
@@ -82,5 +96,8 @@ public class GameObject implements Serializable {
         throw new ComponentMissingException(desiredClass.getSimpleName());
     }
 
+    public GameContainer getGameContainer() {
+        return gameContainer;
+    }
 
 }

@@ -5,8 +5,11 @@ import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
+import com.apetrei.misc.observers.PlayerObserver;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /*!
  * Componenta care pune jucatorul in controlui unei nave din joc, si actualizeaza pozitia camerei.
@@ -16,6 +19,8 @@ public class PlayerComponent extends Component  {
     private Rigidbody2D rigidbody;
     private TurretComponent turretComponent;
     private  Vector2 fireTarget = new Vector2();
+
+    private List<PlayerObserver> observers = new ArrayList<PlayerObserver>();
 
     public PlayerComponent(){
         super();
@@ -38,16 +43,20 @@ public class PlayerComponent extends Component  {
     @Override
     public void componentUpdate(double fT) {
 
-        GameContainer gameContainer =  GameContainer.getInstance();
+        GameContainer gameContainer =   this.getParent().getGameContainer();
         //Deplasare fata spate
         Vector2 forceToBeAplied = new Vector2( );
 
         if(gameContainer.getInput().isKey( KeyEvent.VK_W , InputType.DOWN)) {
             engineLevel = engineLevel < 3 ? ++engineLevel : engineLevel;
-           if(ConfigHandler.isDebugMode() ) System.out.println("Engine level: "+ engineLevel );
+
+            notifyoObserver();
+            if(ConfigHandler.isDebugMode() ) System.out.println("Engine level: "+ engineLevel );
         }
         if(gameContainer.getInput().isKey( KeyEvent.VK_S , InputType.DOWN)) {
             engineLevel = engineLevel > -1 ? --engineLevel : engineLevel;
+
+            notifyoObserver();
             if(ConfigHandler.isDebugMode() )  System.out.println("Engine level: "+ engineLevel );
         }
 
@@ -86,9 +95,8 @@ public class PlayerComponent extends Component  {
         }
 
         //Camera
-        gameContainer.getRenderer().placeCameraAt( rigidbody.position);
+        gameContainer.getRenderer().getCamera().placeCameraAt( rigidbody.position);
     }
-
 
     @Override
     public void componentRender() {
@@ -98,15 +106,28 @@ public class PlayerComponent extends Component  {
             Vector2 forward = new Vector2(rigidbody.getForward());
             Vector2 result = new Vector2(rigidbody.getPosition()).add(forward.mul(100f));
 
-            GameContainer.getInstance().getRenderer().drawLine(new Line(new Vector2(rigidbody.position), new Vector2(result)));
-            GameContainer.getInstance().getRenderer().drawLine(new Line(new Vector2(rigidbody.position), fireTarget));
+            this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawLine(new Line(new Vector2(rigidbody.position), new Vector2(result)));
+            this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawLine(new Line(new Vector2(rigidbody.position), fireTarget));
+        }
+    }
+    //_________________________OBSERVER__________________
+
+    final public void attach( PlayerObserver newObs){
+
+        observers.add(newObs);
+    }
+
+    final public void dettach( PlayerObserver newObs){
+        observers.remove(newObs);
+    }
+
+    final public void  notifyoObserver(){
+        for ( var obs :observers ) {
+            obs.update( engineLevel);
         }
     }
 
     //__________________________GETTERS___________________
 
-    public int getEngineLevel() {
-        return engineLevel;
-    }
 
 }

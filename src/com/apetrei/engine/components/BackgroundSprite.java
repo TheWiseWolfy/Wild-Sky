@@ -1,14 +1,9 @@
 package com.apetrei.engine.components;
 
-import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.exceptions.SpriteNotFoundException;
+import com.apetrei.misc.exceptions.SpriteNotFoundException;
 import com.apetrei.engine.renderer.ImageLoader;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /*!
  * O componenta metita sa reprezinte obiecte statice, si care nu are fuctionalitate de rotatie ca sa salveze resurse.
@@ -61,7 +56,7 @@ public class BackgroundSprite extends Component {
         }
 
         //Aici se afiseaza imaginea pe ecran
-        GameContainer.getInstance().getRenderer().drawSprite(transformComponent.getPosition(),spriteScale,sprite, scrollFactor);
+        this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawSprite(transformComponent.getPosition(),spriteScale,sprite, scrollFactor);
     }
 
     //__________________SETTERS______________________

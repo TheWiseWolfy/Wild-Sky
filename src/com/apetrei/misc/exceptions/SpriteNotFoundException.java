@@ -1,4 +1,4 @@
-package com.apetrei.engine.exceptions;
+package com.apetrei.misc.exceptions;
 
 public class SpriteNotFoundException extends Exception{
 

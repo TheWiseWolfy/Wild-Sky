@@ -19,34 +19,6 @@ public class ObjectManager {
         this.gameContainer = gameContainer;
     }
 
-    //TODO: Extend fuctionality of loading system, create a level manager/ level editor mode.
-    public void saveGame() {
-        try {
-            FileOutputStream fout = new FileOutputStream("src/com/resources/levels/level1.save");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fout);
-
-            objectOutputStream.writeObject(gameObjects);
-
-            System.out.println("Game saved successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void restoreGame() {
-        try {
-            FileInputStream fin = new FileInputStream("src/com/resources/levels/level1.save");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fin);
-            gameObjects = (ArrayList<GameObject>) objectInputStream.readObject();
-
-            GameContainer.getInstance().getPhysicsSystem().physicsRefrsh(gameObjects);
-
-            System.out.println("Game restored successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public void addGameObject(GameObject created){
        objectsOnHold.add(created);
@@ -74,5 +46,45 @@ public class ObjectManager {
 
         }
     }
+
+    public GameObject findGameObject(String tag){
+        for (var gameobject : objectsOnHold) {
+            if( gameobject.hasTag( tag )){
+                return gameobject;
+            }
+        }
+        return null;
+    }
+
+    /*
+    //TODO: Extend fuctionality of loading system, create a level manager/ level editor mode.
+    public void saveGame() {
+        try {
+            FileOutputStream fout = new FileOutputStream("src/com/resources/levels/level1.save");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fout);
+
+            objectOutputStream.writeObject(gameObjects);
+
+            System.out.println("Game saved successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void restoreGame() {
+        try {
+            FileInputStream fin = new FileInputStream("src/com/resources/levels/level1.save");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fin);
+            gameObjects = (ArrayList<GameObject>) objectInputStream.readObject();
+
+            gameContainer.getPhysicsSystem().physicsRefrsh(gameObjects);
+
+            System.out.println("Game restored successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    */
 
 }

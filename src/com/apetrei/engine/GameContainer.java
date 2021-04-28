@@ -1,5 +1,7 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.components.PlayerComponent;
+import com.apetrei.engine.gui.HUDManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.physics.PhysicsSystem2D;
@@ -16,38 +18,46 @@ public class GameContainer implements Runnable {
 
     //Thread pe care va rula enginul
     private final Thread thread;
+    //private final Thread threadTest;
+
     private final Window window;
     private final Renderer renderer;
     private final Input input;
     private final ObjectManager objectManager;
+    private final HUDManager hudManager;
     private final PhysicsSystem2D physicsSystem;
 
     private  boolean running = false;
 
-    private GameContainer(){
+    public GameContainer(){
         //Initializari importante
         thread = new Thread(this);
+
         window = new Window();
         renderer = new Renderer(this);
+        hudManager = new HUDManager(this);
         input = new Input(this);
         objectManager = new ObjectManager(this);
         physicsSystem = new PhysicsSystem2D();
 
+
     }
 
     //Nu consider ca un singleton e ideal aici, dar e o scurtatura usoara pentru a permite serializarea catorva obiecte.
-    static public  GameContainer getInstance(){
-        if (gameContainer == null) {
-            gameContainer = new GameContainer();
-            return  gameContainer;
-        }
-        else {
-            return  gameContainer;
-        }
-    }
 
     public void start(){
         ImageLoader.getInstance();      //Pre initializare
+       // threadTest.start();
+
+
+        try {
+            PlayerComponent pc = (PlayerComponent) objectManager.findGameObject("player").getComponent(PlayerComponent.class);
+            pc.attach(hudManager);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         thread.run();
     }
 
@@ -88,10 +98,10 @@ public class GameContainer implements Runnable {
 
             //TESTING ZONE
             if(this.getInput().isKey( KeyEvent.VK_F1 , InputType.DOWN)) {
-                objectManager.saveGame();
+                //objectManager.saveGame();
             }
             if(this.getInput().isKey( KeyEvent.VK_F2 , InputType.DOWN)) {
-                objectManager.restoreGame();
+               // objectManager.restoreGame();
             }
 
             //Imita performanta proasta pentru teste
@@ -116,7 +126,8 @@ public class GameContainer implements Runnable {
 
             if (render) {
                 renderer.Render();
-                renderer.Display();
+                getObjectManager().renderObjects();
+
             } else {
                 try {
                     Thread.sleep(1);
