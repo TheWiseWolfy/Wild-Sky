@@ -1,7 +1,7 @@
 package com.apetrei.engine.physics.primitives.colliders;
 
-import com.apetrei.engine.components.Collider2D;
-import com.apetrei.engine.components.Rigidbody2D;
+import com.apetrei.engine.objects.components.Collider2D;
+import com.apetrei.engine.objects.components.Rigidbody2D;
 import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.Vector2;
 

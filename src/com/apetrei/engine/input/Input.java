@@ -1,4 +1,5 @@
 package com.apetrei.engine.input;
+
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
 import com.google.inject.Key;
@@ -18,7 +19,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     Set<Integer> pressedKeys = new TreeSet<Integer>();
     Set<Integer> pressedMouseKeys = new TreeSet<Integer>();
 
-    private  int mouseX, mouseY;
+    private int mouseX, mouseY;
     private int scroll;
 
     //Public:
@@ -36,16 +37,16 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     }
 
     //The bread and butter of this class
-    public Boolean isKey(int code, InputType type){
+    public Boolean isKey(int code, InputType type) {
 
-        switch (type){
+        switch (type) {
             case CONTINUOUS:
-               return pressedKeys.contains(code);
+                return pressedKeys.contains(code);
 
             case DOWN:
             case UP:
-                if (getInput() != null ){
-                    if( getInput().getEvent().getKeyCode() == code && getInput().getInputType() == type ) {
+                if (getInput() != null) {
+                    if (getInput().getEvent().getKeyCode() == code && getInput().getInputType() == type) {
                         return true;
                     }
                 }
@@ -59,7 +60,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     }
 
     //Gestionam butoanele de pe mouse
-    public boolean isMouseKeyPressed(int keyCode){
+    public boolean isMouseKeyPressed(int keyCode) {
         return pressedMouseKeys.contains(keyCode);
 
         //TODO: Finish implementation for mouse imputs
@@ -69,16 +70,16 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     private Queue<InputEvent> inputEventQueue = new LinkedList<>();
 
-     public void addInput( InputEvent inputEvent){
-        inputEventQueue.add( inputEvent);
+    public void addInput(InputEvent inputEvent) {
+        inputEventQueue.add(inputEvent);
     }
 
-    public void nextEvent(){
+    public void nextEvent() {
         inputEventQueue.poll();
     }
 
-    public InputEvent getInput( ){
-        if ( inputEventQueue.isEmpty() )
+    public InputEvent getInput() {
+        if (inputEventQueue.isEmpty())
             return null;
         return inputEventQueue.peek();
     }
@@ -96,11 +97,10 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
         if (pressedKeys.contains(code)) {
             return;
-        }
-        else {
-            InputEvent event = new InputEvent(e , InputType.DOWN);
-            gameContainer.getInput().addInput( event );
-            pressedKeys.add( code);
+        } else {
+            InputEvent event = new InputEvent(e, InputType.DOWN);
+            gameContainer.getInput().addInput(event);
+            pressedKeys.add(code);
         }
 
     }
@@ -108,8 +108,8 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     @Override
     public void keyReleased(KeyEvent e) {
 
-        InputEvent event = new InputEvent(e , InputType.UP);
-        gameContainer.getInput().addInput( event );
+        InputEvent event = new InputEvent(e, InputType.UP);
+        gameContainer.getInput().addInput(event);
 
         pressedKeys.remove(e.getKeyCode());
     }
@@ -125,11 +125,10 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
         if (pressedMouseKeys.contains(code)) {
             return;
-        }
-        else {
+        } else {
             //InputEvent event = new InputEvent(e , InputType.DOWN);
             //gameContainer.getInputQueue().addInput( event );
-            pressedMouseKeys.add( code);
+            pressedMouseKeys.add(code);
         }
 
 
@@ -151,15 +150,15 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        mouseX = (int)(e.getX() / ConfigHandler.getScale());
-        mouseY  = (int)(e.getY() / ConfigHandler.getScale());
+        mouseX = (int) (e.getX() / ConfigHandler.getScale());
+        mouseY = (int) (e.getY() / ConfigHandler.getScale());
 
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        mouseX = (int)(e.getX() / ConfigHandler.getScale() );
-        mouseY = (int)(e.getY() /ConfigHandler.getScale() );
+        mouseX = (int) (e.getX() / ConfigHandler.getScale());
+        mouseY = (int) (e.getY() / ConfigHandler.getScale());
     }
 
     @Override

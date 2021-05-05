@@ -1,13 +1,11 @@
 package com.apetrei.engine.physics.primitives.colliders;
 
-import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.components.Collider2D;
+import com.apetrei.engine.objects.components.Collider2D;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /*!

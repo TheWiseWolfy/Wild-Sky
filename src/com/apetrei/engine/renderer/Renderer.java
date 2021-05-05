@@ -6,7 +6,7 @@ import com.apetrei.engine.GameContainer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Renderer implements Runnable {
+public class Renderer {
     
     private GameContainer gameContainer;
     private Graphics graphics;
@@ -17,9 +17,11 @@ public class Renderer implements Runnable {
 
     //Aici stocam pozitia camerei
     private Camera camera;
-    private LayerRenderer layerRenderer;
-    private LayerRenderer hudRenderer;
 
+    //Renderers for diffrent layers of the game
+    private LayerRenderer layerRenderer;
+
+    Graphics graphicsBuffer = null;
 
     public Renderer(GameContainer gameContainer){
         this.gameContainer = gameContainer;
@@ -30,22 +32,25 @@ public class Renderer implements Runnable {
         HUDLayer = new BufferedImage(ConfigHandler.getWidth(), ConfigHandler.getHeight(),BufferedImage.TYPE_INT_ARGB);
 
         layerRenderer = new LayerRenderer(gameFrame ,camera);
-        hudRenderer = new LayerRenderer(HUDLayer ,camera);
     }
 
-    public void Render(){
+    public void PrepareRender() {
 
-        Graphics graphicsBuffer = this.gameContainer.getWindow().getBufferStrategy().getDrawGraphics();
-        graphics = gameFrame.getGraphics();
+        graphicsBuffer = this.gameContainer.getWindow().getBufferStrategy().getDrawGraphics();
+        //  graphics = gameFrame.getGraphics();
 
         int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
         int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
 
-        graphicsBuffer.drawImage(gameFrame,0,0,realSizeX,realSizeY ,null);
-        graphicsBuffer.drawImage(HUDLayer,0,0,realSizeX,realSizeY ,null);
+        layerRenderer.setGraphics( graphicsBuffer);
+    }
 
-        //Rendering step
-        gameContainer.getObjectManager().renderObjects();
+    public void Render(){
+
+
+      //  graphicsBuffer.drawImage(gameFrame,0,0,realSizeX,realSizeY ,null);
+     //   graphicsBuffer.drawImage(HUDLayer,0,0,realSizeX,realSizeY ,null);
+
 
         //Final render
         graphicsBuffer.dispose();
@@ -80,34 +85,5 @@ public class Renderer implements Runnable {
         return layerRenderer;
     }
 
-    public LayerRenderer getHudRenderer() {
-        return hudRenderer;
-    }
 
-    @Override
-    public void run() {
-        while (true){
-
-            Graphics graphicsBuffer = this.gameContainer.getWindow().getBufferStrategy().getDrawGraphics();
-            graphics = gameFrame.getGraphics();
-
-            int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
-            int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
-
-            graphicsBuffer.drawImage(gameFrame,0,0,realSizeX,realSizeY ,null);
-            graphicsBuffer.drawImage(HUDLayer,0,0,realSizeX,realSizeY ,null);
-
-            //Rendering step
-           // gameContainer.getObjectManager().renderObjects();
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //Final render
-            graphicsBuffer.dispose();
-
-            this.gameContainer.getWindow().getBufferStrategy().show();
-        }
-    }
 }

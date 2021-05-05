@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class LayerRenderer {
+
     Graphics graphics;
     Camera camera;
 
@@ -48,13 +49,13 @@ public class LayerRenderer {
         graphics.drawRect(x,y ,wight,height);
     }
 
-    public void drawRectangle(Vector2 min, Vector2 max){
-        graphics.setColor(Color.BLACK);
+    public void drawRectangle(Vector2 min, Vector2 max, Color color){
+        graphics.setColor(color);
 
         int wight =(int) (max.x - min.x);
         int height =(int) (max.y - min.y);
 
-        graphics.drawRect((int)min.x,(int) min.y ,wight,height);
+        graphics.fillRect((int)min.x,(int) min.y ,wight,height);
     }
 
     //ConvexPolygon2D
@@ -68,6 +69,21 @@ public class LayerRenderer {
             drawLine(vertices.get(i), vertices.get( (i + 1) % vertices.size()) );
         }
     }
+    //STATIC SPRITES
+
+    public void drawStaticSprite(Vector2 poz,float scale, BufferedImage img){
+
+        int possitionX = (int) (poz.x - ( img.getWidth() * 0.5f  * scale) ) ;
+        int possitionY = (int) (poz.y - ( img.getHeight() * 0.5f * scale) ) ;
+
+        int sizeX =(int) (img.getWidth() * scale ) ;
+        int sizeY =(int) (img.getHeight() * scale ) ;
+
+        graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
+
+    }
+
+
 
     //SPRITES
     public void drawSprite(Vector2 poz,float scale, BufferedImage img, float scrollfactor){
@@ -118,6 +134,13 @@ public class LayerRenderer {
         g.rotate(radians + offset, imgOld.getWidth()/2, imgOld.getHeight()/2);                                    //configure rotation
         g.drawImage(imgOld, 0, 0, null);                                                                                //draw rotated image
         return imgNew;                                                                                                 //return rotated image
+    }
+
+
+    //________________________SETTER_____________________________________
+
+    public void setGraphics(Graphics graphics) {
+        this.graphics = graphics;
     }
 
 }

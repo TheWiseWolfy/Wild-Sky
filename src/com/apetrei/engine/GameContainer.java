@@ -1,20 +1,21 @@
 package com.apetrei.engine;
 
-import com.apetrei.engine.components.PlayerComponent;
 import com.apetrei.engine.gui.HUDManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.input.InputType;
+import com.apetrei.engine.objects.ObjectManager;
 import com.apetrei.engine.physics.PhysicsSystem2D;
 import com.apetrei.engine.renderer.ImageLoader;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.engine.renderer.Window;
+import com.apetrei.engine.scenes.GameplayScene;
+import com.apetrei.engine.scenes.MainMenuScene;
+import com.apetrei.engine.scenes.Scene;
 
 import java.awt.event.KeyEvent;
-import java.util.concurrent.TimeUnit;
+import java.util.Stack;
 
 public class GameContainer implements Runnable {
-
-    static private GameContainer gameContainer;
 
     //Thread pe care va rula enginul
     private final Thread thread;
@@ -24,12 +25,17 @@ public class GameContainer implements Runnable {
     private final Renderer renderer;
     private final Input input;
     private final ObjectManager objectManager;
+
+
     private final HUDManager hudManager;
     private final PhysicsSystem2D physicsSystem;
 
-    private  boolean running = false;
+    //Scene stack
+    Stack<Scene> sceneStack = new Stack<>();
 
-    public GameContainer(){
+    private boolean running = false;
+
+    public GameContainer() {
         //Initializari importante
         thread = new Thread(this);
 
@@ -37,37 +43,31 @@ public class GameContainer implements Runnable {
         renderer = new Renderer(this);
         hudManager = new HUDManager(this);
         input = new Input(this);
-        objectManager = new ObjectManager(this);
         physicsSystem = new PhysicsSystem2D();
 
+        objectManager = new ObjectManager(this);
+        objectManager.attachObserver(hudManager);
+        objectManager.attachObserver( physicsSystem);
 
+        MainMenuScene mainMenuScene = new MainMenuScene();
+        sceneStack.add(mainMenuScene);
     }
 
     //Nu consider ca un singleton e ideal aici, dar e o scurtatura usoara pentru a permite serializarea catorva obiecte.
 
-    public void start(){
+    public void start() {
         ImageLoader.getInstance();      //Pre initializare
-       // threadTest.start();
-
-
-        try {
-            PlayerComponent pc = (PlayerComponent) objectManager.findGameObject("player").getComponent(PlayerComponent.class);
-            pc.attach(hudManager);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
         thread.run();
     }
 
-    public void stop(){
+    public void stop() {
 
     }
 
     //The Runnable interface should be implemented by any class whose instances are intended to be executed by a thread.
     // The class must define a method of no arguments called run.
-    public void run(){
+    public void run() {
 
         //Atat timp cat jocul ruleaza
         running = true;
@@ -76,46 +76,37 @@ public class GameContainer implements Runnable {
 
         //Monitorizare performanta
         float firstTime = 0;
-        float lastTime = (float) ( System.nanoTime() / 10.0e8) ;
+        float lastTime = (float) (System.nanoTime() / 10.0e8);
         float frameTime = 0;
         float unprocessedTime = 0;
 
-        while(running) {
+        while (running) {
 
             //Presupunem ca nu trebuie sa redesenam jocul
             render = false;
-
             firstTime = (float) (System.nanoTime() / 10.0e8);
             frameTime = firstTime - lastTime;
             lastTime = firstTime;
-
             unprocessedTime += frameTime;
 
-            //PHYSICS UPDATE
-            physicsSystem.updatePhysics(frameTime);
-            //UPDATE
-            objectManager.updateObjects(frameTime);
+            //UPDATE//
 
-            //TESTING ZONE
-            if(this.getInput().isKey( KeyEvent.VK_F1 , InputType.DOWN)) {
-                //objectManager.saveGame();
-            }
-            if(this.getInput().isKey( KeyEvent.VK_F2 , InputType.DOWN)) {
-               // objectManager.restoreGame();
-            }
+            sceneStack.peek().update(this,frameTime);
 
-            //Imita performanta proasta pentru teste
-            try {
-                //   TimeUnit.MICROSECONDS.sleep( 8666);
-            }catch (Exception e){
+            if(input.isKey( KeyEvent.VK_F1 , InputType.DOWN)) {
+              goTo (new GameplayScene(this) );
             }
-
-            //IMPUT UPDATE
+            if(input.isKey( KeyEvent.VK_F2 , InputType.DOWN)) {
+                goBack();
+            }
             input.nextEvent();
 
 
-            if(ConfigHandler.isDebugMode()    ) {
-             //   System.out.println("Current FPS:" + 1 / frameTime + "\r");
+
+            ///////////
+
+            if (ConfigHandler.isDebugMode()) {
+                //   System.out.println("Current FPS:" + 1 / frameTime + "\r");
             }
 
             //RENDERING
@@ -125,8 +116,12 @@ public class GameContainer implements Runnable {
             }
 
             if (render) {
+
+                renderer.PrepareRender();
+                ////RENDER////
+                sceneStack.peek().render(this);
+                /////////////
                 renderer.Render();
-                getObjectManager().renderObjects();
 
             } else {
                 try {
@@ -136,11 +131,18 @@ public class GameContainer implements Runnable {
                 }
             }
         }
-        dispose();
     }
 
-    private void dispose(){
-        //don't know
+    //_____________________SCENE_STACK_____________________
+
+    void goBack(){
+        if(sceneStack.size() > 1) {
+            sceneStack.pop();
+        }
+    }
+
+    void goTo(GameplayScene newScene){
+        sceneStack.add(newScene);
     }
 
     //______________________GETTERS__________________________
@@ -164,4 +166,11 @@ public class GameContainer implements Runnable {
     public PhysicsSystem2D getPhysicsSystem() {
         return physicsSystem;
     }
+
+
+    public HUDManager getHudManager() {
+        return hudManager;
+    }
+
+
 }

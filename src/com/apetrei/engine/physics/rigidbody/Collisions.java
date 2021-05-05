@@ -1,12 +1,11 @@
 package com.apetrei.engine.physics.rigidbody;
 
-import com.apetrei.engine.components.Collider2D;
+import com.apetrei.engine.objects.components.Collider2D;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 
-import java.awt.*;
 import java.util.List;
 
 /*!

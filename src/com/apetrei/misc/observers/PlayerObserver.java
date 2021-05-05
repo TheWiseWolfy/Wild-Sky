@@ -2,6 +2,8 @@ package com.apetrei.misc.observers;
 
 public interface PlayerObserver {
 
-    public void update(int engineLevel);
+    public void attachToPLayer();
+
+    public void playerUpdate(int engineLevel, int playerHealt);
 
 }
