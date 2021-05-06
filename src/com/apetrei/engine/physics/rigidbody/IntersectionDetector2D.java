@@ -9,9 +9,13 @@ import com.apetrei.misc.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
+/*!
+ * Colectie de fuctii matematice sofisticate care sa poate cerceta 2 poligoane si sa calculeze date referitoare la intersectia
+ * lor
+ */
 public class IntersectionDetector2D {
 
-
+    //AM luat asta de pe internet
     static public Vector2 GetIntersectionPoint(Line line1, Line line2) {
 
         float A1 = line1.getB().y - line1.getA().y;
@@ -54,6 +58,7 @@ public class IntersectionDetector2D {
         return null; //intersection is at out of at least one segment.
     }
 
+    //Coliziunea dintre o linie si un poligon
    static  public List<Vector2> GetIntersectionPoints(Line line1, ConvexPolygon2D poly) {
         List<Vector2> intersectionPoints = new ArrayList<Vector2>();
 
@@ -67,6 +72,7 @@ public class IntersectionDetector2D {
         return intersectionPoints;
     }
 
+    //Multa matematica care ma sperie
    static public boolean IsPointInsidePoly(Vector2 test, ConvexPolygon2D poly)
     {
         int i,j;
@@ -115,7 +121,7 @@ public class IntersectionDetector2D {
         List<Vector2> intersectionPoint = new ArrayList<Vector2>();
 
         //Add  the intersection points
-        for (int i = 0, next = 1; i < poly1.getVertices().size(); i++, next = (i + 1 == poly2.getVertices().size()) ? 0 : i + 1) {
+        for (int i = 0, next = 1; i < poly1.getVertices().size(); i++, next = (i + 1 == poly1.getVertices().size()) ? 0 : i + 1) {
             Line line1 = new Line( poly1.getVertices().get(i), poly1.getVertices().get(next));
 
             List<Vector2> foundPoints =  GetIntersectionPoints(line1, poly2);

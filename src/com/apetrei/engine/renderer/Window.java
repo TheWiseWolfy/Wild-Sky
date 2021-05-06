@@ -4,6 +4,7 @@ import com.apetrei.engine.ConfigHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 
 //Clasa care gestioneaza fereastra care contine joculs
@@ -12,21 +13,20 @@ public class Window {
     private JFrame frame;
     private Canvas canvas;
     private BufferStrategy bufferStrategy;
-    private Graphics graphics;
 
     //Initializam clase si interfate inportante pentru randarea jocului
     public Window(){
       canvas = new Canvas();
 
-        int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
-        int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
+      int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
+      int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
 
-        Dimension s = new Dimension(realSizeX,realSizeY);
+      Dimension dimension = new Dimension(realSizeX,realSizeY);
 
        //Setari canvas
-      canvas.setPreferredSize(s);
-      canvas.setMaximumSize(s);
-      canvas.setMinimumSize(s);
+      canvas.setPreferredSize(dimension);
+      canvas.setMaximumSize(dimension);
+      canvas.setMinimumSize(dimension);
 
       //Setari pentru fereastra
       frame = new JFrame(ConfigHandler.getTitle());
@@ -41,16 +41,16 @@ public class Window {
       //Asocieri
       canvas.createBufferStrategy(2);
       bufferStrategy = canvas.getBufferStrategy();
-      graphics = bufferStrategy.getDrawGraphics();
-
-      //Aici avem imaginea pe care o vom desena pe ecran
     }
 
-    //Chemat in GameContainer
-    public void UpdateWindow(){
-        bufferStrategy.show();
+    public void close(){
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
     //________________________________GETTERS__________________________________________________
+
+    public BufferStrategy getBufferStrategy() {
+        return bufferStrategy;
+    }
 
     public Canvas getCanvas() {
         return canvas;
@@ -60,8 +60,5 @@ public class Window {
         return frame;
     }
 
-    public Graphics getGraphics() {
-        return graphics;
-    }
 }
 

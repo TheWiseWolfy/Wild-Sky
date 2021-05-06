@@ -1,17 +1,19 @@
 package com.apetrei.engine;
-
+/*!
+ * O clasa care incapsuleaza mai multe variabile de interes global, si care in viitor le va gestiona cu o baza de date.
+ */
 public class ConfigHandler {
 
     //Propietatile jocului
     private static final double UPDATE_CAP= 1/60.0f;
-    private static int width = 800;
-    private static int height =600;
+    private static int width = 1280;
+    private static int height =720;
 
     private static float scale = 1f;
     private static String title = "Engine v1.0";
 
 
-    private static boolean debugMode = false;
+    private static boolean debugMode = true;
 
     public static double getUpdateCap() {
         return UPDATE_CAP;
@@ -40,8 +42,17 @@ public class ConfigHandler {
 
     //Player information
 
-    private static float enginePower = 2000;
-    private static float maneuverability = 100f;
+    private static float enginePower = 50;
+    private static float maneuverability = 5f;
+    private static int maxPlayerHealt = 100;
+
+    public static int getMaxPlayerHealt() {
+        return maxPlayerHealt;
+    }
+
+    public static void setMaxPlayerHealt(int maxPlayerHealt) {
+        ConfigHandler.maxPlayerHealt = maxPlayerHealt;
+    }
 
     public static float getManeuverability() {
         return maneuverability;

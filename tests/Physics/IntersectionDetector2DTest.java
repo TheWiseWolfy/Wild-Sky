@@ -4,9 +4,12 @@ import com.apetrei.engine.physics.rigidbody.IntersectionDetector2D;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.*;
 
@@ -36,37 +39,6 @@ public class IntersectionDetector2DTest  {
         assertNotNull(testVector );
     }
 
-    @Test
-    public void SteliIsStupid_Test(){
-        /*
-        Vector2[] waka = {
-                new Vector2(0, 0),
-                new Vector2(200, 200),
-                new Vector2(300, 400),
-                new Vector2(100, 600)
-        };
-        ConvexPolygon2D wa = new ConvexPolygon2D(waka);
-
-       // parent.getGameContainer().getRenderer().drawPoligon(wa);
-
-        int x =-180;
-        int y =0;
-        Vector2[] waka2 = {
-                new Vector2(370+x, 400+y),
-                new Vector2(600+x, 500+y),
-                new Vector2(620+x, 740+y),
-                new Vector2(310+x, 720+y)
-        };
-        ConvexPolygon2D wa2 = new ConvexPolygon2D(waka2);
-
-       // parent.getGameContainer().getRenderer().drawPoligon(wa2);
-
-      //  Vector2[] waka3 = IntersectionDetector2D.GetIntersectionOfPolygons(wa,wa2);
-        //ConvexPolygon2D wa3 = new ConvexPolygon2D( waka3 );
-
-       // parent.getGameContainer().getRenderer().drawPoligon(wa3, Color.RED);
-*/
-    }
 
 
 }

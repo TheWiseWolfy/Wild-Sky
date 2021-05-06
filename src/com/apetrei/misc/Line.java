@@ -2,7 +2,12 @@ package com.apetrei.misc;
 
 import com.apetrei.misc.Vector2;
 
-public class Line {
+import java.io.Serializable;
+
+/*!
+ * E o linie
+ */
+public class Line implements Serializable {
     private Vector2 A;
     private Vector2 B;
 
