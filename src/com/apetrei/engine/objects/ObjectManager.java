@@ -2,8 +2,8 @@ package com.apetrei.engine.objects;
 
 import com.apetrei.engine.GameContainer;
 import com.apetrei.misc.exceptions.GameObjectNotFoundException;
-import com.apetrei.misc.observers.ObjectManagerObserver;
-import com.apetrei.misc.observers.PlayerObserver;
+import com.apetrei.misc.observer.ObjectManagerObserver;
+import com.apetrei.misc.observer.PlayerObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,8 @@ restaora dintr-un document. In felul asta, starea interna a jocului poate fi cap
 public class ObjectManager {
     protected ArrayList<GameObject> gameObjects;
     protected ArrayList<GameObject> objectsOnHold;   //Obicte introduse in runtime care vor fi mutate in gameObjects intre cadre.
+    protected ArrayList<GameObject> objectsToDelete;   //Obicte introduse in runtime care vor fi mutate in gameObjects intre cadre.
+
     protected GameContainer gameContainer;
 
     private List<ObjectManagerObserver> observers = new ArrayList<ObjectManagerObserver>();
@@ -23,14 +25,14 @@ public class ObjectManager {
     public ObjectManager(GameContainer gameContainer){
         gameObjects = new ArrayList<>();
         objectsOnHold = new ArrayList<>();
+        objectsToDelete = new ArrayList<>();
         this.gameContainer = gameContainer;
     }
 
 
     public void addGameObject(GameObject created){
        objectsOnHold.add(created);
-
-       notifyoObservers(created);
+       notifyObserversOfNewObject(created);
     }
 
     //Update fuctions
@@ -51,9 +53,16 @@ public class ObjectManager {
         for( GameObject current : gameObjects ){
             if(current.isActive() ) {
                 current.render();
+            }else {
+                objectsToDelete.add( current);
             }
-
         }
+
+        for ( var current : objectsToDelete) {
+            gameObjects.remove(current );
+            notifyObserversOfDeletedObject(current);
+        }
+        objectsToDelete.clear();
     }
 
     public GameObject findGameObject(ObjectTag tag) throws  GameObjectNotFoundException{
@@ -90,9 +99,15 @@ public class ObjectManager {
         observers.remove(newObs);
     }
 
-    final public void  notifyoObservers( GameObject newGameObject){
+    final public void  notifyObserversOfNewObject( GameObject newGameObject){
         for ( var obs :observers ) {
             obs.newObjectUpdate( newGameObject );
+        }
+    }
+
+    final public void  notifyObserversOfDeletedObject( GameObject newGameObject){
+        for ( var obs :observers ) {
+            obs.objectDeletedUpdate( newGameObject );
         }
     }
     //___________________________________________

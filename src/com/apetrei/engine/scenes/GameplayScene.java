@@ -64,28 +64,34 @@ public class GameplayScene implements Scene{
         GameObject gameObject1 = new GameObject(gameContainer);
         gameObject1.addTag(ObjectTag.player);
         gameObject1.addComponent(new Rigidbody2D(new Vector2(400, 400), 1));
-        Collider2D colider1 = new ConvexCollider(wa);
+        Collider2D colider1 = new ConvexCollider(false,wa);
         gameObject1.addComponent(colider1);
         gameObject1.addComponent(new TurretComponent());
         gameObject1.addComponent(new PlayerComponent());
         gameObject1.addComponent(new SpriteComponent("Airship.png"));
         gameContainer.getObjectManager().addGameObject(gameObject1);
 
-        /////////
+        /////////ENEMY
 
         GameObject gameObject2 = new GameObject(gameContainer);
+        gameObject2.addTag( ObjectTag.hasHealth);
+
         gameObject2.addComponent(new Rigidbody2D(new Vector2(600, 600), 5));
-        Collider2D colider2 = new ConvexCollider(wa);
+        Collider2D colider2 = new ConvexCollider(false,wa);
         gameObject2.addComponent(colider2);
         gameObject2.addComponent(new SpriteComponent("Airship.png"));
+        gameObject2.addComponent(new EnemyComponent() );
         gameContainer.getObjectManager().addGameObject(gameObject2);
 
         /////////
         GameObject gameObject3 = new GameObject(gameContainer);
+        gameObject3.addTag( ObjectTag.hasHealth);
         gameObject3.addComponent(new Rigidbody2D(new Vector2(600, 350), 5));
-        Collider2D colider3 = new ConvexCollider(wa);
+        Collider2D colider3 = new ConvexCollider(false,wa);
         gameObject3.addComponent(colider3);
         gameObject3.addComponent(new SpriteComponent("Airship.png"));
+        gameObject3.addComponent(new EnemyComponent() );
+
         gameContainer.getObjectManager().addGameObject(gameObject3);
 
 
@@ -97,13 +103,13 @@ public class GameplayScene implements Scene{
         List<Vector2> waka2 = new ArrayList<Vector2>();
 
         waka2.add(new Vector2(-720, 200));
-        waka2.add(new Vector2(630, 200));
-        waka2.add(new Vector2(630, -300));
+        waka2.add(new Vector2(631, 200));
+        waka2.add(new Vector2(630, -301));
         waka2.add(new Vector2(-720, -300));
 
         ConvexPolygon2D wa2 = new ConvexPolygon2D(waka2);
 
-        Collider2D colider4 = new ConvexCollider(wa2);
+        Collider2D colider4 = new ConvexCollider(false,wa2);
         dock.addComponent(colider4);
         BackgroundSprite sprite = new BackgroundSprite("Port.png");
         sprite.setSpriteScale(1f);

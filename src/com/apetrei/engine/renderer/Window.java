@@ -4,6 +4,7 @@ import com.apetrei.engine.ConfigHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 
 //Clasa care gestioneaza fereastra care contine joculs
@@ -42,6 +43,9 @@ public class Window {
       bufferStrategy = canvas.getBufferStrategy();
     }
 
+    public void close(){
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+    }
     //________________________________GETTERS__________________________________________________
 
     public BufferStrategy getBufferStrategy() {

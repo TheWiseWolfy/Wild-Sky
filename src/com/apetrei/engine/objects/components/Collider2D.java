@@ -6,12 +6,28 @@ package com.apetrei.engine.objects.components;
  * AABB - Un colider primitiv care incadreaza obiectul intr-un patrat aliniat la axe.
  */
 
-public class Collider2D extends Component {
+import com.apetrei.engine.GameContainer;
+import com.apetrei.misc.command.ColliderCommand;
+
+public abstract class Collider2D extends Component {
 
     protected Rigidbody2D rigidbody = null;
 
-    public Collider2D() {
+    private boolean isTrigger;
+    private ColliderCommand command;
+
+    public Collider2D(boolean isTrigger) {
         super();
+        this.isTrigger = isTrigger;
+        this.command = null;
+    }
+
+    public Collider2D(boolean isTrigger, ColliderCommand command) {
+        super();
+        this.isTrigger = isTrigger;
+        this.command = command;
+
+
     }
 
     @Override
@@ -25,11 +41,18 @@ public class Collider2D extends Component {
     }
 
     @Override
-    public void componentUpdate(double fT) {
-    }
-
+   abstract public void componentUpdate(double fT);
     @Override
-    public void componentRender() {
+   abstract public void componentRender();
+
+     public void onCollision(Collider2D collided){
+         if(command != null) {
+             command.execute(collided);
+         }
+     }
+
+    public boolean isColliderTrigger(){
+        return isTrigger;
     }
 
     //______________________GETTER_AND_SETTER_______________________

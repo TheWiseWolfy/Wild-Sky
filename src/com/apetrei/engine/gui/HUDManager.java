@@ -4,14 +4,11 @@ import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
-import com.apetrei.engine.objects.components.Collider2D;
 import com.apetrei.engine.objects.components.PlayerComponent;
 import com.apetrei.engine.renderer.ImageLoader;
 import com.apetrei.misc.Vector2;
-import com.apetrei.misc.exceptions.ComponentMissingException;
-import com.apetrei.misc.exceptions.GameObjectNotFoundException;
-import com.apetrei.misc.observers.ObjectManagerObserver;
-import com.apetrei.misc.observers.PlayerObserver;
+import com.apetrei.misc.observer.ObjectManagerObserver;
+import com.apetrei.misc.observer.PlayerObserver;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,7 +20,7 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
 
     //Variables
     private int engineLevel = 0;
-    private int playerHealt = 0;
+    private int playerHealt = ConfigHandler.getMaxPlayerHealt();
 
 
     //Sprites
@@ -34,7 +31,6 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
 
     public HUDManager(GameContainer gameContainer){
         this.gameContainer = gameContainer;
-
 
         try {
             gauge.add(  ImageLoader.getInstance().getSprite("speed_gauge_0.png")  );
@@ -51,7 +47,6 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
         }
 
     }
-
 
     public void updateHUD(){
         Vector2 poz = new Vector2(ConfigHandler.getWidth() * 0.90f  ,ConfigHandler.getHeight() * 0.87f );
@@ -73,26 +68,6 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
 
     //_________________________________OBESERVER___________________________________
 
-
-    @Override
-    public void attachToPLayer() {
-
-    //   try {
-    //       PlayerComponent pc = (PlayerComponent) gameContainer.getObjectManager().findGameObject(ObjectTag.player).getComponent(PlayerComponent.class);
-    //       pc.attach(this);
-    //   } catch (ComponentMissingException e) {
-    //       e.printStackTrace();
-    //       System.err.println("The required player component is missing.");
-    //   }catch (GameObjectNotFoundException e) {
-    //       e.printStackTrace();
-    //       System.err.println("The required game object component is missing.");
-    //   }catch (Exception e) {
-    //       System.err.println("Hud error");
-    //       e.printStackTrace();
-    //   }
-
-    }
-
     @Override
     public void playerUpdate(int engineLevel , int playerHealt) {
         this.engineLevel = engineLevel;
@@ -102,7 +77,7 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
     @Override
     public void newObjectUpdate(GameObject gameObject) {
 
-        if( gameObject.hasComponent(PlayerComponent.class)){
+        if(gameObject.hasTag(ObjectTag.player) && gameObject.hasComponent(PlayerComponent.class)){
             try {
                 PlayerComponent  pc = (PlayerComponent) gameObject.getComponent(PlayerComponent.class);
                 pc.attach(this);
@@ -111,5 +86,10 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void objectDeletedUpdate(GameObject gameObject) {
+
     }
 }

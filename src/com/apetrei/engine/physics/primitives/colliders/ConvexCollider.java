@@ -1,9 +1,11 @@
 package com.apetrei.engine.physics.primitives.colliders;
 
+import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.objects.components.Collider2D;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
+import com.apetrei.misc.command.ColliderCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +17,15 @@ public class ConvexCollider extends Collider2D {
 
     final private ConvexPolygon2D collider;
 
-    public ConvexCollider( ConvexPolygon2D poligon){
+    public ConvexCollider(boolean isTrigger, ConvexPolygon2D poligon,  ColliderCommand command){
+        super(isTrigger, command);
         this.collider = new ConvexPolygon2D(poligon);
     }
 
-    public ConvexPolygon2D getPoligon() {
-        return collider;
+
+    public ConvexCollider(boolean isTrigger, ConvexPolygon2D poligon){
+        super(isTrigger);
+        this.collider = new ConvexPolygon2D(poligon);
     }
 
     public ConvexPolygon2D getLocalPoligon() {
@@ -54,10 +59,18 @@ public class ConvexCollider extends Collider2D {
     public void showColider(Renderer renderer){
         ConvexPolygon2D local = getLocalPoligon();
         renderer.getLayerRenderer().drawPoligon(local);
+    }
+
+    @Override
+    public void componentUpdate(double fT) {
 
     }
 
     public void componentRender() {
-        showColider(this.getParent().getGameContainer().getRenderer());
+        if(ConfigHandler.isDebugMode() ) {
+            showColider(this.getParent().getGameContainer().getRenderer());
+        }
     }
+
+
 }

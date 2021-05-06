@@ -63,6 +63,10 @@ public class GameObject implements Serializable {
         return active;
     }
 
+    public void kill(){
+        active = false;
+    }
+
     //Fuctii de actualizare
     public  void update(double fT){
 

@@ -5,7 +5,7 @@ import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
-import com.apetrei.misc.observers.PlayerObserver;
+import com.apetrei.misc.observer.PlayerObserver;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 /*!
  * Componenta care pune jucatorul in controlui unei nave din joc, si actualizeaza pozitia camerei.
  */
-public class PlayerComponent extends Component  {
+public class PlayerComponent extends Component implements HealthInterface {
 
     private Rigidbody2D rigidbody;
     private TurretComponent turretComponent;
@@ -24,8 +24,6 @@ public class PlayerComponent extends Component  {
 
     public PlayerComponent(){
         super();
-
-
     }
 
     //Variabile gameplay
@@ -149,7 +147,6 @@ public class PlayerComponent extends Component  {
         }else {
             playerHealt = 0;
         }
-
     }
 
 }

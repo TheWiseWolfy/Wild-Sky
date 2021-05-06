@@ -1,6 +1,7 @@
 package com.apetrei.engine;
 
 import com.apetrei.engine.gui.HUDManager;
+import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.objects.ObjectManager;
@@ -14,6 +15,7 @@ import com.apetrei.engine.scenes.Scene;
 
 import java.awt.event.KeyEvent;
 import java.util.Stack;
+import java.util.concurrent.TimeUnit;
 
 public class GameContainer implements Runnable {
 
@@ -26,8 +28,8 @@ public class GameContainer implements Runnable {
     private final Input input;
     private final ObjectManager objectManager;
 
-
     private final HUDManager hudManager;
+    private final MenuManager menuManager;
     private final PhysicsSystem2D physicsSystem;
 
     //Scene stack
@@ -42,6 +44,7 @@ public class GameContainer implements Runnable {
         window = new Window();
         renderer = new Renderer(this);
         hudManager = new HUDManager(this);
+        menuManager = new MenuManager(this);
         input = new Input(this);
         physicsSystem = new PhysicsSystem2D();
 
@@ -101,12 +104,16 @@ public class GameContainer implements Runnable {
             }
             input.nextEvent();
 
-
-
             ///////////
 
             if (ConfigHandler.isDebugMode()) {
                 //   System.out.println("Current FPS:" + 1 / frameTime + "\r");
+            }
+
+            try {
+                  TimeUnit.MICROSECONDS.sleep( 8666);
+            }catch (Exception e){
+
             }
 
             //RENDERING
@@ -130,18 +137,25 @@ public class GameContainer implements Runnable {
                     e.printStackTrace();
                 }
             }
-        }
+
+        }//END WHILE
+        window.close();
     }
 
     //_____________________SCENE_STACK_____________________
 
-    void goBack(){
+    public void close(){
+        running = false;
+
+    }
+
+    public void goBack(){
         if(sceneStack.size() > 1) {
             sceneStack.pop();
         }
     }
 
-    void goTo(GameplayScene newScene){
+    public void goTo(GameplayScene newScene){
         sceneStack.add(newScene);
     }
 
@@ -167,10 +181,12 @@ public class GameContainer implements Runnable {
         return physicsSystem;
     }
 
-
     public HUDManager getHudManager() {
         return hudManager;
     }
 
+    public MenuManager getMenuManager() {
+        return menuManager;
+    }
 
 }
