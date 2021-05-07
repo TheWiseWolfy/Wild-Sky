@@ -55,8 +55,19 @@ public class LayerRenderer {
         int wight =(int) (max.x - min.x);
         int height =(int) (max.y - min.y);
 
+        graphics.drawRect((int)min.x,(int) min.y ,wight,height);
+    }
+
+
+    public void drawFilledRectangle(Vector2 min, Vector2 max, Color color){
+        graphics.setColor(color);
+
+        int wight =(int) (max.x - min.x);
+        int height =(int) (max.y - min.y);
+
         graphics.fillRect((int)min.x,(int) min.y ,wight,height);
     }
+
 
     //ConvexPolygon2D
 

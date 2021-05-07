@@ -22,12 +22,10 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
     private int engineLevel = 0;
     private int playerHealt = ConfigHandler.getMaxPlayerHealt();
 
-
     //Sprites
     ArrayList<BufferedImage> gauge = new ArrayList<BufferedImage>();
-    BufferedImage healt1 = null;
-    BufferedImage healt2 = null;
-
+   // BufferedImage healt1 = null;
+   // BufferedImage healt2 = null;
 
     public HUDManager(GameContainer gameContainer){
         this.gameContainer = gameContainer;
@@ -39,13 +37,12 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
             gauge.add(  ImageLoader.getInstance().getSprite("speed_gauge_3.png")  );
             gauge.add(  ImageLoader.getInstance().getSprite("speed_gauge_4.png")  );
 
-            healt1 = ImageLoader.getInstance().getSprite("healt_top.png");
-            healt2 = ImageLoader.getInstance().getSprite("healt_bottom.png");
+        //    healt1 = ImageLoader.getInstance().getSprite("healt_top.png");
+        //    healt2 = ImageLoader.getInstance().getSprite("healt_bottom.png");
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     public void updateHUD(){
@@ -54,16 +51,15 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
 
         Vector2 healtCorner =  new Vector2( ConfigHandler.getWidth() * 0.07f,ConfigHandler.getHeight() * 0.05f);
 
-        Vector2 healtSize = new Vector2((float)playerHealt / ConfigHandler.getMaxPlayerHealt() * 270f,70);
+        Vector2 healtSize = new Vector2((float)playerHealt / ConfigHandler.getMaxPlayerHealt() * 270f,30);
 
-        gameContainer.getRenderer().getLayerRenderer().drawRectangle(healtCorner,new Vector2( healtCorner).add(healtSize), Color.red);
+        gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle(healtCorner,new Vector2( healtCorner).add(healtSize), Color.red);
 
-
-        Vector2 poz2 = new Vector2(ConfigHandler.getWidth() * 0.30f  ,ConfigHandler.getHeight() * 0.10f );
+       /* Vector2 poz2 = new Vector2(ConfigHandler.getWidth() * 0.30f  ,ConfigHandler.getHeight() * 0.10f );
         gameContainer.getRenderer().getLayerRenderer().drawStaticSprite( poz2, 1f ,healt1);
-
-        Vector2 poz3 = new Vector2(ConfigHandler.getWidth() * 0.05f  ,ConfigHandler.getHeight() * 0.10f );
+       Vector2 poz3 = new Vector2(ConfigHandler.getWidth() * 0.05f  ,ConfigHandler.getHeight() * 0.10f );
         gameContainer.getRenderer().getLayerRenderer().drawStaticSprite( poz3, 1f ,healt2);
+        */
     }
 
     //_________________________________OBESERVER___________________________________

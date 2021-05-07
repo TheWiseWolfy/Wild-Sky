@@ -28,7 +28,7 @@ public class TurretComponent extends Component{
         GameObject projectile = new GameObject(    this.getParent().getGameContainer() );
 
         Vector2 tranjectory =  new Vector2(rigidbody.getPosition()).sub(target).normalized().mul(-500f);
-        Vector2 tranjectory2 =  new Vector2(rigidbody.getPosition()).sub(target).normalized().mul(-100);
+        Vector2 tranjectory2 =  new Vector2(rigidbody.getPosition()).sub(target).normalized().mul(-20);
 
         Rigidbody2D rigid = new Rigidbody2D( new Vector2(rigidbody.getPosition()).add(tranjectory2) ,tranjectory,0.1f);
         rigid.setRotation( - (float)Math.atan2(tranjectory.x, tranjectory.y) );
@@ -45,17 +45,18 @@ public class TurretComponent extends Component{
 
         Collider2D colider4 = new ConvexCollider(true,wa2,(Collider2D collider) -> {
 
-                System.out.print( "|");
-
-               if( collider.parent.hasTag( ObjectTag.hasHealth) ){
-                   try {
-                       HealthInterface enemy =  (HealthInterface) collider.parent.getComponent( EnemyComponent.class );
-                       enemy.substactHealt(10);
-                   } catch (ComponentMissingException e) {
-                       e.printStackTrace();
-                   }
-               }
-            projectile.kill();
+            if(! collider.parent.hasTag( ObjectTag.player )) {
+                // System.out.print( "|");
+                if (collider.parent.hasTag(ObjectTag.hasHealth)) {
+                    try {
+                        HealthInterface enemy = (HealthInterface) collider.parent.getComponent(EnemyComponent.class);
+                        enemy.substactHealt(10);
+                    } catch (ComponentMissingException e) {
+                        e.printStackTrace();
+                    }
+                }
+                projectile.kill();
+            }
         } );
 
         projectile.addComponent(colider4);

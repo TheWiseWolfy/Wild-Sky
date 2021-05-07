@@ -3,7 +3,6 @@ package com.apetrei.engine;
 import com.apetrei.engine.gui.HUDManager;
 import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
-import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.objects.ObjectManager;
 import com.apetrei.engine.physics.PhysicsSystem2D;
 import com.apetrei.engine.renderer.ImageLoader;
@@ -13,7 +12,6 @@ import com.apetrei.engine.scenes.GameplayScene;
 import com.apetrei.engine.scenes.MainMenuScene;
 import com.apetrei.engine.scenes.Scene;
 
-import java.awt.event.KeyEvent;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +33,8 @@ public class GameContainer implements Runnable {
     //Scene stack
     Stack<Scene> sceneStack = new Stack<>();
 
+    Scene sceneToBeUsed;
+    private boolean popScene = false;
     private boolean running = false;
 
     public GameContainer() {
@@ -52,20 +52,14 @@ public class GameContainer implements Runnable {
         objectManager.attachObserver(hudManager);
         objectManager.attachObserver( physicsSystem);
 
-        MainMenuScene mainMenuScene = new MainMenuScene();
+        MainMenuScene mainMenuScene = new MainMenuScene(this);
+        mainMenuScene.init(this);
         sceneStack.add(mainMenuScene);
     }
 
-    //Nu consider ca un singleton e ideal aici, dar e o scurtatura usoara pentru a permite serializarea catorva obiecte.
-
     public void start() {
         ImageLoader.getInstance();      //Pre initializare
-
         thread.run();
-    }
-
-    public void stop() {
-
     }
 
     //The Runnable interface should be implemented by any class whose instances are intended to be executed by a thread.
@@ -93,17 +87,8 @@ public class GameContainer implements Runnable {
             unprocessedTime += frameTime;
 
             //UPDATE//
-
             sceneStack.peek().update(this,frameTime);
-
-            if(input.isKey( KeyEvent.VK_F1 , InputType.DOWN)) {
-              goTo (new GameplayScene(this) );
-            }
-            if(input.isKey( KeyEvent.VK_F2 , InputType.DOWN)) {
-                goBack();
-            }
             input.nextEvent();
-
             ///////////
 
             if (ConfigHandler.isDebugMode()) {
@@ -111,7 +96,7 @@ public class GameContainer implements Runnable {
             }
 
             try {
-                  TimeUnit.MICROSECONDS.sleep( 8666);
+               //   TimeUnit.MICROSECONDS.sleep( 8666);
             }catch (Exception e){
 
             }
@@ -123,13 +108,11 @@ public class GameContainer implements Runnable {
             }
 
             if (render) {
-
                 renderer.PrepareRender();
                 ////RENDER////
                 sceneStack.peek().render(this);
                 /////////////
                 renderer.Render();
-
             } else {
                 try {
                     Thread.sleep(1);
@@ -138,6 +121,16 @@ public class GameContainer implements Runnable {
                 }
             }
 
+            //CHANGE SCENE AT THE END OF FRAME
+            if(sceneToBeUsed != null){
+                sceneToBeUsed.init(this);
+                sceneStack.add( sceneToBeUsed);
+                sceneToBeUsed = null;
+            } else if( popScene){
+                sceneStack.pop();
+                sceneStack.peek().init(this);
+                popScene =false;
+            }
         }//END WHILE
         window.close();
     }
@@ -151,12 +144,14 @@ public class GameContainer implements Runnable {
 
     public void goBack(){
         if(sceneStack.size() > 1) {
-            sceneStack.pop();
+            popScene = true;
         }
     }
 
     public void goTo(GameplayScene newScene){
-        sceneStack.add(newScene);
+        if( newScene.getClass() != sceneStack.peek().getClass() ) {
+            sceneToBeUsed = newScene;
+        }
     }
 
     //______________________GETTERS__________________________
@@ -184,9 +179,7 @@ public class GameContainer implements Runnable {
     public HUDManager getHudManager() {
         return hudManager;
     }
-
     public MenuManager getMenuManager() {
         return menuManager;
     }
-
 }

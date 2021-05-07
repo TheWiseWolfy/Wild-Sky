@@ -4,45 +4,21 @@ title __COLLIDERS's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace physics {
-      namespace primitives {
-        namespace colliders {
-          class com.apetrei.engine.physics.primitives.colliders.Box2DCollider {
-              + Box2DCollider()
-              + Box2DCollider()
-              + getHalfSize()
-              + getMax()
-              + getMin()
-              + getRidigbody2D()
-              + getSize()
-              + getVertices()
-          }
+      namespace primitives.colliders {
+        class com.apetrei.engine.physics.primitives.colliders.ConvexCollider {
+            + ConvexCollider()
+            + ConvexCollider()
+            + componentRender()
+            + componentUpdate()
+            + getLocalPoligon()
+            + showColider()
         }
       }
     }
   }
   
 
-  namespace com.apetrei.engine {
-    namespace physics {
-      namespace primitives {
-        namespace colliders {
-          class com.apetrei.engine.physics.primitives.colliders.ConvexCollider {
-              + ConvexCollider()
-              + componentRender()
-              + getLocalPoligon()
-              + getPoligon()
-              + showColider()
-          }
-        }
-      }
-    }
-  }
-  
-
-  com.apetrei.engine.physics.primitives.colliders.Box2DCollider -up-|> com.apetrei.engine.components.Collider2D
-  com.apetrei.engine.physics.primitives.colliders.Box2DCollider o-- com.apetrei.misc.Vector2 : halfSize
-  com.apetrei.engine.physics.primitives.colliders.Box2DCollider o-- com.apetrei.misc.Vector2 : size
-  com.apetrei.engine.physics.primitives.colliders.ConvexCollider -up-|> com.apetrei.engine.components.Collider2D
+  com.apetrei.engine.physics.primitives.colliders.ConvexCollider -up-|> com.apetrei.engine.objects.components.Collider2D
   com.apetrei.engine.physics.primitives.colliders.ConvexCollider o-- com.apetrei.misc.ConvexPolygon2D : collider
 
 
