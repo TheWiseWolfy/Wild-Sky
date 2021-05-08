@@ -65,8 +65,6 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
                     result = Collisions.findCollisionFeatures(c1, c2);
                 }
 
-
-
                 if (result != null && result.isColliding()) {
 
 

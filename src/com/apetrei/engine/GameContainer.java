@@ -5,7 +5,7 @@ import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.objects.ObjectManager;
 import com.apetrei.engine.physics.PhysicsSystem2D;
-import com.apetrei.engine.renderer.ImageLoader;
+import com.apetrei.engine.renderer.ResourceLoader;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.engine.renderer.Window;
 import com.apetrei.engine.scenes.GameplayScene;
@@ -13,7 +13,6 @@ import com.apetrei.engine.scenes.MainMenuScene;
 import com.apetrei.engine.scenes.Scene;
 
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
 
 public class GameContainer implements Runnable {
 
@@ -50,15 +49,16 @@ public class GameContainer implements Runnable {
 
         objectManager = new ObjectManager(this);
         objectManager.attachObserver(hudManager);
+
         objectManager.attachObserver( physicsSystem);
 
         MainMenuScene mainMenuScene = new MainMenuScene(this);
-        mainMenuScene.init(this);
+        mainMenuScene.init();
         sceneStack.add(mainMenuScene);
     }
 
     public void start() {
-        ImageLoader.getInstance();      //Pre initializare
+        ResourceLoader.getInstance();      //Pre initializare
         thread.run();
     }
 
@@ -87,9 +87,9 @@ public class GameContainer implements Runnable {
             unprocessedTime += frameTime;
 
             //UPDATE//
-            sceneStack.peek().update(this,frameTime);
+            sceneStack.peek().update(frameTime);
             input.nextEvent();
-            ///////////
+            //////////
 
             if (ConfigHandler.isDebugMode()) {
                 //   System.out.println("Current FPS:" + 1 / frameTime + "\r");
@@ -110,7 +110,7 @@ public class GameContainer implements Runnable {
             if (render) {
                 renderer.PrepareRender();
                 ////RENDER////
-                sceneStack.peek().render(this);
+                sceneStack.peek().render();
                 /////////////
                 renderer.Render();
             } else {
@@ -123,12 +123,12 @@ public class GameContainer implements Runnable {
 
             //CHANGE SCENE AT THE END OF FRAME
             if(sceneToBeUsed != null){
-                sceneToBeUsed.init(this);
+                sceneToBeUsed.init();
                 sceneStack.add( sceneToBeUsed);
                 sceneToBeUsed = null;
             } else if( popScene){
                 sceneStack.pop();
-                sceneStack.peek().init(this);
+                sceneStack.peek().init();
                 popScene =false;
             }
         }//END WHILE

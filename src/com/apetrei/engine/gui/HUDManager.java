@@ -5,7 +5,7 @@ import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.engine.objects.components.PlayerComponent;
-import com.apetrei.engine.renderer.ImageLoader;
+import com.apetrei.engine.renderer.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.observer.ObjectManagerObserver;
 import com.apetrei.misc.observer.PlayerObserver;
@@ -31,11 +31,11 @@ public class HUDManager implements PlayerObserver, ObjectManagerObserver {
         this.gameContainer = gameContainer;
 
         try {
-            gauge.add(  ImageLoader.getInstance().getSprite("speed_gauge_0.png")  );
-            gauge.add(  ImageLoader.getInstance().getSprite("speed_gauge_1.png")  );
-            gauge.add(  ImageLoader.getInstance().getSprite("speed_gauge_2.png")  );
-            gauge.add(  ImageLoader.getInstance().getSprite("speed_gauge_3.png")  );
-            gauge.add(  ImageLoader.getInstance().getSprite("speed_gauge_4.png")  );
+            gauge.add(  ResourceLoader.getInstance().getSprite("speed_gauge_0.png")  );
+            gauge.add(  ResourceLoader.getInstance().getSprite("speed_gauge_1.png")  );
+            gauge.add(  ResourceLoader.getInstance().getSprite("speed_gauge_2.png")  );
+            gauge.add(  ResourceLoader.getInstance().getSprite("speed_gauge_3.png")  );
+            gauge.add(  ResourceLoader.getInstance().getSprite("speed_gauge_4.png")  );
 
         //    healt1 = ImageLoader.getInstance().getSprite("healt_top.png");
         //    healt2 = ImageLoader.getInstance().getSprite("healt_bottom.png");

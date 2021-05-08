@@ -38,6 +38,28 @@ public class GameObject implements Serializable {
     }
 
 
+    //_______________________________COMPONENT SYSTEM_____________
+
+    public Component getComponent(Class desiredClass) throws ComponentMissingException {
+
+        Component newComponent = components.get(desiredClass.getSimpleName());
+
+        // -Daca ceri un obiect, si acesta este prezent, iti va fi returnat.
+        // -Daca ceri un obiect, si un mostenitor al ecestuia este prezent, atunci iti va fi returnat acesta
+
+        if( newComponent != null) {
+            return newComponent;
+        }
+        else {
+            for (Map.Entry<String, Component> componentEntry : components.entrySet()) {
+                if (desiredClass.isAssignableFrom( componentEntry.getValue().getClass() ) ){
+                    return componentEntry.getValue();
+                }
+            }
+        }
+        throw new ComponentMissingException(desiredClass.getSimpleName());
+    }
+
 
     public void addComponent(Component newComponent ){
         newComponent.setParent(this);
@@ -59,6 +81,7 @@ public class GameObject implements Serializable {
         return isPresent || childIsPresent;
     }
 
+    //________________________________________GAME OBJECT FUCIONALITY_____________
     public boolean isActive() {
         return active;
     }
@@ -81,6 +104,7 @@ public class GameObject implements Serializable {
             componentEntry.getValue().componentRender();
         }
     }
+
     //_______________________________TAGS____________________________
 
     public void addTag(ObjectTag tag){
@@ -91,28 +115,8 @@ public class GameObject implements Serializable {
         return tags.contains( tag);
     }
 
-
     //_______________________________GETTER__________________________
 
-    public Component getComponent(Class desiredClass) throws ComponentMissingException {
-
-        Component newComponent = components.get(desiredClass.getSimpleName());
-
-        // -Daca ceri un obiect, si acesta este prezent, iti va fi returnat.
-        // -Daca ceri un obiect, si un mostenitor al ecestuia este prezent, atunci iti va fi returnat acesta
-
-        if( newComponent != null) {
-            return newComponent;
-        }
-        else {
-            for (Map.Entry<String, Component> componentEntry : components.entrySet()) {
-                if (desiredClass.isAssignableFrom( componentEntry.getValue().getClass() ) ){
-                    return componentEntry.getValue();
-                }
-            }
-        }
-        throw new ComponentMissingException(desiredClass.getSimpleName());
-    }
 
     public GameContainer getGameContainer() {
         return gameContainer;

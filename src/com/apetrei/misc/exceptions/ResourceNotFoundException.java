@@ -1,9 +1,9 @@
 package com.apetrei.misc.exceptions;
 
-public class SpriteNotFoundException extends Exception{
+public class ResourceNotFoundException extends Exception{
 
     String name;
-    public SpriteNotFoundException(String name){
+    public ResourceNotFoundException(String name){
         this.name = name;
     }
 

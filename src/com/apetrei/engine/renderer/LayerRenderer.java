@@ -6,6 +6,9 @@ import com.apetrei.misc.Vector2;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.beans.beancontext.BeanContext;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class LayerRenderer {
@@ -15,13 +18,13 @@ public class LayerRenderer {
 
     //private int pixelsW, pixelsH;
     //private int[] pixels;
-    LayerRenderer(BufferedImage layer, Camera camera){
-        this.graphics = layer.getGraphics();
+    LayerRenderer( Graphics graphics, Camera camera){
+        this.graphics = graphics;
         this.camera = camera;
+
     }
 
     //_____________________________________HERE WE DRAW____________________________
-    //Fuction using the graphics class
 
     public void drawLine(Line line){
         graphics.setColor(Color.BLACK);
@@ -42,6 +45,14 @@ public class LayerRenderer {
 
         graphics.drawLine((int) a.x, (int)a.y,(int)b.x  ,(int) b.y ) ;
     }
+    //CIRCLE
+    public void drawCircle(Vector2 a, int radius){
+        graphics.setColor(Color.BLACK);
+
+        a = camera.vector2CameraSpace(a);
+
+        graphics.drawOval((int) a.x, (int)a.y,radius  ,radius); ;
+    }
 
     //RECTANGLE
     public void drawRectangle(int x, int y, int wight, int height){
@@ -54,7 +65,6 @@ public class LayerRenderer {
 
         int wight =(int) (max.x - min.x);
         int height =(int) (max.y - min.y);
-
         graphics.drawRect((int)min.x,(int) min.y ,wight,height);
     }
 
@@ -93,8 +103,6 @@ public class LayerRenderer {
         graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
 
     }
-
-
 
     //SPRITES
     public void drawSprite(Vector2 poz,float scale, BufferedImage img, float scrollfactor){

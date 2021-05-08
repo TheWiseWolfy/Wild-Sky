@@ -13,7 +13,7 @@ public class ConfigHandler {
     private static String title = "Engine v1.0";
 
 
-    private static boolean debugMode = true;
+    private static boolean debugMode = false;
 
     public static double getUpdateCap() {
         return UPDATE_CAP;
@@ -44,7 +44,7 @@ public class ConfigHandler {
 
     private static float enginePower = 50;
     private static float maneuverability = 5f;
-    private static int maxPlayerHealt = 100;
+    private static int maxPlayerHealt = 10000;
 
     public static int getMaxPlayerHealt() {
         return maxPlayerHealt;

@@ -12,26 +12,28 @@ public class Renderer {
     private Graphics graphics;
 
     //Layers of the game
-    BufferedImage gameFrame;
-    BufferedImage HUDLayer;
+   // BufferedImage gameFrame;
+   // BufferedImage HUDLayer;
 
     //Aici stocam pozitia camerei
-    private Camera camera;
+    private final Camera camera;
 
     //Renderers for diffrent layers of the game
-    private LayerRenderer layerRenderer;
+    private final LayerRenderer layerRenderer;
+    private final TextRenderer textRenderer;
 
-    Graphics graphicsBuffer = null;
+    Graphics graphicsBuffer;
 
     public Renderer(GameContainer gameContainer){
         this.gameContainer = gameContainer;
 
         camera = new Camera();
+        graphicsBuffer = this.gameContainer.getWindow().getBufferStrategy().getDrawGraphics();
+      //  gameFrame = new BufferedImage(ConfigHandler.getWidth(), ConfigHandler.getHeight(),BufferedImage.TYPE_INT_ARGB);
+      //  HUDLayer = new BufferedImage(ConfigHandler.getWidth(), ConfigHandler.getHeight(),BufferedImage.TYPE_INT_ARGB);
 
-        gameFrame = new BufferedImage(ConfigHandler.getWidth(), ConfigHandler.getHeight(),BufferedImage.TYPE_INT_ARGB);
-        HUDLayer = new BufferedImage(ConfigHandler.getWidth(), ConfigHandler.getHeight(),BufferedImage.TYPE_INT_ARGB);
-
-        layerRenderer = new LayerRenderer(gameFrame ,camera);
+        layerRenderer = new LayerRenderer(graphicsBuffer ,camera);
+        textRenderer = new TextRenderer( graphicsBuffer);
     }
 
     public void PrepareRender() {
@@ -39,10 +41,11 @@ public class Renderer {
         graphicsBuffer = this.gameContainer.getWindow().getBufferStrategy().getDrawGraphics();
         //  graphics = gameFrame.getGraphics();
 
-        int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
-        int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
+       // int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
+        //int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
 
         layerRenderer.setGraphics( graphicsBuffer);
+        textRenderer.setGraphics( graphicsBuffer);
     }
 
     public void Render(){
@@ -85,5 +88,8 @@ public class Renderer {
         return layerRenderer;
     }
 
+    public TextRenderer getTextRenderer() {
+        return textRenderer;
+    }
 
 }

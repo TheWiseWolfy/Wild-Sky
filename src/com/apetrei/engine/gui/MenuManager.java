@@ -1,14 +1,8 @@
 package com.apetrei.engine.gui;
 
 import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.gui.UIElements.UIElement;
-import com.apetrei.engine.renderer.ImageLoader;
-import com.apetrei.engine.scenes.GameplayScene;
-import com.apetrei.misc.Vector2;
-import com.apetrei.misc.exceptions.SpriteNotFoundException;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 

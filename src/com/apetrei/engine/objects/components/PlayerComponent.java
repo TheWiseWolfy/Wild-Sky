@@ -3,6 +3,8 @@ package com.apetrei.engine.objects.components;
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.input.InputType;
+import com.apetrei.engine.objects.GameObject;
+import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.observer.PlayerObserver;
@@ -39,6 +41,9 @@ public class PlayerComponent extends Component implements HealthInterface {
         catch (Exception e){
             e.printStackTrace();
         }
+
+        parent.addTag(ObjectTag.hasHealth);
+        parent.addTag(ObjectTag.player);
     }
 
     @Override
@@ -92,12 +97,13 @@ public class PlayerComponent extends Component implements HealthInterface {
 
         fireTarget =  gameContainer.getRenderer().getCamera().getMousePozInWorld( gameContainer.getInput().getMouseX() ,gameContainer.getInput().getMouseY() );
 
-        if(gameContainer.getInput().isKey( KeyEvent.VK_SPACE , InputType.DOWN)) {
+        if(gameContainer.getInput().isKey( KeyEvent.VK_SPACE , InputType.CONTINUOUS)) {
             turretComponent.fireProjectile(fireTarget);
         }
 
         //Camera
         gameContainer.getRenderer().getCamera().placeCameraAt( rigidbody.position);
+
     }
 
     @Override
@@ -139,6 +145,7 @@ public class PlayerComponent extends Component implements HealthInterface {
         }else {
             playerHealt = ConfigHandler.getMaxPlayerHealt();
         }
+         notifyoObserver();
     }
 
     public void substactHealt( int value){
@@ -147,6 +154,7 @@ public class PlayerComponent extends Component implements HealthInterface {
         }else {
             playerHealt = 0;
         }
+        notifyoObserver();
     }
 
 }

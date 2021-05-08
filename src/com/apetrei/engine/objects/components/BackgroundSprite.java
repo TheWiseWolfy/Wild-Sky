@@ -1,7 +1,7 @@
 package com.apetrei.engine.objects.components;
 
-import com.apetrei.misc.exceptions.SpriteNotFoundException;
-import com.apetrei.engine.renderer.ImageLoader;
+import com.apetrei.misc.exceptions.ResourceNotFoundException;
+import com.apetrei.engine.renderer.ResourceLoader;
 
 import java.awt.image.BufferedImage;
 
@@ -29,9 +29,9 @@ public class BackgroundSprite extends Component {
         this.name = name;
 
         try {
-            sprite = ImageLoader.getInstance().getSprite(name);
+            sprite = ResourceLoader.getInstance().getSprite(name);
 
-        } catch ( SpriteNotFoundException e) {
+        } catch ( ResourceNotFoundException e) {
             e.printStackTrace();
         }
     }
