@@ -2,6 +2,9 @@ package com.apetrei.engine.scenes;
 
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.event.GlobalEvent;
+import com.apetrei.engine.gui.DialogLine;
+import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
@@ -11,28 +14,27 @@ import com.apetrei.engine.renderer.ResourceLoader;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
-import com.apetrei.misc.observer.ObjectManagerObserver;
-import com.apetrei.misc.observer.PlayerObserver;
 
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class GameplayScene implements Scene, PlayerObserver, ObjectManagerObserver {
+public class GameplayScene implements Scene {
     GameContainer gameContainer;
 
     boolean paused = false;
-    BufferedImage background = null;
-    BufferedImage sprite = null;
+    BufferedImage pauseMenuBackground = null;
+
+    Set<GlobalEvent> hasHappened= new  TreeSet<GlobalEvent>();
 
     public GameplayScene(GameContainer gameContainer) {
         this.gameContainer = gameContainer;
 
         try {
-            background = ResourceLoader.getInstance().getSprite("Pause_menu_background.png");
-            sprite = ResourceLoader.getInstance().getSprite("Button.png");
-
+            pauseMenuBackground = ResourceLoader.getInstance().getSprite("Pause_menu_background.png");
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
         }
@@ -43,12 +45,14 @@ public class GameplayScene implements Scene, PlayerObserver, ObjectManagerObserv
 
         gameContainer.getMenuManager().clearUI();
         gameContainer.getPhysicsSystem().resetPhysicsSystem();
-
         gameContainer.getObjectManager().resetObjectManager();
-        gameContainer.getObjectManager().attachObserver(this);
 
         initializeGame(gameContainer);
         initializePauseMenu(gameContainer);
+
+        gameContainer.getHudManager().addDialogueLine( new DialogLine("Defend the city at all cost.", 2f,1));
+        gameContainer.getHudManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
+
     }
 
     @Override
@@ -64,7 +68,6 @@ public class GameplayScene implements Scene, PlayerObserver, ObjectManagerObserv
         }
 
         if (gameContainer.getInput().isKey(KeyEvent.VK_ESCAPE, InputType.DOWN)) {
-
             paused = !paused;
             if( ConfigHandler.isDebugMode()) {
                 if (paused) {
@@ -81,9 +84,21 @@ public class GameplayScene implements Scene, PlayerObserver, ObjectManagerObserv
             //UPDATE
             gameContainer.getObjectManager().updateObjects(frameTime);
             //HUD UPDATE
+            gameContainer.getHudManager().updateHUD(frameTime);
         }else {
             gameContainer.getMenuManager().update();
         }
+
+        if( gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.PLAYER_DESTROYED ||
+                gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.OBJECTIVE_DESTROYED ){
+            gameContainer.goBack();
+        }
+
+        if( gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.OBJECTIVE_DAMAGED && !hasHappened.contains(GlobalEvent.OBJECTIVE_DAMAGED )){
+            gameContainer.getHudManager().addDialogueLine( new DialogLine("The city is being attacked !",8f,1));
+            hasHappened.add(GlobalEvent.OBJECTIVE_DAMAGED);
+        }
+
     }
 
     @Override
@@ -91,9 +106,9 @@ public class GameplayScene implements Scene, PlayerObserver, ObjectManagerObserv
 
         if (!paused) {
             gameContainer.getObjectManager().renderObjects();
-            gameContainer.getHudManager().updateHUD();
+            gameContainer.getHudManager().renderHUD();
         }else {
-            gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(new Vector2( ConfigHandler.getWidth()/2,ConfigHandler.getHeight()/2), 0.6f, background);
+            gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(new Vector2( ConfigHandler.getWidth()/2,ConfigHandler.getHeight()/2), 0.6f, pauseMenuBackground);
             gameContainer.getMenuManager().draw();
         }
 
@@ -103,19 +118,19 @@ public class GameplayScene implements Scene, PlayerObserver, ObjectManagerObserv
 
         //MENU BUTTON
         Vector2 button2Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 -100);
-        com.apetrei.engine.gui.UIElements.Button button2 = new com.apetrei.engine.gui.UIElements.Button("Continue",button2Poz, 0.3f, sprite, () -> {
+        Button button2 =  Button.makeButton("Continue",button2Poz, 0.3f, () -> {
             paused = false;
         });
 
         //MENU BUTTON
         Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
-        com.apetrei.engine.gui.UIElements.Button button1 = new com.apetrei.engine.gui.UIElements.Button("Menu",button1Poz, 0.3f, sprite, () -> {
+        Button button1 = Button.makeButton("Menu",button1Poz, 0.3f, () -> {
             gameContainer.goBack();
         });
 
         //SETTINGS BUTTON
         Vector2 button3Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
-        com.apetrei.engine.gui.UIElements.Button button3 = new com.apetrei.engine.gui.UIElements.Button("Settings",button3Poz, 0.3f, sprite, () -> {
+        Button button3 = Button.makeButton("Settings",button3Poz, 0.3f, () -> {
             System.out.println("Settings Button");
         });
 
@@ -149,49 +164,52 @@ public class GameplayScene implements Scene, PlayerObserver, ObjectManagerObserv
 
         //DOCK
         GameObject dock = new GameObject(gameContainer);
-        dock.addComponent(new Rigidbody2D(new Vector2(400, 0), 0));
-
+        dock.addComponent(new Rigidbody2D(new Vector2(400, -600), 0));
+        dock.addTag(ObjectTag.ally);
         List<Vector2> waka2 = new ArrayList<Vector2>();
 
-        waka2.add(new Vector2(-720, 200));
-        waka2.add(new Vector2(631, 200));
-        waka2.add(new Vector2(630, -301));
-        waka2.add(new Vector2(-720, -300));
+        waka2.add(new Vector2(-520, 150));
+        waka2.add(new Vector2(440, 150));
+        waka2.add(new Vector2(440, -200));
+        waka2.add(new Vector2(-520, -200));
 
         ConvexPolygon2D wa2 = new ConvexPolygon2D(waka2);
         Collider2D colider4 = new ConvexCollider(false, wa2);
         dock.addComponent(colider4);
         BackgroundSprite sprite = new BackgroundSprite("Port.png");
-        sprite.setSpriteScale(1f);
+        sprite.setSpriteScale(0.7f);
         dock.addComponent(sprite);
+        dock.addComponent( new GameObjectiveComponent());
+
         gameContainer.getObjectManager().addGameObject(dock);
+
 
         //PLAYER
         GameObject gameObject1 = new GameObject(gameContainer);
-        gameObject1.addComponent(new Rigidbody2D(new Vector2(200, 500), 1));
+        gameObject1.addComponent(new Rigidbody2D(new Vector2(200, -350), 1));
         Collider2D colider1 = new ConvexCollider(false, wa);
         gameObject1.addComponent(colider1);
-        gameObject1.addComponent(new TurretComponent());
+        gameObject1.addComponent(new TurretComponent(ObjectTag.ally ) );
         gameObject1.addComponent(new PlayerComponent());
         gameObject1.addComponent(new SpriteComponent("Airship.png"));
         gameContainer.getObjectManager().addGameObject(gameObject1);
 
         /////////ENEMY
         GameObject gameObject2 = new GameObject(gameContainer);
-        gameObject2.addComponent(new Rigidbody2D(new Vector2(600, 700), 5));
+        gameObject2.addComponent(new Rigidbody2D(new Vector2(600, 1000), 5));
         Collider2D colider2 = new ConvexCollider(false, wa);
         gameObject2.addComponent(colider2);
-        gameObject2.addComponent(new TurretComponent());
+        gameObject2.addComponent(new TurretComponent(ObjectTag.enemy ));
         gameObject2.addComponent(new SpriteComponent("Airship.png"));
         gameObject2.addComponent(new EnemyComponent(dock));
         gameContainer.getObjectManager().addGameObject(gameObject2);
 
         /////////ENEMY2
         GameObject gameObject3 = new GameObject(gameContainer);
-        gameObject3.addComponent(new Rigidbody2D(new Vector2(600, 450), 5));
+        gameObject3.addComponent(new Rigidbody2D(new Vector2(800, 1000), 5));
         Collider2D colider3 = new ConvexCollider(false, wa);
         gameObject3.addComponent(colider3);
-        gameObject3.addComponent(new TurretComponent());
+        gameObject3.addComponent(new TurretComponent(ObjectTag.enemy));
         gameObject3.addComponent(new SpriteComponent("Airship.png"));
         gameObject3.addComponent(new EnemyComponent(dock));
 
@@ -199,41 +217,15 @@ public class GameplayScene implements Scene, PlayerObserver, ObjectManagerObserv
 
         /////////ENEMY2
         GameObject gameObject4 = new GameObject(gameContainer);
-        gameObject4.addComponent(new Rigidbody2D(new Vector2(100, 350), 5));
+        gameObject4.addComponent(new Rigidbody2D(new Vector2(400, 1000), 5));
         Collider2D colider6 = new ConvexCollider(false, wa);
         gameObject4.addComponent(colider6);
-        gameObject4.addComponent(new TurretComponent());
+        gameObject4.addComponent(new TurretComponent(ObjectTag.enemy));
         gameObject4.addComponent(new SpriteComponent("Airship.png"));
         gameObject4.addComponent(new EnemyComponent(dock));
-
         gameContainer.getObjectManager().addGameObject(gameObject4);
 
 
     }
 
-    //_______________________________OBSERVERS_______________________
-    @Override
-    public void playerUpdate(int engineLevel, int playerHealt) {
-        if(playerHealt == 0){
-            gameContainer.goBack();
-        }
-    }
-
-    @Override
-    public void newObjectUpdate(GameObject gameObject) {
-        if(gameObject.hasTag(ObjectTag.player) ){
-            try {
-                PlayerComponent  pc = (PlayerComponent) gameObject.getComponent(PlayerComponent.class);
-                pc.attach(this);
-            } catch (Exception e) {
-                System.err.println( "");
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void objectDeletedUpdate(GameObject gameObject) {
-
-    }
 }

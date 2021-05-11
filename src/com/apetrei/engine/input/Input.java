@@ -115,16 +115,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
-        int code = e.getButton();
-
-        if (pressedMouseKeys.contains(code)) {
-            return;
-        } else {
-            playerInputEvent event = new playerInputEvent(e, InputType.MOUSE_DOWN);
-            addInput(event);
-            pressedMouseKeys.add(code);
-        }
     }
 
     @Override

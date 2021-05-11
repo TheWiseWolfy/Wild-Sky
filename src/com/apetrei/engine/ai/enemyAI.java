@@ -36,7 +36,7 @@ public class enemyAI {
        List<GameObject> objectInRange = gameContainer.getObjectManager().findGameObjectInRange(enemyComponent.getParent(), 1500);
 
        for (var object : objectInRange) {
-           if (object.hasTag(ObjectTag.enemy)) {
+           if ( object.hasTag(ObjectTag.player)) {
                float distance =  enemyComponent.distanceTo( object);
                 if( distance > 500 ) {
                     currentState = AIState.CHASE_TARGET;
@@ -49,9 +49,13 @@ public class enemyAI {
        }
 
        if( currentState == AIState.CHASE_OBJECTIVE){
+           float distanceToObjective =  enemyComponent.distanceTo( objective);
            enemyComponent.chaseTarger( objective );
+           if (distanceToObjective <= 1000){
+               enemyComponent.destroy( objective);
+           }
        }
-       System.out.println(currentState.toString());
+     //  System.out.println(currentState.toString());
     }
 
     //_______________________SETTER_______________________

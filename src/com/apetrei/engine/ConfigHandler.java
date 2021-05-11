@@ -44,7 +44,7 @@ public class ConfigHandler {
 
     private static float enginePower = 50;
     private static float maneuverability = 5f;
-    private static int maxPlayerHealt = 10000;
+    private static int maxPlayerHealt = 5000;
 
     public static int getMaxPlayerHealt() {
         return maxPlayerHealt;

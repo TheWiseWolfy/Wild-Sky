@@ -103,7 +103,7 @@ public class EnemyComponent extends Component implements HealthInterface{
 
 
     //________________________HealthInterface________________________
-    public void addHealt( int value){
+    public void addHealth(int value){
         if( healt + value <= maxHealt)  {
             healt +=value;
         }else {
@@ -111,7 +111,7 @@ public class EnemyComponent extends Component implements HealthInterface{
         }
     }
 
-    public void substactHealt( int value){
+    public void substactHealth(int value){
         if( healt - value >= 0)  {
             healt -=value;
         }else {

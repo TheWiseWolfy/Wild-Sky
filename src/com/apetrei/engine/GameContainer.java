@@ -1,5 +1,6 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.event.GlobalEventQueue;
 import com.apetrei.engine.gui.HUDManager;
 import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
@@ -28,6 +29,7 @@ public class GameContainer implements Runnable {
     private final HUDManager hudManager;
     private final MenuManager menuManager;
     private final PhysicsSystem2D physicsSystem;
+    private final GlobalEventQueue globalEventQueue;
 
     //Scene stack
     Stack<Scene> sceneStack = new Stack<>();
@@ -37,21 +39,23 @@ public class GameContainer implements Runnable {
     private boolean running = false;
 
     public GameContainer() {
-        //Initializari importante
-        thread = new Thread(this);
 
+        //Engine Initialization
+        //This might actually be really stupid. TODO: Move all use of "this" after the contructor has finished.
+        thread = new Thread(this);
         window = new Window();
         renderer = new Renderer(this);
         hudManager = new HUDManager(this);
         menuManager = new MenuManager(this);
         input = new Input(this);
         physicsSystem = new PhysicsSystem2D();
+        globalEventQueue = new GlobalEventQueue();
 
         objectManager = new ObjectManager(this);
         objectManager.attachObserver(hudManager);
-
         objectManager.attachObserver( physicsSystem);
 
+        //Game Initialization
         MainMenuScene mainMenuScene = new MainMenuScene(this);
         mainMenuScene.init();
         sceneStack.add(mainMenuScene);
@@ -89,16 +93,11 @@ public class GameContainer implements Runnable {
             //UPDATE//
             sceneStack.peek().update(frameTime);
             input.nextEvent();
+            globalEventQueue.nextEvent();
             //////////
 
             if (ConfigHandler.isDebugMode()) {
                 //   System.out.println("Current FPS:" + 1 / frameTime + "\r");
-            }
-
-            try {
-               //   TimeUnit.MICROSECONDS.sleep( 8666);
-            }catch (Exception e){
-
             }
 
             //RENDERING
@@ -148,7 +147,7 @@ public class GameContainer implements Runnable {
         }
     }
 
-    public void goTo(GameplayScene newScene){
+    public void goTo(Scene newScene){
         if( newScene.getClass() != sceneStack.peek().getClass() ) {
             sceneToBeUsed = newScene;
         }
@@ -179,7 +178,13 @@ public class GameContainer implements Runnable {
     public HUDManager getHudManager() {
         return hudManager;
     }
+
     public MenuManager getMenuManager() {
         return menuManager;
     }
+
+    public GlobalEventQueue getGlobalEventQueue() {
+        return globalEventQueue;
+    }
+
 }

@@ -3,9 +3,10 @@ package com.apetrei.engine.gui.UIElements;
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.input.InputType;
-import com.apetrei.engine.renderer.CustomFonts;
+import com.apetrei.engine.renderer.ResourceLoader;
 import com.apetrei.misc.command.Command;
 import com.apetrei.misc.Vector2;
+import com.apetrei.misc.exceptions.ResourceNotFoundException;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -22,7 +23,7 @@ public class Button extends UIElement {
     BufferedImage sprite;
     String buttonText;
 
-    public Button(String buttonText,Vector2 position,float scale, BufferedImage sprite,Command command) {
+    private Button(String buttonText,Vector2 position,float scale, BufferedImage sprite,Command command) {
         super(command);
         this.position = position;
         this.scale = scale;
@@ -37,6 +38,10 @@ public class Button extends UIElement {
 
     @Override
     public void update(GameContainer gameContainer) {
+
+        cornerA = new Vector2(position.x - size.x / 2, position.y - size.y / 2);
+        cornerB = new Vector2(position.x + size.x / 2, position.y + size.y / 2);
+
         if( isPressed( gameContainer )) {
             command.execute();
         }
@@ -67,5 +72,22 @@ public class Button extends UIElement {
         if(ConfigHandler.isDebugMode()) gameContainer.getRenderer().getLayerRenderer().drawRectangle(cornerA, cornerB, Color.red);
     }
 
+    //_____________________________UTILITY_________________________________________
+
+    static public Button makeButton(String buttonText,Vector2 position,float scale,Command command){
+
+        BufferedImage sprite = null;
+        try {
+            sprite = ResourceLoader.getInstance().getSprite("Button.png");
+
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new Button(buttonText,position,scale,sprite,command);
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
 
 }

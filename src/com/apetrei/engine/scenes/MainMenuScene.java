@@ -15,12 +15,10 @@ public class MainMenuScene implements Scene {
     GameContainer gameContainer;
 
     BufferedImage background = null;
-    BufferedImage sprite = null;
 
     public MainMenuScene(GameContainer gameContainer) {
         this.gameContainer = gameContainer;
         try {
-            sprite = ResourceLoader.getInstance().getSprite("Button.png");
             background = ResourceLoader.getInstance().getSprite("main_menu_background.jpg");
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
@@ -32,29 +30,35 @@ public class MainMenuScene implements Scene {
     public void init() {
         gameContainer.getMenuManager().clearUI();
 
-        if (sprite != null) {
-            //START GAME BUTTON
 
-            Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
+        //START GAME BUTTON
 
-            Button button1 = new com.apetrei.engine.gui.UIElements.Button("New Game",button1Poz, 0.3f, sprite, () -> {
-                gameContainer.goTo(new GameplayScene(gameContainer));
-            });
+        Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
+        Button button1 = Button.makeButton("New Game",button1Poz, 0.3f, () -> {
+            gameContainer.goTo(new LevelMenuScene(gameContainer));
+        });
 
-            //SETTINGS BUTTON
-            Vector2 button3Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 200);
-            Button button3 = new Button("Settings",button3Poz, 0.3f, sprite, () -> {
-                System.out.println("wew");
-            });
+        //SETTINGS BUTTON
+        Vector2 button2Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
+        Button button2 = Button.makeButton("Continue",button2Poz, 0.3f, () -> {
+            System.out.println("trolled");
+        });
 
-            //CLOSE GAME BUTTON
-            Vector2 button2Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 300);
-            Button button2 = new com.apetrei.engine.gui.UIElements.Button("Quit",button2Poz, 0.3f, sprite, gameContainer::close);
+        //SETTINGS BUTTON
+        Vector2 button3Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 200);
+        Button button3 = Button.makeButton("Settings",button3Poz, 0.3f, () -> {
+            gameContainer.goTo(new SettingsScene(gameContainer));
+        });
 
-            gameContainer.getMenuManager().addUIElement(button1);
-            gameContainer.getMenuManager().addUIElement(button2);
-            gameContainer.getMenuManager().addUIElement(button3);
-        }
+        //CLOSE GAME BUTTON
+        Vector2 button4Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 300);
+        Button button4 =Button.makeButton("Quit",button4Poz, 0.3f, gameContainer::close);
+
+        gameContainer.getMenuManager().addUIElement(button1);
+        gameContainer.getMenuManager().addUIElement(button2);
+        gameContainer.getMenuManager().addUIElement(button3);
+        gameContainer.getMenuManager().addUIElement(button4);
+
 
     }
 
@@ -67,7 +71,8 @@ public class MainMenuScene implements Scene {
     public void render( ) {
         gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(new Vector2( ConfigHandler.getWidth()/2,ConfigHandler.getHeight()/2), 0.6f, background);
         gameContainer.getMenuManager().draw();
-        Vector2 textPoz = new Vector2( ConfigHandler.getWidth()/2, 300);
+
+        Vector2 textPoz = new Vector2( ConfigHandler.getWidth()/2, 200);
         gameContainer.getRenderer().getTextRenderer().drawText("Wild-Sky" , textPoz, CustomFonts.SEAGRAM ,100, Color.BLACK);
 
     }

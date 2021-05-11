@@ -39,6 +39,7 @@ public class Vector2 implements Serializable {
        if( temp.x == Float.NEGATIVE_INFINITY || temp.y == Float.POSITIVE_INFINITY ) {
            throw new ArithmeticException();   //you screwed up
        }
+
        return temp;
     }
 
