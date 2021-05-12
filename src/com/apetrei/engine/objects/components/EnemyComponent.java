@@ -1,6 +1,7 @@
 package com.apetrei.engine.objects.components;
 
 import com.apetrei.engine.ai.enemyAI;
+import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.misc.Vector2;
@@ -14,7 +15,7 @@ public class EnemyComponent extends Component implements HealthInterface{
 
     GameObject objective;
 
-    int maxHealt = 1000;
+    int maxHealt = 100;
     int healt = maxHealt;
 
     public EnemyComponent(GameObject objective){
@@ -47,6 +48,7 @@ public class EnemyComponent extends Component implements HealthInterface{
 
         if( healt <= 0){
             this.parent.kill();
+            parent.getGameContainer().getGlobalEventQueue().declareEvent( GlobalEvent.ENEMY_DESTROYED );
         }
     }
 

@@ -5,6 +5,10 @@ import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.renderer.ResourceLoader;
+import com.apetrei.engine.scenes.levels.Level1;
+import com.apetrei.engine.scenes.levels.Level2;
+import com.apetrei.engine.scenes.levels.Level3;
+import com.apetrei.engine.scenes.levels.Level4;
 import com.apetrei.misc.Vector2;
 
 import java.awt.*;
@@ -26,6 +30,9 @@ public class LevelMenuScene implements Scene {
     float borderY = 100;
 
     Button mapButton1;
+    Button mapButton2;
+    Button mapButton3;
+    Button mapButton4;
 
     public LevelMenuScene( GameContainer gameContainer){
 
@@ -44,15 +51,28 @@ public class LevelMenuScene implements Scene {
        //Buttons on map
 
         mapButton1 = Button.makeButton("Level 1", mapPosition, 0.3f, () -> {
-            gameContainer.goTo(new GameplayScene(gameContainer));
+            gameContainer.goTo(new Level1(gameContainer));
+        });
+        mapButton2 = Button.makeButton("Level 2", mapPosition, 0.3f, () -> {
+            gameContainer.goTo(new Level2(gameContainer));
+        });
+        mapButton3 = Button.makeButton("Level 3", mapPosition, 0.3f, () -> {
+            gameContainer.goTo(new Level3(gameContainer));
+        });
+        mapButton4 = Button.makeButton("Level 4", mapPosition, 0.3f, () -> {
+            gameContainer.goTo(new Level4(gameContainer));
         });
 
-        //Buttons
-        Vector2 button2Poz = new Vector2(ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.9f  );
-        Button button2 = Button.makeButton("Back", button2Poz, 0.3f, gameContainer::goBack);
-
         gameContainer.getMenuManager().addUIElement(mapButton1);
-        gameContainer.getMenuManager().addUIElement(button2);
+        gameContainer.getMenuManager().addUIElement(mapButton2);
+        gameContainer.getMenuManager().addUIElement(mapButton3);
+        gameContainer.getMenuManager().addUIElement(mapButton4);
+
+        //Buttons
+        Vector2 buttonBackPoz = new Vector2(ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.9f  );
+        Button buttonBack = Button.makeButton("Back", buttonBackPoz, 0.3f, gameContainer::goBack);
+
+        gameContainer.getMenuManager().addUIElement(buttonBack);
 
     }
 
@@ -76,6 +96,7 @@ public class LevelMenuScene implements Scene {
             origin = currentMousePoz;
         }
 
+        //Camera border
         if( mapPosition.x  < borderX){
             mapPosition.x = borderX;
         }
@@ -103,8 +124,17 @@ public class LevelMenuScene implements Scene {
     }
 
     public void updateMovingButtons(){
+
         relativeCoordonateSytem = new Vector2(mapPosition).sub( new Vector2( background.getWidth()/2, background.getHeight()/2 ));
+
         Vector2 mapButton1Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1400,100));
+        Vector2 mapButton2Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1400,300));
+        Vector2 mapButton3Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1400,500));
+        Vector2 mapButton4Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1400,700));
+
         mapButton1.setPosition(mapButton1Poz);
+        mapButton2.setPosition(mapButton2Poz);
+        mapButton3.setPosition(mapButton3Poz);
+        mapButton4.setPosition(mapButton4Poz);
     }
 }

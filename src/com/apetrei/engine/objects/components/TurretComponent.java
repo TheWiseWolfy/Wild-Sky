@@ -4,12 +4,10 @@ import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
 import com.apetrei.misc.ConvexPolygon2D;
-import com.apetrei.misc.ShapeProvider;
+import com.apetrei.engine.physics.ShapeProvider;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class TurretComponent extends Component{
