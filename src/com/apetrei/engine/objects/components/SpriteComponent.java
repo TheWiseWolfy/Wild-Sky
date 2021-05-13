@@ -1,7 +1,7 @@
 package com.apetrei.engine.objects.components;
 
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
-import com.apetrei.engine.renderer.ResourceLoader;
+import com.apetrei.providers.ResourceLoader;
 
 import java.awt.image.BufferedImage;
 

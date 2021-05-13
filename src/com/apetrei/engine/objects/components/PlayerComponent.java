@@ -5,6 +5,7 @@ import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.objects.ObjectTag;
+import com.apetrei.engine.sound.SoundManager;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.observer.PlayerObserver;
@@ -59,6 +60,7 @@ public class PlayerComponent extends Component implements HealthInterface {
             notifyoObserver();
 
             if(ConfigHandler.isDebugMode() ) System.out.println("Engine level: "+ engineLevel );
+
         }
 
         if(gameContainer.getInput().isKey( KeyEvent.VK_S , InputType.DOWN)) {

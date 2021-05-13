@@ -6,10 +6,9 @@ import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.objects.ObjectManager;
 import com.apetrei.engine.physics.PhysicsSystem2D;
-import com.apetrei.engine.renderer.ResourceLoader;
+import com.apetrei.providers.ResourceLoader;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.engine.renderer.Window;
-import com.apetrei.engine.scenes.GameplayScene;
 import com.apetrei.engine.scenes.MainMenuScene;
 import com.apetrei.engine.scenes.Scene;
 
@@ -125,7 +124,7 @@ public class GameContainer implements Runnable {
                 sceneToBeUsed.init();
                 sceneStack.add( sceneToBeUsed);
                 sceneToBeUsed = null;
-            } else if( popScene){
+            } else if(popScene){
                 sceneStack.pop();
                 sceneStack.peek().init();
                 popScene =false;
@@ -145,6 +144,7 @@ public class GameContainer implements Runnable {
         if(sceneStack.size() > 1) {
             popScene = true;
         }
+
     }
 
     public void goTo(Scene newScene){

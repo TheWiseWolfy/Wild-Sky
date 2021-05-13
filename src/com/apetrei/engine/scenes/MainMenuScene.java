@@ -4,7 +4,8 @@ import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.renderer.CustomFonts;
-import com.apetrei.engine.renderer.ResourceLoader;
+import com.apetrei.engine.sound.SoundManager;
+import com.apetrei.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
 
@@ -29,8 +30,6 @@ public class MainMenuScene implements Scene {
     @Override
     public void init() {
         gameContainer.getMenuManager().clearUI();
-
-
         //START GAME BUTTON
 
         Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
@@ -59,7 +58,8 @@ public class MainMenuScene implements Scene {
         gameContainer.getMenuManager().addUIElement(button3);
         gameContainer.getMenuManager().addUIElement(button4);
 
-
+        //SOUND
+        SoundManager.getInstance().playSound("music2.wav");
     }
 
     @Override

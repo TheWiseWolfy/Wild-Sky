@@ -12,7 +12,9 @@ public class GlobalEventQueue {
     }
 
     public GlobalEvent checkCurrentEvent(){
-        return  eventQueue.peek();
+        if( eventQueue.peek() != null ) {
+            return eventQueue.peek();
+        }else return GlobalEvent.NULL;
     }
 
     public void nextEvent(){

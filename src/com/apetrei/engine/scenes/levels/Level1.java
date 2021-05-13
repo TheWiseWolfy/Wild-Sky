@@ -13,8 +13,6 @@ import com.apetrei.engine.scenes.GameplayScene;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -56,7 +54,16 @@ public class Level1 extends GameplayScene {
         }
 
         if( enemiesLeft == 0){
-            gameContainer.getHudManager().addDialogueLine( new DialogLine("You did it you wonker !",1f,1));
+            gameContainer.getGlobalEventQueue().declareEvent( GlobalEvent.LEVEL1_COMPLETED);
+
+            if( !hasHappened.contains( GlobalEvent.LEVEL1_COMPLETED) ){
+                hasHappened.add( GlobalEvent.LEVEL1_COMPLETED);
+                gameContainer.getHudManager().addDialogueLine( new DialogLine("You did it you wonker !",2f,1));
+            }
+
+            if( gameContainer.getHudManager().isDialogueFinished() ) {
+                gameContainer.goBack();
+            }
         }
     }
 

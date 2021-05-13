@@ -92,11 +92,9 @@ public class GameObject implements Serializable {
 
     //Fuctii de actualizare
     public  void update(double fT){
-
         for (Map.Entry<String, Component> componentEntry : components.entrySet()) {
             componentEntry.getValue().componentUpdate(fT);
         }
-
     }
     public  void render( ){
 

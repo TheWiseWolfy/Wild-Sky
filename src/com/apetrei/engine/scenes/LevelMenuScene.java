@@ -3,8 +3,9 @@ package com.apetrei.engine.scenes;
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.gui.UIElements.Button;
+import com.apetrei.engine.gui.UIElements.MapButton;
 import com.apetrei.engine.input.InputType;
-import com.apetrei.engine.renderer.ResourceLoader;
+import com.apetrei.providers.ResourceLoader;
 import com.apetrei.engine.scenes.levels.Level1;
 import com.apetrei.engine.scenes.levels.Level2;
 import com.apetrei.engine.scenes.levels.Level3;
@@ -18,6 +19,7 @@ import java.awt.image.BufferedImage;
 public class LevelMenuScene implements Scene {
     GameContainer gameContainer;
 
+    //Interface
     Vector2 currentMousePoz = new Vector2(0,0);
     Vector2 origin = new Vector2(0,0);
     Vector2 moved = new Vector2(0,0);
@@ -33,6 +35,10 @@ public class LevelMenuScene implements Scene {
     Button mapButton2;
     Button mapButton3;
     Button mapButton4;
+
+    //Level logic
+    int currentLevel = 1;
+
 
     public LevelMenuScene( GameContainer gameContainer){
 
@@ -50,16 +56,19 @@ public class LevelMenuScene implements Scene {
 
        //Buttons on map
 
-        mapButton1 = Button.makeButton("Level 1", mapPosition, 0.3f, () -> {
+        mapButton1 = MapButton.makeMapButton("Level 1", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level1(gameContainer));
         });
-        mapButton2 = Button.makeButton("Level 2", mapPosition, 0.3f, () -> {
+
+        mapButton2 = MapButton.makeMapButton("Level 2", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level2(gameContainer));
         });
-        mapButton3 = Button.makeButton("Level 3", mapPosition, 0.3f, () -> {
+
+        mapButton3 = MapButton.makeMapButton("Level 3", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level3(gameContainer));
         });
-        mapButton4 = Button.makeButton("Level 4", mapPosition, 0.3f, () -> {
+
+        mapButton4 = MapButton.makeMapButton("Level 4", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level4(gameContainer));
         });
 
@@ -73,17 +82,69 @@ public class LevelMenuScene implements Scene {
         Button buttonBack = Button.makeButton("Back", buttonBackPoz, 0.3f, gameContainer::goBack);
 
         gameContainer.getMenuManager().addUIElement(buttonBack);
-
     }
 
     @Override
     public void update(float frameTime) {
 
         //SLIDING MAP
-        updateMovingButtons();
-
+        updateSlidingMap();
         gameContainer.getMenuManager().update();
 
+        //Level progression logic
+
+        switch ( gameContainer.getGlobalEventQueue().checkCurrentEvent() ) {
+            case LEVEL1_COMPLETED -> {
+                currentLevel = 2;
+            }
+            case LEVEL2_COMPLETED -> {
+                currentLevel = 3;
+            }
+            case LEVEL3_COMPLETED -> {
+                currentLevel = 4;
+            }
+            default -> {}
+        }
+
+        //Level unlock
+        switch (currentLevel) {
+            case 1 ->{
+                mapButton2.setActive(false);
+                mapButton3.setActive(false);
+                mapButton4.setActive(false);
+            }
+            case 2 ->{
+                mapButton2.setActive(true);
+                mapButton3.setActive(false);
+                mapButton4.setActive(false);
+            }
+            case 3 ->{
+                mapButton2.setActive(true);
+                mapButton3.setActive(true);
+                mapButton4.setActive(false);
+            }
+            case 4 ->{
+                mapButton2.setActive(true);
+                mapButton3.setActive(true);
+                mapButton4.setActive(true);
+            }
+        }
+
+        //COMMANDS
+        if (gameContainer.getInput().isKey(KeyEvent.VK_ESCAPE, InputType.DOWN)) {
+            gameContainer.goBack();
+        }
+    }
+
+    @Override
+    public void render() {
+        gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle( new Vector2( 0,0), new Vector2( ConfigHandler.getWidth() + 400, ConfigHandler.getHeight()+ 200), new Color(182,90,73));
+        gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(mapPosition, 1.1f, background);
+        gameContainer.getMenuManager().draw();
+    }
+
+    public void updateSlidingMap(){
+        //Sliding map
         currentMousePoz = new Vector2(gameContainer.getInput().getMouseX(), gameContainer.getInput().getMouseY() );
 
         if( gameContainer.getInput().isMouseKey( 1, InputType.MOUSE_DOWN)){
@@ -110,27 +171,18 @@ public class LevelMenuScene implements Scene {
             mapPosition.y= ConfigHandler.getHeight()  - borderY;
         }
 
-        //COMMANDS
-        if (gameContainer.getInput().isKey(KeyEvent.VK_ESCAPE, InputType.DOWN)) {
-            gameContainer.goBack();
-        }
-    }
-
-    @Override
-    public void render() {
-        gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle( new Vector2( 0,0), new Vector2( ConfigHandler.getWidth() + 400, ConfigHandler.getHeight()+ 200), new Color(182,90,73));
-        gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(mapPosition, 1.1f, background);
-        gameContainer.getMenuManager().draw();
+        //We also move the buttons
+        updateMovingButtons();
     }
 
     public void updateMovingButtons(){
 
         relativeCoordonateSytem = new Vector2(mapPosition).sub( new Vector2( background.getWidth()/2, background.getHeight()/2 ));
 
-        Vector2 mapButton1Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1400,100));
-        Vector2 mapButton2Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1400,300));
-        Vector2 mapButton3Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1400,500));
-        Vector2 mapButton4Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1400,700));
+        Vector2 mapButton1Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1430,400));
+        Vector2 mapButton2Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1330,140));
+        Vector2 mapButton3Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1070,60));
+        Vector2 mapButton4Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(850,100));
 
         mapButton1.setPosition(mapButton1Poz);
         mapButton2.setPosition(mapButton2Poz);

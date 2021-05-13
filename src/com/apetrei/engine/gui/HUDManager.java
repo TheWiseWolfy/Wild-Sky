@@ -2,12 +2,11 @@ package com.apetrei.engine.gui;
 
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.input.playerInputEvent;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.engine.objects.components.GameObjectiveComponent;
 import com.apetrei.engine.objects.components.PlayerComponent;
-import com.apetrei.engine.renderer.ResourceLoader;
+import com.apetrei.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.observer.ObjectManagerObserver;
 import com.apetrei.misc.observer.ObjectiveObserver;
@@ -29,7 +28,6 @@ public class HUDManager implements PlayerObserver, ObjectiveObserver, ObjectMana
 
     private int objectiveHealth = -1;
     private int maxObjectiveHealth = 10000;
-
 
     private float timePassed = 0;
     private float lasDialogueTime =0;
@@ -109,7 +107,6 @@ public class HUDManager implements PlayerObserver, ObjectiveObserver, ObjectMana
         }
     }
 
-
     private void displayDialogueBox(String dialogLine, int character ){
 
         //DIALOGUE BOX
@@ -133,6 +130,12 @@ public class HUDManager implements PlayerObserver, ObjectiveObserver, ObjectMana
                 dialogueCorner.add (new Vector2(10,2)), new Vector2( dialogueCorner).add(dialogueSize),
                 "Serif" ,22, Color.BLACK );
     }
+    public boolean isDialogueFinished(){
+        if( dialogueQueue.isEmpty()) {
+            return true;
+        }else return false;
+    }
+
 
     //_________________________________OBESERVER_____________________________________
 

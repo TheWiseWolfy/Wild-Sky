@@ -4,7 +4,8 @@ import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.input.InputType;
-import com.apetrei.engine.renderer.ResourceLoader;
+import com.apetrei.engine.sound.SoundManager;
+import com.apetrei.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
 
@@ -34,6 +35,7 @@ public abstract class GameplayScene implements Scene {
         gameContainer.getPhysicsSystem().resetPhysicsSystem();
         gameContainer.getObjectManager().resetObjectManager();
 
+        SoundManager.getInstance().stopAllSound();
         initializePauseMenu(gameContainer);
     }
 

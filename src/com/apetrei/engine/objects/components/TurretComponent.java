@@ -3,6 +3,7 @@ package com.apetrei.engine.objects.components;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
+import com.apetrei.engine.sound.SoundManager;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.engine.physics.ShapeProvider;
 import com.apetrei.misc.Vector2;
@@ -40,8 +41,10 @@ public class TurretComponent extends Component{
 
     public void fireProjectile( Vector2 target){
 
+
         if(lastFiredTime + colddown  < timePassed  ) {
             lastFiredTime = timePassed;
+            SoundManager.getInstance().playSound("gun.wav");
 
             //Calculam traiectoria pentru proiectil
             Vector2 trajectory = new Vector2(rigidbody.getPosition()).sub(target).normalized();
