@@ -53,7 +53,7 @@ public class PlayerComponent extends Component implements HealthInterface {
         GameContainer gameContainer =   this.getParent().getGameContainer();
 
         //Deplasare fata spate
-        Vector2 forceToBeAplied = new Vector2( );
+        Vector2 forceToBeAplied = new Vector2();
 
         if(gameContainer.getInput().isKey( KeyEvent.VK_W , InputType.DOWN)) {
             engineLevel = engineLevel < 3 ? ++engineLevel : engineLevel;

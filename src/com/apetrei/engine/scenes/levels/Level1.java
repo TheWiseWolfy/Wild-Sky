@@ -10,6 +10,7 @@ import com.apetrei.engine.objects.components.*;
 import com.apetrei.engine.physics.ShapeProvider;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
 import com.apetrei.engine.scenes.GameplayScene;
+import com.apetrei.engine.sound.SoundManager;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
 
@@ -32,6 +33,7 @@ public class Level1 extends GameplayScene {
         gameContainer.getHudManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
 
         initializeGame(gameContainer);
+        SoundManager.getInstance().playSound("music3.wav");
     }
 
     @Override

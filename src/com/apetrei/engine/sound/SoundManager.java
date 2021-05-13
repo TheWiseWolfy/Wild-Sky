@@ -1,10 +1,9 @@
 package com.apetrei.engine.sound;
 
+import com.apetrei.engine.ConfigHandler;
 import com.apetrei.providers.ResourceLoader;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
+
+import javax.sound.sampled.*;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
@@ -28,6 +27,12 @@ public class SoundManager {
                 Clip clip = AudioSystem.getClip();
                 AudioInputStream sound = ResourceLoader.getInstance().getSound(soundName);
                 clip.open(sound);
+
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                float range = gainControl.getMaximum() - gainControl.getMinimum();
+                float gain = (range * ConfigHandler.Volume) + gainControl.getMinimum();
+                gainControl.setValue(gain);
+
                 clip.setFramePosition(0);
                 clip.start();
                 activeClips.put(soundName, clip);

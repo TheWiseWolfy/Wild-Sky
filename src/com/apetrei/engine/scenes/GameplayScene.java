@@ -37,6 +37,8 @@ public abstract class GameplayScene implements Scene {
 
         SoundManager.getInstance().stopAllSound();
         initializePauseMenu(gameContainer);
+
+
     }
 
     @Override

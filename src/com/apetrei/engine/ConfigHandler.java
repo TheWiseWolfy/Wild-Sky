@@ -6,6 +6,7 @@ public class ConfigHandler {
 
     //Propietatile jocului
     private static final double UPDATE_CAP= 1/60.0f;
+    public static float Volume = 0.5f;
     private static int width = 1280;
     private static int height =720;
 

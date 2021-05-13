@@ -6,12 +6,14 @@ import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.objects.ObjectManager;
 import com.apetrei.engine.physics.PhysicsSystem2D;
+import com.apetrei.providers.DatabaseManager;
 import com.apetrei.providers.ResourceLoader;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.engine.renderer.Window;
 import com.apetrei.engine.scenes.MainMenuScene;
 import com.apetrei.engine.scenes.Scene;
 
+import java.sql.SQLException;
 import java.util.Stack;
 
 public class GameContainer implements Runnable {
@@ -53,6 +55,8 @@ public class GameContainer implements Runnable {
         objectManager = new ObjectManager(this);
         objectManager.attachObserver(hudManager);
         objectManager.attachObserver( physicsSystem);
+
+        DatabaseManager.connect();
 
         //Game Initialization
         MainMenuScene mainMenuScene = new MainMenuScene(this);
