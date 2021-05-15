@@ -19,8 +19,8 @@ public class Level4 extends GameplayScene {
     public void init() {
         super.init();
 
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Unga bunga shunga lunga", 2f,1));
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Unga bunga shunga lunga", 2f,1));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
 
         initializeGame(gameContainer);
     }
@@ -43,13 +43,13 @@ public class Level4 extends GameplayScene {
         if( enemiesLeft == 0){
             gameContainer.getGlobalEventQueue().declareEvent( GlobalEvent.LEVEL4_COMPLETED);
             if( !hasHappened.contains( GlobalEvent.LEVEL4_COMPLETED) ) {
-                gameContainer.getHudManager().addDialogueLine(new DialogLine("You did it you wonker !", 2f, 1));
+                gameContainer.getHudManager().getDialogManager().addDialogueLine(new DialogLine("You did it you wonker !", 2f, 1));
             }
             hasHappened.add( GlobalEvent.LEVEL4_COMPLETED);
         }
 
         //END LEVEL CONDITION
-        if( gameContainer.getHudManager().isDialogueFinished()  && hasHappened.contains(GlobalEvent.LEVEL4_COMPLETED)) {
+        if( gameContainer.getHudManager().getDialogManager().isDialogueFinished()  && hasHappened.contains(GlobalEvent.LEVEL4_COMPLETED)) {
             gameContainer.goBack();
         }
 

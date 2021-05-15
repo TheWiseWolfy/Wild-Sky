@@ -25,9 +25,9 @@ public class Level1 extends GameplayScene {
     public void init() {
         super.init();
 
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Defend the city at all cost.", 2f,1));
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Fight me pretisor", 1.5f,0));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Defend the city at all cost.", 2f,1));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Fight me pretisor", 1.5f,0));
 
         initializeGame(gameContainer);
         SoundManager.getInstance().playSound("music3.wav");
@@ -45,7 +45,7 @@ public class Level1 extends GameplayScene {
         }
 
         if( gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.OBJECTIVE_DAMAGED && !hasHappened.contains(GlobalEvent.OBJECTIVE_DAMAGED )){
-            gameContainer.getHudManager().addDialogueLine( new DialogLine("The city is being attacked !",1f,1));
+            gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("The city is being attacked !",1f,1));
             hasHappened.add(GlobalEvent.OBJECTIVE_DAMAGED);
         }
 
@@ -53,7 +53,7 @@ public class Level1 extends GameplayScene {
             enemiesLeft--;
         }
         //END LEVEL CONDITION
-        if( gameContainer.getHudManager().isDialogueFinished()  && hasHappened.contains(GlobalEvent.LEVEL1_COMPLETED)) {
+        if( gameContainer.getHudManager().getDialogManager().isDialogueFinished()  && hasHappened.contains(GlobalEvent.LEVEL1_COMPLETED)) {
             gameContainer.goBack();
         }
 
@@ -61,7 +61,7 @@ public class Level1 extends GameplayScene {
         if( enemiesLeft == 0){
             gameContainer.getGlobalEventQueue().declareEvent( GlobalEvent.LEVEL1_COMPLETED);
             if( !hasHappened.contains( GlobalEvent.LEVEL1_COMPLETED) ){
-                gameContainer.getHudManager().addDialogueLine( new DialogLine("You did it you wonker !",2f,1));
+                gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("You did it you wonker !",2f,1));
             }
             hasHappened.add( GlobalEvent.LEVEL1_COMPLETED);
         }

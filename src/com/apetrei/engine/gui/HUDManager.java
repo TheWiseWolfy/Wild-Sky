@@ -23,23 +23,15 @@ public class HUDManager implements ObjectManagerObserver {
     //Variables
     private int engineLevel = 0;
     private int playerHealt = 0;
-
     private int objectiveHealth = -1;
     private int maxObjectiveHealth = 0;
 
-    private float timePassed = 0;
-    private float lasDialogueTime =0;
-
-    private String currentDialogLine ="";
-    int character;
-
-    private Queue<DialogLine> dialogueQueue = new LinkedList<>();
+    DialogManager dialogManager;
 
     PlayerComponent playerComponent;
     HealthInterface objectiveHealtInterface;
     //Sprites
     ArrayList<BufferedImage> gauge = new ArrayList<BufferedImage>();
-    ArrayList<BufferedImage> portraits = new ArrayList<BufferedImage>();
 
     public HUDManager(GameContainer gameContainer){
         this.gameContainer = gameContainer;
@@ -50,13 +42,12 @@ public class HUDManager implements ObjectManagerObserver {
             gauge.add(  ResourceLoader.getInstance().getSprite("speed_gauge_3.png")  );
             gauge.add(  ResourceLoader.getInstance().getSprite("speed_gauge_4.png")  );
 
-            portraits.add(  ResourceLoader.getInstance().getSprite("Iulius.png")  );
-            portraits.add(  ResourceLoader.getInstance().getSprite("Radulus.png")  );
-            portraits.add(  ResourceLoader.getInstance().getSprite("Reiner.png")  );
+
         }
         catch (Exception e){
             e.printStackTrace();
         }
+        dialogManager = new DialogManager(gameContainer);
     }
 
     public void updateHUD(float fT) {
@@ -69,9 +60,7 @@ public class HUDManager implements ObjectManagerObserver {
             maxObjectiveHealth = objectiveHealtInterface.getMaxHealth();
             objectiveHealth = objectiveHealtInterface.getHealth();
         }
-
-        timePassed += fT;
-        playDialogue();
+        dialogManager.update(fT);
     }
 
     public void renderHUD(){
@@ -92,60 +81,10 @@ public class HUDManager implements ObjectManagerObserver {
         }
 
         //DIALOGUE
-        if(!currentDialogLine.isEmpty()) {
-            displayDialogueBox(currentDialogLine, character);
+        if(!dialogManager.isDialogueFinished()) {
+            dialogManager.displayDialogueBox();
         }
     }
-
-    //______________________________DISPLAY DIALOGUE___________________________
-
-    public void addDialogueLine(DialogLine dialogLine){
-        dialogueQueue.add(dialogLine);
-        lasDialogueTime = timePassed;
-    }
-
-    private void playDialogue(){
-        if( !dialogueQueue.isEmpty()) {
-            currentDialogLine = dialogueQueue.peek().dialogLine;
-            character = dialogueQueue.peek().character;
-            if(lasDialogueTime + dialogueQueue.peek().duration < timePassed  ) {
-                lasDialogueTime = timePassed;
-                dialogueQueue.poll();
-            }
-        }else {
-            currentDialogLine = "";
-        }
-    }
-
-    private void displayDialogueBox(String dialogLine, int character ){
-
-        //DIALOGUE BOX
-        float portraitScale = 0.12f;
-
-        //Poz of portrait
-        Vector2 portraitPoz = new Vector2(ConfigHandler.getWidth() * 0.55f  ,ConfigHandler.getHeight() *  0.13f );
-
-        //Coltul drept sus al potretului
-        Vector2 cornerOfPortrair = new Vector2( (float)portraits.get( character).getWidth()/2 * portraitScale,
-                                                (float) -portraits.get(character).getHeight()/2 *portraitScale);
-
-        //Poz of dialogue box
-        Vector2 dialogueCorner =new Vector2( portraitPoz).add( cornerOfPortrair );
-        //Size of dialogue box
-        Vector2 dialogueSize = new Vector2( 450f,portraits.get( character ).getHeight() *portraitScale);
-
-        gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle(dialogueCorner,new Vector2( dialogueCorner).add(dialogueSize), new Color(238,183,107));
-        gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(portraitPoz, portraitScale, portraits.get(character));
-        gameContainer.getRenderer().getTextRenderer().drawTextInABox( dialogLine,
-                dialogueCorner.add (new Vector2(10,2)), new Vector2( dialogueCorner).add(dialogueSize),
-                "Serif" ,22, Color.BLACK );
-    }
-    public boolean isDialogueFinished(){
-        if( dialogueQueue.isEmpty()) {
-            return true;
-        }else return false;
-    }
-
 
     //_________________________________OBESERVER_____________________________________
 
@@ -174,6 +113,10 @@ public class HUDManager implements ObjectManagerObserver {
     @Override
     public void objectDeletedUpdate(GameObject gameObject) {
 
+    }
+
+    public DialogManager getDialogManager() {
+        return dialogManager;
     }
 
 }

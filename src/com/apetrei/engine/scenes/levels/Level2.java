@@ -22,8 +22,8 @@ public class Level2 extends GameplayScene {
     public void init() {
         super.init();
 
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Unga bunga shunga lunga", 2f,1));
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Unga bunga shunga lunga", 2f,1));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
 
         initializeGame(gameContainer);
 
@@ -40,7 +40,7 @@ public class Level2 extends GameplayScene {
             gameContainer.goBack();
         }
 
-        if( gameContainer.getHudManager().isDialogueFinished() && hasHappened.contains(GlobalEvent.LEVEL2_COMPLETED)) {
+        if( gameContainer.getHudManager().getDialogManager().isDialogueFinished() && hasHappened.contains(GlobalEvent.LEVEL2_COMPLETED)) {
             gameContainer.goBack();
         }
     }
@@ -80,7 +80,7 @@ public class Level2 extends GameplayScene {
 
                         if( !hasHappened.contains( GlobalEvent.LEVEL2_COMPLETED) ){
                             hasHappened.add( GlobalEvent.LEVEL2_COMPLETED);
-                            gameContainer.getHudManager().addDialogueLine( new DialogLine("You did it you wonker !",2f,1));
+                            gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("You did it you wonker !",2f,1));
                         }
                     }
 

@@ -25,8 +25,8 @@ public class Level3 extends GameplayScene {
     public void init() {
         super.init();
 
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Unga bunga shunga lunga", 2f,1));
-        gameContainer.getHudManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Unga bunga shunga lunga", 2f,1));
+        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
 
         initializeGame(gameContainer);
 
@@ -47,7 +47,7 @@ public class Level3 extends GameplayScene {
             hasHappened.add( GlobalEvent.LEVEL3_COMPLETED);
         }
 
-        if( gameContainer.getHudManager().isDialogueFinished() && hasHappened.contains(GlobalEvent.LEVEL3_COMPLETED)) {
+        if( gameContainer.getHudManager().getDialogManager().isDialogueFinished() && hasHappened.contains(GlobalEvent.LEVEL3_COMPLETED)) {
             gameContainer.goBack();
         }
     }
