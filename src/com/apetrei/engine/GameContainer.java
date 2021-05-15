@@ -6,6 +6,7 @@ import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.objects.ObjectManager;
 import com.apetrei.engine.physics.PhysicsSystem2D;
+import com.apetrei.misc.exceptions.ValueNotFoundException;
 import com.apetrei.providers.DatabaseManager;
 import com.apetrei.providers.ResourceLoader;
 import com.apetrei.engine.renderer.Renderer;
@@ -40,6 +41,7 @@ public class GameContainer implements Runnable {
     private boolean running = false;
 
     public GameContainer() {
+        DatabaseManager.getInstance().actualizeazaConfig();
 
         //Engine Initialization
         //This might actually be really stupid. TODO: Move all use of "this" after the contructor has finished.
@@ -55,8 +57,7 @@ public class GameContainer implements Runnable {
         objectManager = new ObjectManager(this);
         objectManager.attachObserver(hudManager);
         objectManager.attachObserver( physicsSystem);
-
-        DatabaseManager.connect();
+        objectManager.attachObserver( physicsSystem.getWindEffect() );
 
         //Game Initialization
         MainMenuScene mainMenuScene = new MainMenuScene(this);
@@ -134,6 +135,7 @@ public class GameContainer implements Runnable {
                 popScene =false;
             }
         }//END WHILE
+        DatabaseManager.getInstance().actualizeazaBazaDate();
         window.close();
     }
 

@@ -69,7 +69,7 @@ public class TurretComponent extends Component{
             projectile.addComponent(rigid);
 
             //COLLIDER
-            ConvexPolygon2D polygon = new ConvexPolygon2D(ShapeProvider.getProjectileColider());
+            ConvexPolygon2D polygon = new ConvexPolygon2D(ShapeProvider.getProjectileCollider());
             Collider2D projectileCollider = new ConvexCollider(true, polygon, (Collider2D collider) -> {
                 if ( hitCondition(collider) ) {
                     if (collider.parent.hasComponent(HealthInterface.class)) {

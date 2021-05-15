@@ -45,7 +45,7 @@ public class SpriteComponent  extends Component {
 
     @Override
     public void componentRender( ) {
-        this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
+        this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawRotatedSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
     }
 
     //____________________________SETTERS_______________

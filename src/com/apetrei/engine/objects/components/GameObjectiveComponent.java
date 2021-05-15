@@ -10,10 +10,16 @@ import java.util.List;
 
 public class GameObjectiveComponent extends Component implements  HealthInterface{
 
-    int maxObjectiveHealth = 10000;
-    int objectiveHealth = maxObjectiveHealth;
+    int maxObjectiveHealth;
+    int objectiveHealth;
 
     private List<ObjectiveObserver> observers = new ArrayList<ObjectiveObserver>();
+
+    public GameObjectiveComponent(int healt){
+        this.maxObjectiveHealth = healt;
+        objectiveHealth = maxObjectiveHealth;
+    }
+
 
     @Override
     public void componentInit() {
@@ -29,7 +35,6 @@ public class GameObjectiveComponent extends Component implements  HealthInterfac
             parent.getGameContainer().getGlobalEventQueue().declareEvent(GlobalEvent.OBJECTIVE_DESTROYED);
         }
     }
-
     @Override
     public void componentRender() {
     }
@@ -60,7 +65,7 @@ public class GameObjectiveComponent extends Component implements  HealthInterfac
         observers.add(newObs);
     }
 
-    final public void dettach( PlayerObserver newObs){
+    final public void dettach( ObjectiveObserver newObs){
         observers.remove(newObs);
     }
 
@@ -69,6 +74,5 @@ public class GameObjectiveComponent extends Component implements  HealthInterfac
             obs.objectiveUpdate( objectiveHealth );
         }
     }
-
 
 }

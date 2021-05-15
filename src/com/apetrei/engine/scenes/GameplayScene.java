@@ -2,6 +2,7 @@ package com.apetrei.engine.scenes;
 
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.sound.SoundManager;
@@ -11,9 +12,12 @@ import com.apetrei.misc.exceptions.ResourceNotFoundException;
 
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 public abstract class GameplayScene implements Scene {
+    protected Set<GlobalEvent> hasHappened= new TreeSet<GlobalEvent>();
     protected GameContainer gameContainer;
 
     boolean paused = false;

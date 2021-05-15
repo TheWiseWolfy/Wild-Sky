@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Level1 extends GameplayScene {
-    private Set<GlobalEvent> hasHappened= new TreeSet<GlobalEvent>();
     private int enemiesLeft = 0;
 
     public Level1(GameContainer gameContainer) {
@@ -31,9 +30,12 @@ public class Level1 extends GameplayScene {
 
         gameContainer.getHudManager().addDialogueLine( new DialogLine("Defend the city at all cost.", 2f,1));
         gameContainer.getHudManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
+        gameContainer.getHudManager().addDialogueLine( new DialogLine("Fight me pretisor", 1.5f,0));
 
         initializeGame(gameContainer);
         SoundManager.getInstance().playSound("music3.wav");
+
+        gameContainer.getRenderer().getCamera().setBounds(800,800,800,800);
     }
 
     @Override
@@ -51,21 +53,20 @@ public class Level1 extends GameplayScene {
         }
 
         if( gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.ENEMY_DESTROYED ){
-            hasHappened.add(GlobalEvent.ENEMY_DESTROYED);
             enemiesLeft--;
         }
+        //END LEVEL CONDITION
+        if( gameContainer.getHudManager().isDialogueFinished()  && hasHappened.contains(GlobalEvent.LEVEL1_COMPLETED)) {
+            gameContainer.goBack();
+        }
 
+        //WIN CONDITION
         if( enemiesLeft == 0){
             gameContainer.getGlobalEventQueue().declareEvent( GlobalEvent.LEVEL1_COMPLETED);
-
             if( !hasHappened.contains( GlobalEvent.LEVEL1_COMPLETED) ){
-                hasHappened.add( GlobalEvent.LEVEL1_COMPLETED);
                 gameContainer.getHudManager().addDialogueLine( new DialogLine("You did it you wonker !",2f,1));
             }
-
-            if( gameContainer.getHudManager().isDialogueFinished() ) {
-                gameContainer.goBack();
-            }
+            hasHappened.add( GlobalEvent.LEVEL1_COMPLETED);
         }
     }
 
@@ -81,23 +82,25 @@ public class Level1 extends GameplayScene {
         ObjectBuilder ob = new ObjectBuilder( gameContainer);
         //BACKGROUND
         ob.setPlateToBuildAt( new Vector2(200, -350) );
-        gameContainer.getObjectManager().addGameObject( ob.BackgroundBuilder("Level1_background.png", 0.7f) );
+        gameContainer.getObjectManager().addGameObject( ob.BackgroundBuilder("Level1_background.png", 0.7f,0.2f) );
+        ob.setPlateToBuildAt( new Vector2(200, -350) );
+        gameContainer.getObjectManager().addGameObject( ob.BackgroundBuilder("clouds.png", 1f, 0.4f) );
 
         //DOCK
         GameObject dock = new GameObject(gameContainer);
         dock.addComponent(new Rigidbody2D(new Vector2(400, -600), 0));
         dock.addTag(ObjectTag.ally);
-        Collider2D colider4 = new ConvexCollider(false, ShapeProvider.getDockColider());
+        Collider2D colider4 = new ConvexCollider(false, ShapeProvider.getDockCollider());
         dock.addComponent(colider4);
         BackgroundSprite sprite = new BackgroundSprite("Port.png");
         sprite.setSpriteScale(0.7f);
         dock.addComponent(sprite);
-        dock.addComponent( new GameObjectiveComponent());
+        dock.addComponent( new GameObjectiveComponent(5000));
         gameContainer.getObjectManager().addGameObject(dock);
 
 
         //PLAYER
-        ConvexPolygon2D wa = new ConvexPolygon2D(ShapeProvider.getZepelinColider());
+        ConvexPolygon2D wa = new ConvexPolygon2D(ShapeProvider.getZepelinCollider());
         gameContainer.getObjectManager().addGameObject( ob.PlayerBuilder() );
 
         /////////ENEMY

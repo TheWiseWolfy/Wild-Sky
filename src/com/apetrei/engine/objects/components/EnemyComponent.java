@@ -34,7 +34,6 @@ public class EnemyComponent extends Component implements HealthInterface{
             e.printStackTrace();
         }
 
-        parent.addTag(ObjectTag.hasHealth);
         parent.addTag(ObjectTag.enemy);
         ai = new enemyAI(this, this.getParent().getGameContainer() );
         ai.setObjective( objective);

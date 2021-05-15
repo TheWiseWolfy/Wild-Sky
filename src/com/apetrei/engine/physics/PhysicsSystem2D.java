@@ -23,13 +23,13 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
     private int impulseIterations = 5;
 
     private List<Collider2D> colliders;
-
     private List<Rigidbody2D> bodies1;
     private List<Rigidbody2D> bodies2;
-
     private List<CollisionManifold> collisions;
 
     Set<Pair<Integer, Integer>> activeCollisions = new HashSet<>();
+
+    WindEffect windEffect = new WindEffect();
 
     public PhysicsSystem2D() {
         colliders = new ArrayList<>();
@@ -39,6 +39,11 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
     }
 
     public void updatePhysics(float fixedUpdate) {
+        windEffect.update();
+        updateColisions();
+    }
+
+    private void updateColisions( ){
         bodies1.clear();
         bodies2.clear();
         collisions.clear();
@@ -138,13 +143,11 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
         b.addForce(impulse.mul(-1.0f));
     }
 
-    //TODO Make this automatic after a set criteria
-    //O fuctie prin care adaugem obiecte in sistemul de fizica
-    public void addCollider(Collider2D collider) {
+    private void addCollider(Collider2D collider) {
         this.colliders.add(collider);
     }
 
-    public void removeCollider(Collider2D collider) {
+    private void removeCollider(Collider2D collider) {
         this.colliders.remove(collider);
     }
 
@@ -152,17 +155,25 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
         this.colliders.clear();
     }
 
+    //_______________________________________GETTERS_______________________
+
+    public WindEffect getWindEffect() {
+        return windEffect;
+    }
+
+    //____________________________________OBJECT_OBSERVER_______________________
+
     @Override
     public void newObjectUpdate(GameObject created) {
 
-         if( created.hasComponent(Collider2D.class)){
-             try {
-                 addCollider( (Collider2D) created.getComponent( Collider2D.class));
-             } catch (ComponentMissingException e) {
-                 System.err.println( "One with object with collisions has not been added to the Physics sistem.");
-                 e.printStackTrace();
-             }
-         }
+        if( created.hasComponent(Collider2D.class)){
+            try {
+                addCollider( (Collider2D) created.getComponent( Collider2D.class));
+            } catch (ComponentMissingException e) {
+                System.err.println( "One with object with collisions has not been added to the Physics sistem.");
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -176,8 +187,6 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
             }
         }
     }
-
-
 }
 
 

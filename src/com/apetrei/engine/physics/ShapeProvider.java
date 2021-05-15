@@ -7,7 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShapeProvider {
-    public static  ConvexPolygon2D  getProjectileColider(){
+    public static  ConvexPolygon2D  getFinishLineCollider(){
+
+        List<Vector2> shape = new ArrayList<Vector2>();
+
+        shape.add(new Vector2(-200, 1300));
+        shape.add(new Vector2(200, 1300));
+        shape.add(new Vector2(200, -1300));
+        shape.add(new Vector2(-200, -1300));
+
+        return new ConvexPolygon2D(shape);
+    }
+
+    public static  ConvexPolygon2D getProjectileCollider(){
 
         List<Vector2> shape = new ArrayList<Vector2>();
 
@@ -19,7 +31,7 @@ public class ShapeProvider {
         return new ConvexPolygon2D(shape);
     }
 
-    public static ConvexPolygon2D getZepelinColider(){
+    public static ConvexPolygon2D getZepelinCollider(){
 
         List<Vector2>  shape = new ArrayList<Vector2>();
 
@@ -34,7 +46,7 @@ public class ShapeProvider {
         return new ConvexPolygon2D(shape);
     }
 
-    public static ConvexPolygon2D getDockColider(){
+    public static ConvexPolygon2D getDockCollider(){
         List<Vector2>  shape = new ArrayList<Vector2>();
 
         shape.add(new Vector2(-520, 150));

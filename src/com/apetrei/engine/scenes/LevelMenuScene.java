@@ -2,6 +2,7 @@ package com.apetrei.engine.scenes;
 
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.gui.UIElements.MapButton;
 import com.apetrei.engine.input.InputType;
@@ -36,10 +37,6 @@ public class LevelMenuScene implements Scene {
     Button mapButton3;
     Button mapButton4;
 
-    //Level logic
-    int currentLevel = 1;
-
-
     public LevelMenuScene( GameContainer gameContainer){
 
         try {
@@ -54,8 +51,18 @@ public class LevelMenuScene implements Scene {
     public void init() {
         gameContainer.getMenuManager().clearUI();
 
-       //Buttons on map
+        //Level logic
+        if (  gameContainer.getGlobalEventQueue().didItHappen(GlobalEvent.LEVEL1_COMPLETED)) {
+            ConfigHandler.setCurrentLevel( Math.max(2,   ConfigHandler.getCurrentLevel() ) );
+        }
+        if (  gameContainer.getGlobalEventQueue().didItHappen(GlobalEvent.LEVEL2_COMPLETED)) {
+            ConfigHandler.setCurrentLevel( Math.max(3,   ConfigHandler.getCurrentLevel() ) );
+        }
+        if (  gameContainer.getGlobalEventQueue().didItHappen(GlobalEvent.LEVEL3_COMPLETED)) {
+            ConfigHandler.setCurrentLevel( Math.max(4,   ConfigHandler.getCurrentLevel() ) );
+        }
 
+        //BUTTONS
         mapButton1 = MapButton.makeMapButton("Level 1", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level1(gameContainer));
         });
@@ -72,15 +79,14 @@ public class LevelMenuScene implements Scene {
             gameContainer.goTo(new Level4(gameContainer));
         });
 
+        //STATIC BUTTONS
         gameContainer.getMenuManager().addUIElement(mapButton1);
         gameContainer.getMenuManager().addUIElement(mapButton2);
         gameContainer.getMenuManager().addUIElement(mapButton3);
         gameContainer.getMenuManager().addUIElement(mapButton4);
 
-        //Buttons
         Vector2 buttonBackPoz = new Vector2(ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.9f  );
         Button buttonBack = Button.makeButton("Back", buttonBackPoz, 0.3f, gameContainer::goBack);
-
         gameContainer.getMenuManager().addUIElement(buttonBack);
     }
 
@@ -91,23 +97,8 @@ public class LevelMenuScene implements Scene {
         updateSlidingMap();
         gameContainer.getMenuManager().update();
 
-        //Level progression logic
-
-        switch ( gameContainer.getGlobalEventQueue().checkCurrentEvent() ) {
-            case LEVEL1_COMPLETED -> {
-                currentLevel = 2;
-            }
-            case LEVEL2_COMPLETED -> {
-                currentLevel = 3;
-            }
-            case LEVEL3_COMPLETED -> {
-                currentLevel = 4;
-            }
-            default -> {}
-        }
-
         //Level unlock
-        switch (currentLevel) {
+        switch (ConfigHandler.getCurrentLevel()) {
             case 1 ->{
                 mapButton2.setActive(false);
                 mapButton3.setActive(false);

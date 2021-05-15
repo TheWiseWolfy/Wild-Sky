@@ -1,5 +1,5 @@
 package com.apetrei.engine.objects;
 
 public enum ObjectTag {
-    player, hasHealth, staticObject,enemy, ally,objective
+    player, staticObject,enemy, ally,objective
 }

@@ -17,13 +17,13 @@ import java.util.List;
 /*!
  * Componenta care pune jucatorul in controlui unei nave din joc, si actualizeaza pozitia camerei.
  */
-public class PlayerComponent extends Component implements HealthInterface {
+public class PlayerComponent extends Component implements HealthInterface, WindInterface {
 
     private Rigidbody2D rigidbody;
     private TurretComponent turretComponent;
-    private  Vector2 fireTarget = new Vector2();
-
+    private AnimatedSpriteComponent animatedSprite;
     private List<PlayerObserver> observers = new ArrayList<PlayerObserver>();
+    private  Vector2 fireTarget = new Vector2();
 
     public PlayerComponent(){
         super();
@@ -32,18 +32,18 @@ public class PlayerComponent extends Component implements HealthInterface {
     //Variabile gameplay
     private int engineLevel = 0;
     private int playerHealt = ConfigHandler.getMaxPlayerHealt();
+    private float currentSailsModifier = ConfigHandler.getWithouthSailsDrag();
 
     @Override
     public void componentInit() {
         try {
             rigidbody = (Rigidbody2D) parent.getComponent(Rigidbody2D.class);
             turretComponent = (TurretComponent) parent.getComponent( TurretComponent.class);
+            animatedSprite = (AnimatedSpriteComponent) parent.getComponent(AnimatedSpriteComponent.class );
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
-        parent.addTag(ObjectTag.hasHealth);
         parent.addTag(ObjectTag.player);
     }
 
@@ -59,8 +59,8 @@ public class PlayerComponent extends Component implements HealthInterface {
             engineLevel = engineLevel < 3 ? ++engineLevel : engineLevel;
             notifyoObserver();
 
+            if(ConfigHandler.isDebugMode() ) System.out.println("Engine level: "+ rigidbody.position );
             if(ConfigHandler.isDebugMode() ) System.out.println("Engine level: "+ engineLevel );
-
         }
 
         if(gameContainer.getInput().isKey( KeyEvent.VK_S , InputType.DOWN)) {
@@ -97,6 +97,20 @@ public class PlayerComponent extends Component implements HealthInterface {
             rigidbody.addAngularForce( -ConfigHandler.getManeuverability());
         }
 
+        if( gameContainer.getInput().isKey(KeyEvent.VK_SHIFT ,InputType.DOWN ) ){
+            animatedSprite.playAnimation();
+
+            currentSailsModifier = ConfigHandler.getWithouthSailsDrag();
+            System.out.println(currentSailsModifier);
+        }
+
+        if( gameContainer.getInput().isKey(KeyEvent.VK_SHIFT ,InputType.UP ) ){
+            animatedSprite.playAnimationBackwards();
+
+            currentSailsModifier = ConfigHandler.getWithouthSailsDrag();
+            System.out.println(currentSailsModifier);
+        }
+
         fireTarget =  gameContainer.getRenderer().getCamera().coordinates2CameraSpace( gameContainer.getInput().getMouseX() ,gameContainer.getInput().getMouseY() );
 
         if(gameContainer.getInput().isKey( KeyEvent.VK_SPACE , InputType.CONTINUOUS)) {
@@ -105,7 +119,6 @@ public class PlayerComponent extends Component implements HealthInterface {
 
         //Camera
         gameContainer.getRenderer().getCamera().placeCameraAt( rigidbody.position);
-
     }
 
     @Override
@@ -120,10 +133,10 @@ public class PlayerComponent extends Component implements HealthInterface {
             this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawLine(new Line(new Vector2(rigidbody.position), fireTarget));
         }
     }
+
     //_________________________OBSERVER__________________
 
     final public void attach( PlayerObserver newObs){
-
         observers.add(newObs);
     }
 
@@ -137,9 +150,18 @@ public class PlayerComponent extends Component implements HealthInterface {
         }
     }
 
-    //__________________________GETTERS___________________
+    //__________________________WIND_INTERFACE___________________
+    @Override
+    public Vector2 getDrag() {
+         return new Vector2( rigidbody.getForward() ).mul(currentSailsModifier);
+    }
 
-    //__________________________SETTERS___________________
+    @Override
+    public Rigidbody2D getRigitdbody() {
+        return rigidbody;
+    }
+
+    //__________________________HEALT_INTERFACE___________________
 
     public void addHealth(int value){
         if( playerHealt + value <= ConfigHandler.getMaxPlayerHealt() )  {
@@ -147,12 +169,12 @@ public class PlayerComponent extends Component implements HealthInterface {
         }else {
             playerHealt = ConfigHandler.getMaxPlayerHealt();
         }
-         notifyoObserver();
+        notifyoObserver();
     }
 
     public void substactHealth(int value){
         if( playerHealt - value >= 0)  {
-           playerHealt -=value;
+            playerHealt -=value;
         }else {
             playerHealt = 0;
 
@@ -160,5 +182,4 @@ public class PlayerComponent extends Component implements HealthInterface {
         }
         notifyoObserver();
     }
-
 }
