@@ -59,6 +59,16 @@ public class GameObjectiveComponent extends Component implements  HealthInterfac
         parent.getGameContainer().getGlobalEventQueue().declareEvent(GlobalEvent.OBJECTIVE_DAMAGED);
     }
 
+    @Override
+    public int getMaxHealth() {
+        return maxObjectiveHealth;
+    }
+
+    @Override
+    public int getHealth() {
+        return objectiveHealth;
+    }
+
     //_________________________OBSERVER__________________
 
     final public void attach( ObjectiveObserver newObs){

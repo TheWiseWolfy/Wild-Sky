@@ -1,7 +1,7 @@
 package com.apetrei.engine.gui.UIElements;
 
 import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.providers.ResourceLoader;
 import com.apetrei.misc.command.Command;
@@ -88,6 +88,18 @@ public class Button extends UIElement {
         BufferedImage sprite = null;
         try {
             sprite = ResourceLoader.getInstance().getSprite("Button.png");
+
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new Button(buttonText,position,scale,sprite,command);
+    }
+
+    static public Button makeShortButton(String buttonText,Vector2 position,float scale,Command command){
+
+        BufferedImage sprite = null;
+        try {
+            sprite = ResourceLoader.getInstance().getSprite("Button_short.png");
 
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();

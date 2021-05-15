@@ -6,7 +6,6 @@ package com.apetrei.engine.objects.components;
  * AABB - Un colider primitiv care incadreaza obiectul intr-un patrat aliniat la axe.
  */
 
-import com.apetrei.engine.GameContainer;
 import com.apetrei.misc.command.ColliderCommand;
 
 public abstract class Collider2D extends Component {

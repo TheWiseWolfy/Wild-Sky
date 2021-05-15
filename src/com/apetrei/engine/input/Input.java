@@ -1,7 +1,7 @@
 package com.apetrei.engine.input;
 
 import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 
 import java.awt.event.*;
 import java.util.LinkedList;

@@ -8,7 +8,7 @@ import java.util.TreeSet;
 public class GlobalEventQueue {
 
     private Queue<GlobalEvent> eventQueue = new LinkedList<>();
-    protected Set<GlobalEvent> hasHappened= new TreeSet<GlobalEvent>();
+    private Set<GlobalEvent> hasHappened= new TreeSet<GlobalEvent>();
 
     public void declareEvent(GlobalEvent event ){
         eventQueue.add( event);
@@ -25,6 +25,9 @@ public class GlobalEventQueue {
         return hasHappened.contains(event);
     }
 
+    public void resetHistory(){
+        hasHappened.clear();
+    }
 
     public void nextEvent(){
         eventQueue.poll();

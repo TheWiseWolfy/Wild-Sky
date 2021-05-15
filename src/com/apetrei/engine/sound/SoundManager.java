@@ -18,7 +18,14 @@ public class SoundManager {
     public void playSound(String soundName) {
 
         if( activeClips.containsKey(soundName)  ){
+
             Clip clip = activeClips.get(soundName);
+
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float range = gainControl.getMaximum() - gainControl.getMinimum();
+            float gain = (range * ConfigHandler.Volume) + gainControl.getMinimum();
+            gainControl.setValue(gain);
+
             clip.setFramePosition(0);
             clip.start();
         }
@@ -27,11 +34,6 @@ public class SoundManager {
                 Clip clip = AudioSystem.getClip();
                 AudioInputStream sound = ResourceLoader.getInstance().getSound(soundName);
                 clip.open(sound);
-
-                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                float range = gainControl.getMaximum() - gainControl.getMinimum();
-                float gain = (range * ConfigHandler.Volume) + gainControl.getMinimum();
-                gainControl.setValue(gain);
 
                 clip.setFramePosition(0);
                 clip.start();

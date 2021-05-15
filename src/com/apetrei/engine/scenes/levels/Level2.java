@@ -1,6 +1,6 @@
 package com.apetrei.engine.scenes.levels;
 
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.DialogLine;
 import com.apetrei.engine.objects.GameObject;
@@ -10,11 +10,7 @@ import com.apetrei.engine.objects.components.*;
 import com.apetrei.engine.physics.ShapeProvider;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
 import com.apetrei.engine.scenes.GameplayScene;
-import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
-
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Level2 extends GameplayScene {
 

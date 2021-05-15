@@ -1,16 +1,14 @@
 package com.apetrei.engine.gui;
 
 import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.objects.GameObject;
-import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.engine.objects.components.GameObjectiveComponent;
+import com.apetrei.engine.objects.components.HealthInterface;
 import com.apetrei.engine.objects.components.PlayerComponent;
 import com.apetrei.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.observer.ObjectManagerObserver;
-import com.apetrei.misc.observer.ObjectiveObserver;
-import com.apetrei.misc.observer.PlayerObserver;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,16 +16,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class HUDManager implements PlayerObserver, ObjectiveObserver, ObjectManagerObserver {
+public class HUDManager implements ObjectManagerObserver {
 
     private GameContainer gameContainer;
 
     //Variables
     private int engineLevel = 0;
-    private int playerHealt = ConfigHandler.getMaxPlayerHealt();
+    private int playerHealt = 0;
 
     private int objectiveHealth = -1;
-    private int maxObjectiveHealth = 10000;
+    private int maxObjectiveHealth = 0;
 
     private float timePassed = 0;
     private float lasDialogueTime =0;
@@ -37,6 +35,8 @@ public class HUDManager implements PlayerObserver, ObjectiveObserver, ObjectMana
 
     private Queue<DialogLine> dialogueQueue = new LinkedList<>();
 
+    PlayerComponent playerComponent;
+    HealthInterface objectiveHealtInterface;
     //Sprites
     ArrayList<BufferedImage> gauge = new ArrayList<BufferedImage>();
     ArrayList<BufferedImage> portraits = new ArrayList<BufferedImage>();
@@ -60,6 +60,16 @@ public class HUDManager implements PlayerObserver, ObjectiveObserver, ObjectMana
     }
 
     public void updateHUD(float fT) {
+        if(playerComponent != null){
+            playerHealt = ConfigHandler.getMaxPlayerHealt();
+            playerHealt = playerComponent.getHealth();
+            engineLevel = playerComponent.getEngineLevel();
+        }
+        if( objectiveHealtInterface != null){
+            maxObjectiveHealth = objectiveHealtInterface.getMaxHealth();
+            objectiveHealth = objectiveHealtInterface.getHealth();
+        }
+
         timePassed += fT;
         playDialogue();
     }
@@ -142,20 +152,18 @@ public class HUDManager implements PlayerObserver, ObjectiveObserver, ObjectMana
     @Override
     public void newObjectUpdate(GameObject gameObject) {
 
-        if(gameObject.hasTag(ObjectTag.player)){
+        if(gameObject.hasComponent(PlayerComponent.class)){
             try {
-                PlayerComponent  pc = (PlayerComponent) gameObject.getComponent(PlayerComponent.class);
-                pc.attach(this);
+                 playerComponent = (PlayerComponent) gameObject.getComponent(PlayerComponent.class);
             } catch (Exception e) {
                 System.err.println( "");
                 e.printStackTrace();
             }
         }
 
-        if(gameObject.hasTag(ObjectTag.objective)){
+        if(gameObject.hasComponent( GameObjectiveComponent.class)){
             try {
-                GameObjectiveComponent obj = (GameObjectiveComponent) gameObject.getComponent(GameObjectiveComponent.class);
-                obj.attach(this);
+                objectiveHealtInterface = (HealthInterface) gameObject.getComponent(HealthInterface.class);
             } catch (Exception e) {
                 System.err.println( "");
                 e.printStackTrace();
@@ -166,17 +174,6 @@ public class HUDManager implements PlayerObserver, ObjectiveObserver, ObjectMana
     @Override
     public void objectDeletedUpdate(GameObject gameObject) {
 
-    }
-
-    @Override
-    public void objectiveUpdate(int objectiveHealth) {
-        this.objectiveHealth = objectiveHealth;
-    }
-
-    @Override
-    public void playerUpdate(int engineLevel , int playerHealt) {
-        this.engineLevel = engineLevel;
-        this.playerHealt = playerHealt;
     }
 
 }

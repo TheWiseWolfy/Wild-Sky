@@ -3,7 +3,6 @@ package com.apetrei.providers;
 import com.apetrei.engine.ConfigHandler;
 import com.apetrei.misc.exceptions.ValueNotFoundException;
 
-import java.awt.*;
 import java.sql.*;
 
 public class DatabaseManager {
@@ -101,7 +100,13 @@ public class DatabaseManager {
     }
 
     //UPDATE DATABASE
-    public void actualizeazaConfig(){
+
+    public void resetGameState() {
+        ConfigHandler.setCurrentLevel(1);
+
+        updateDataBase();
+    }
+    public void updateConfigClass(){
         try {
             ConfigHandler.setVolume( recoverFloat("VOLUME","SETTINGS") );
             ConfigHandler.setCurrentLevel( recoverInt("CURRENT_LEVEL","GAME_STATE") );
@@ -109,7 +114,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-    public void actualizeazaBazaDate(){
+    public void updateDataBase(){
         writeFloat(ConfigHandler.getVolume(),"VOLUME","SETTINGS");
         writeFloat(ConfigHandler.getCurrentLevel(),"CURRENT_LEVEL","GAME_STATE");
     }
@@ -125,5 +130,4 @@ public class DatabaseManager {
             return databaseManager;
         }
     }
-
 }

@@ -1,6 +1,6 @@
 package com.apetrei.engine.objects;
 
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.objects.components.*;
 import com.apetrei.engine.physics.ShapeProvider;
 import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;

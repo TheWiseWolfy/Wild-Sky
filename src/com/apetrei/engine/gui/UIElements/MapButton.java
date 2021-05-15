@@ -1,7 +1,7 @@
 package com.apetrei.engine.gui.UIElements;
 
 import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.command.Command;

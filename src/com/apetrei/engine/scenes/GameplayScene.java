@@ -1,7 +1,7 @@
 package com.apetrei.engine.scenes;
 
 import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.input.InputType;
@@ -39,14 +39,12 @@ public abstract class GameplayScene implements Scene {
         gameContainer.getPhysicsSystem().resetPhysicsSystem();
         gameContainer.getObjectManager().resetObjectManager();
 
-        SoundManager.getInstance().stopAllSound();
         initializePauseMenu(gameContainer);
-
-
     }
 
     @Override
     public void update( float frameTime) {
+        SoundManager.getInstance().stopAllSound();
 
         if( ConfigHandler.isDebugMode()) {
             if (gameContainer.getInput().isKey(KeyEvent.VK_F1, InputType.DOWN)) {
@@ -59,7 +57,7 @@ public abstract class GameplayScene implements Scene {
             if( ConfigHandler.isDebugMode()) {
                 if (paused) {
                     System.out.println("The game has been paused.");
-                } else if (!paused) {
+                } else {
                     System.out.println("The game has been unpaused.");
                 }
             }
@@ -106,7 +104,8 @@ public abstract class GameplayScene implements Scene {
         //SETTINGS BUTTON
         Vector2 button3Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
         Button button3 = Button.makeButton("Settings",button3Poz, 0.3f, () -> {
-            System.out.println("Settings Button");
+            gameContainer.goTo(new SettingsScene(gameContainer));
+            paused = false;
         });
 
         gameContainer.getMenuManager().addUIElement(button1);

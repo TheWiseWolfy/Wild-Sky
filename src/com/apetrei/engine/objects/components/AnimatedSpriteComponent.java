@@ -60,7 +60,7 @@ public class AnimatedSpriteComponent  extends Component {
             currentFrame = animation.getFrame( currentFrameNumber);
             currentFrameNumber--;
         }
-        System.out.println(currentFrameNumber);
+
     }
 
     public void playAnimation(){
@@ -79,7 +79,6 @@ public class AnimatedSpriteComponent  extends Component {
     }
 
     //____________________________SETTERS_______________
-
     public void setSpriteScale(float spriteScale) {
         this.spriteScale = spriteScale;
     }

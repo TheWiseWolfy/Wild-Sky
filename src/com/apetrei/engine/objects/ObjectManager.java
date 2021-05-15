@@ -1,10 +1,9 @@
 package com.apetrei.engine.objects;
 
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.objects.components.TransformComponent;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ComponentMissingException;
-import com.apetrei.misc.exceptions.GameObjectNotFoundException;
 import com.apetrei.misc.observer.ObjectManagerObserver;
 import com.apetrei.misc.observer.PlayerObserver;
 

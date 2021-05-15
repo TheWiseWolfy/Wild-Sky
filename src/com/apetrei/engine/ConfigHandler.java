@@ -12,6 +12,7 @@ public class ConfigHandler {
     private static float scale = 1f;
     private static String title = "Wild-Sky";
     private static boolean debugMode = false;
+
     public static double getUpdateCap() {
         return UPDATE_CAP;
     }
@@ -32,7 +33,6 @@ public class ConfigHandler {
     }
 
     //DATE SALVATE
-
     public static int CurrentLevel = 1;
     public static int getCurrentLevel() {
         return CurrentLevel;
@@ -46,7 +46,9 @@ public class ConfigHandler {
         return Volume;
     }
     public static void setVolume(float volume) {
-        Volume = volume;
+        volume = Math.min(volume, 1);
+        volume = Math.max(volume, 0);
+        Volume = volume ;
     }
 
     //PLAYER INFORMATION

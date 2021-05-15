@@ -1,13 +1,10 @@
 package com.apetrei.engine.ai;
 
 
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.engine.objects.components.EnemyComponent;
-import com.apetrei.engine.objects.components.Rigidbody2D;
-import com.apetrei.misc.Vector2;
-import com.apetrei.misc.exceptions.ComponentMissingException;
 
 import java.util.List;
 

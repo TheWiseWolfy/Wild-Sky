@@ -104,6 +104,7 @@ public class EnemyComponent extends Component implements HealthInterface{
 
 
     //________________________HealthInterface________________________
+    @Override
     public void addHealth(int value){
         if( healt + value <= maxHealt)  {
             healt +=value;
@@ -111,7 +112,7 @@ public class EnemyComponent extends Component implements HealthInterface{
             healt = maxHealt;
         }
     }
-
+    @Override
     public void substactHealth(int value){
         if( healt - value >= 0)  {
             healt -=value;
@@ -119,4 +120,16 @@ public class EnemyComponent extends Component implements HealthInterface{
             healt = 0;
         }
     }
+
+    @Override
+    public int getMaxHealth() {
+        return maxHealt;
+    }
+
+    @Override
+    public int getHealth() {
+        return healt;
+    }
+
+
 }

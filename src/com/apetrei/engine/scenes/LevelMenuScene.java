@@ -1,7 +1,8 @@
 package com.apetrei.engine.scenes;
 
 import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.sound.SoundManager;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.gui.UIElements.MapButton;

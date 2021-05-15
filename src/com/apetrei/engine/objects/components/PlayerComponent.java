@@ -1,11 +1,10 @@
 package com.apetrei.engine.objects.components;
 
 import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.objects.ObjectTag;
-import com.apetrei.engine.sound.SoundManager;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.observer.PlayerObserver;
@@ -23,7 +22,7 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
     private TurretComponent turretComponent;
     private AnimatedSpriteComponent animatedSprite;
     private List<PlayerObserver> observers = new ArrayList<PlayerObserver>();
-    private  Vector2 fireTarget = new Vector2();
+    private Vector2 fireTarget = new Vector2();
 
     public PlayerComponent(){
         super();
@@ -32,6 +31,7 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
     //Variabile gameplay
     private int engineLevel = 0;
     private int playerHealt = ConfigHandler.getMaxPlayerHealt();
+
     private float currentSailsModifier = ConfigHandler.getWithouthSailsDrag();
 
     @Override
@@ -101,17 +101,16 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
             animatedSprite.playAnimation();
 
             currentSailsModifier = ConfigHandler.getWithouthSailsDrag();
-            System.out.println(currentSailsModifier);
+            if(ConfigHandler.isDebugMode() )  System.out.println("Current wind modifier:" + currentSailsModifier);
         }
-
         if( gameContainer.getInput().isKey(KeyEvent.VK_SHIFT ,InputType.UP ) ){
             animatedSprite.playAnimationBackwards();
 
-            currentSailsModifier = ConfigHandler.getWithouthSailsDrag();
-            System.out.println(currentSailsModifier);
+            currentSailsModifier = ConfigHandler.getSailsDrag();
+            if(ConfigHandler.isDebugMode() )   System.out.println("Current wind modifier:" +currentSailsModifier);
         }
 
-        fireTarget =  gameContainer.getRenderer().getCamera().coordinates2CameraSpace( gameContainer.getInput().getMouseX() ,gameContainer.getInput().getMouseY() );
+        fireTarget =  gameContainer.getRenderer().getCamera().mouseInGameSpace();
 
         if(gameContainer.getInput().isKey( KeyEvent.VK_SPACE , InputType.CONTINUOUS)) {
             turretComponent.fireProjectile(fireTarget);
@@ -123,7 +122,6 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
 
     @Override
     public void componentRender() {
-
         //Cod Debug
         if(ConfigHandler.isDebugMode() ) {
             Vector2 forward = new Vector2(rigidbody.getForward());
@@ -135,13 +133,13 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
     }
 
     //_________________________OBSERVER__________________
-
     final public void attach( PlayerObserver newObs){
         observers.add(newObs);
     }
 
     final public void dettach( PlayerObserver newObs){
         observers.remove(newObs);
+
     }
 
     final public void  notifyoObserver(){
@@ -161,6 +159,12 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
         return rigidbody;
     }
 
+    //________________________GETTER___________________
+
+    public int getEngineLevel() {
+        return engineLevel;
+    }
+
     //__________________________HEALT_INTERFACE___________________
 
     public void addHealth(int value){
@@ -177,9 +181,18 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
             playerHealt -=value;
         }else {
             playerHealt = 0;
-
             parent.getGameContainer().getGlobalEventQueue().declareEvent(GlobalEvent.PLAYER_DESTROYED);
         }
         notifyoObserver();
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return ConfigHandler.getMaxPlayerHealt();
+    }
+
+    @Override
+    public int getHealth() {
+        return playerHealt;
     }
 }

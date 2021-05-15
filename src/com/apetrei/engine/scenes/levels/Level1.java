@@ -1,6 +1,6 @@
 package com.apetrei.engine.scenes.levels;
 
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.DialogLine;
 import com.apetrei.engine.objects.GameObject;
@@ -13,9 +13,6 @@ import com.apetrei.engine.scenes.GameplayScene;
 import com.apetrei.engine.sound.SoundManager;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Vector2;
-
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Level1 extends GameplayScene {
     private int enemiesLeft = 0;

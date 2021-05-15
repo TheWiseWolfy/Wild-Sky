@@ -1,10 +1,7 @@
 package com.apetrei.engine.objects;
 
-import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.objects.components.Collider2D;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.objects.components.Component;
-import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
-import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 
 import java.io.Serializable;

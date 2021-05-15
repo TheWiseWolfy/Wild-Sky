@@ -1,16 +1,6 @@
 package com.apetrei.game;
 
-import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.objects.GameObject;
-import com.apetrei.engine.objects.ObjectTag;
-import com.apetrei.engine.objects.components.*;
-import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
-import com.apetrei.engine.objects.components.Rigidbody2D;
-import com.apetrei.misc.ConvexPolygon2D;
-import com.apetrei.misc.Vector2;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.apetrei.providers.GameContainer;
 
 //!MAIN
 public class GameManager {

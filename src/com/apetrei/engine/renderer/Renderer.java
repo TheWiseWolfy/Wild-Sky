@@ -1,10 +1,8 @@
 package com.apetrei.engine.renderer;
 
-import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Renderer {
     
@@ -27,7 +25,8 @@ public class Renderer {
     public Renderer(GameContainer gameContainer){
         this.gameContainer = gameContainer;
 
-        camera = new Camera();
+        camera = new Camera(gameContainer);
+
         graphicsBuffer = this.gameContainer.getWindow().getBufferStrategy().getDrawGraphics();
       //  gameFrame = new BufferedImage(ConfigHandler.getWidth(), ConfigHandler.getHeight(),BufferedImage.TYPE_INT_ARGB);
       //  HUDLayer = new BufferedImage(ConfigHandler.getWidth(), ConfigHandler.getHeight(),BufferedImage.TYPE_INT_ARGB);
@@ -43,18 +42,12 @@ public class Renderer {
 
        // int realSizeX= (int)(ConfigHandler.getWidth()* ConfigHandler.getScale() );
         //int realSizeY= (int)(ConfigHandler.getHeight()* ConfigHandler.getScale() );
-
+        camera.update();
         layerRenderer.setGraphics( graphicsBuffer);
         textRenderer.setGraphics( graphicsBuffer);
     }
 
     public void Render(){
-
-
-      //  graphicsBuffer.drawImage(gameFrame,0,0,realSizeX,realSizeY ,null);
-     //   graphicsBuffer.drawImage(HUDLayer,0,0,realSizeX,realSizeY ,null);
-
-
         //Final render
         graphicsBuffer.dispose();
 

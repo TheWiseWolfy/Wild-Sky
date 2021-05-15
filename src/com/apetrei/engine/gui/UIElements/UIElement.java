@@ -1,7 +1,7 @@
 package com.apetrei.engine.gui.UIElements;
 
 
-import com.apetrei.engine.GameContainer;
+import com.apetrei.providers.GameContainer;
 import com.apetrei.misc.command.Command;
 
 public abstract class UIElement {

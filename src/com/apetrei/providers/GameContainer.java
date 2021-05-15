@@ -1,20 +1,17 @@
-package com.apetrei.engine;
+package com.apetrei.providers;
 
+import com.apetrei.engine.ConfigHandler;
 import com.apetrei.engine.event.GlobalEventQueue;
 import com.apetrei.engine.gui.HUDManager;
 import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.objects.ObjectManager;
 import com.apetrei.engine.physics.PhysicsSystem2D;
-import com.apetrei.misc.exceptions.ValueNotFoundException;
-import com.apetrei.providers.DatabaseManager;
-import com.apetrei.providers.ResourceLoader;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.engine.renderer.Window;
 import com.apetrei.engine.scenes.MainMenuScene;
 import com.apetrei.engine.scenes.Scene;
 
-import java.sql.SQLException;
 import java.util.Stack;
 
 public class GameContainer implements Runnable {
@@ -41,7 +38,7 @@ public class GameContainer implements Runnable {
     private boolean running = false;
 
     public GameContainer() {
-        DatabaseManager.getInstance().actualizeazaConfig();
+        DatabaseManager.getInstance().updateConfigClass();
 
         //Engine Initialization
         //This might actually be really stupid. TODO: Move all use of "this" after the contructor has finished.
@@ -58,6 +55,7 @@ public class GameContainer implements Runnable {
         objectManager.attachObserver(hudManager);
         objectManager.attachObserver( physicsSystem);
         objectManager.attachObserver( physicsSystem.getWindEffect() );
+        objectManager.attachObserver(renderer.getCamera());
 
         //Game Initialization
         MainMenuScene mainMenuScene = new MainMenuScene(this);
@@ -135,7 +133,7 @@ public class GameContainer implements Runnable {
                 popScene =false;
             }
         }//END WHILE
-        DatabaseManager.getInstance().actualizeazaBazaDate();
+        DatabaseManager.getInstance().updateDataBase();
         window.close();
     }
 
