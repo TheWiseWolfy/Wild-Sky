@@ -100,12 +100,11 @@ public class DatabaseManager {
     }
 
     //UPDATE DATABASE
-
     public void resetGameState() {
-        ConfigHandler.setCurrentLevel(1);
-
+        ConfigHandler.setCurrentLevel(4);
         updateDataBase();
     }
+
     public void updateConfigClass(){
         try {
             ConfigHandler.setVolume( recoverFloat("VOLUME","SETTINGS") );

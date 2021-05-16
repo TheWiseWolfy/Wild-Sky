@@ -150,7 +150,7 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
 
     //__________________________WIND_INTERFACE___________________
     @Override
-    public Vector2 getDrag() {
+    public Vector2 getDragDirection() {
          return new Vector2( rigidbody.getForward() ).mul(currentSailsModifier);
     }
 

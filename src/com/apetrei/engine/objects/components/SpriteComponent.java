@@ -1,5 +1,7 @@
 package com.apetrei.engine.objects.components;
 
+import com.apetrei.engine.renderer.LayerRenderer;
+import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
 import com.apetrei.providers.ResourceLoader;
 
@@ -15,6 +17,8 @@ public class SpriteComponent  extends Component {
     String name;
 
     BufferedImage sprite = null;
+    BufferedImage rotatedSprite;
+    float oldRotation = 0;
 
     public SpriteComponent(String name){
         super();
@@ -37,6 +41,8 @@ public class SpriteComponent  extends Component {
         catch (Exception e){
             e.printStackTrace();
         }
+        rotatedSprite = sprite;
+
     }
     @Override
     public void componentUpdate( double fT) {
@@ -45,7 +51,12 @@ public class SpriteComponent  extends Component {
 
     @Override
     public void componentRender( ) {
-        this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawRotatedSprite(  transformComponent.getPosition(),spriteScale ,transformComponent.getRotation(),sprite);
+        if( ! ExtraMath.equal( transformComponent.rotation ,oldRotation)   ){
+            rotatedSprite = LayerRenderer.rotate(sprite,transformComponent.getRotation(), (float)Math.PI /2);
+            oldRotation =  transformComponent.rotation;
+        }
+
+        this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawSprite(  transformComponent.getPosition(),spriteScale,rotatedSprite);
     }
 
     //____________________________SETTERS_______________

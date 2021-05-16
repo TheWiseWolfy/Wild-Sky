@@ -56,4 +56,20 @@ public class ShapeProvider {
 
         return new ConvexPolygon2D(shape);
     }
+
+    public static ConvexPolygon2D getLighthouseCollider(){
+        List<Vector2>  shape = new ArrayList<Vector2>();
+
+        float a =22;
+        shape.add(new Vector2(-10 * a,5 * a ));
+        shape.add(new Vector2(-5 * a,10 * a));
+        shape.add(new Vector2(5 * a,10 * a ));
+        shape.add(new Vector2(10 * a,5 * a));
+        shape.add(new Vector2(10 * a,-5 * a));
+        shape.add(new Vector2(5 * a,-10 * a ));
+        shape.add(new Vector2(-5 * a,-10 * a));
+        shape.add(new Vector2(-10 * a,-5* a));
+
+        return new ConvexPolygon2D(shape);
+    }
 }

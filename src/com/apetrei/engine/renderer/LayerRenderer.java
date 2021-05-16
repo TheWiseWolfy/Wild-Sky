@@ -105,7 +105,7 @@ public class LayerRenderer {
     }
 
     //SPRITES
-    public void drawRotatedSprite(Vector2 poz, float scale, BufferedImage img, float scrollfactor){
+    public void drawSprite(Vector2 poz, float scale, BufferedImage img, float scrollfactor){
 
         Vector2 ajustedPoz =  camera.vector2CameraSpace( poz, scrollfactor);
 
@@ -118,7 +118,7 @@ public class LayerRenderer {
         graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
     }
 
-    public void drawRotatedSprite(Vector2 poz, float scale, BufferedImage img){
+    public void drawSprite(Vector2 poz, float scale, BufferedImage img){
 
         Vector2 ajustedPoz =  camera.vector2CameraSpace( poz);
 
@@ -131,22 +131,6 @@ public class LayerRenderer {
         graphics.drawImage(img,possitionX,possitionY ,sizeX ,sizeY,null);
     }
 
-    public void drawRotatedSprite(Vector2 poz, float scale, float rotation, BufferedImage img){
-
-        img = rotate(img,rotation, (float)Math.PI /2);
-
-        Vector2 ajustedPoz =  camera.vector2CameraSpace( poz);
-
-        int possitionX = (int) (ajustedPoz.x  -  img.getWidth() * 0.5f  * scale  ) ;
-        int possitionY = (int) (ajustedPoz.y  -  img.getHeight() * 0.5f * scale  ) ;
-
-        int sizeX =(int) (img.getWidth() * scale ) ;
-        int sizeY =(int) (img.getHeight() * scale) ;
-
-        graphics.drawImage(img ,possitionX,possitionY ,sizeX ,sizeY,null);
-    }
-
-    //TODO: Problem with rendering images that are not squared
     public static BufferedImage rotate(BufferedImage imgOld, float radians, float offset){                                                 //parameter same as method above
 
         BufferedImage imgNew = new BufferedImage(imgOld.getWidth(), imgOld.getHeight(), imgOld.getType());
@@ -156,7 +140,6 @@ public class LayerRenderer {
         g.drawImage(imgOld, 0, 0, null);                                                                                //draw rotated image
         return imgNew;                                                                                                 //return rotated image
     }
-
 
     //________________________SETTER_____________________________________
 

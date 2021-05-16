@@ -15,11 +15,14 @@ public class enemyAI {
     private GameContainer gameContainer;
 
     private GameObject objective;
-
-    //Sense
-    //Think
-    //Act
     AIState currentState;
+
+    //Many values
+    int visionRange = 1500;
+    int attckDistance = 600;
+    int fightRange = 400;
+    int attackObjectiveRange = 1200;
+    int mentainDistanceToObjective = 1000;
 
     public enemyAI( EnemyComponent enemyComponent, GameContainer gameContainer){
         this.enemyComponent = enemyComponent;
@@ -30,32 +33,44 @@ public class enemyAI {
         currentState = AIState.CHASE_OBJECTIVE;
 
         //CHASE TARGET
-       List<GameObject> objectInRange = gameContainer.getObjectManager().findGameObjectInRange(enemyComponent.getParent(), 1500);
+       List<GameObject> objectInRange = gameContainer.getObjectManager().findGameObjectInRange(enemyComponent.getParent(), visionRange);
 
        for (var object : objectInRange) {
-           if ( object.hasTag(ObjectTag.player)) {
+           if (object.hasTag(ObjectTag.player)) {
                float distance =  enemyComponent.distanceTo( object);
-                if( distance > 500 ) {
+                if( distance > attckDistance) {
                     currentState = AIState.CHASE_TARGET;
-                    enemyComponent.chaseTarger(object);
-                }else if( distance < 500){
+                    enemyComponent.chaseTarget(object);
+                }
+                else if( distance < attckDistance){
                     currentState = AIState.FIGHT;
                     enemyComponent.destroy(object);
+                    enemyComponent.mentainDistance(object,fightRange, attckDistance);
                 }
            }
        }
 
-       if( currentState == AIState.CHASE_OBJECTIVE){
+       if( currentState == AIState.CHASE_OBJECTIVE && objective != null){
            float distanceToObjective =  enemyComponent.distanceTo( objective);
-           enemyComponent.chaseTarger( objective );
-           if (distanceToObjective <= 1000){
+           enemyComponent.chaseTarget( objective );
+           if (distanceToObjective <= attackObjectiveRange){
                enemyComponent.destroy( objective);
+               enemyComponent.mentainDistance(objective,mentainDistanceToObjective,attackObjectiveRange);
+
            }
        }
      //  System.out.println(currentState.toString());
     }
 
     //_______________________SETTER_______________________
+
+    public void setAttckDistance(int attckDistance) {
+        this.attckDistance = attckDistance;
+    }
+
+    public void setFightRange(int fightRange) {
+        this.fightRange = fightRange;
+    }
 
     public void setObjective(GameObject objective) {
         this.objective = objective;

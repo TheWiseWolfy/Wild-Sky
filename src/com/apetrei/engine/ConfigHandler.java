@@ -11,7 +11,7 @@ public class ConfigHandler {
     private static int height =720;
     private static float scale = 1f;
     private static String title = "Wild-Sky";
-    private static boolean debugMode = false;
+    private static boolean debugMode = true;
 
     public static double getUpdateCap() {
         return UPDATE_CAP;
@@ -37,6 +37,7 @@ public class ConfigHandler {
     public static int getCurrentLevel() {
         return CurrentLevel;
     }
+
     public static void setCurrentLevel(int currentLevel) {
         CurrentLevel = currentLevel;
     }
@@ -52,7 +53,7 @@ public class ConfigHandler {
     }
 
     //PLAYER INFORMATION
-    private static int maxPlayerHealt = 5000;
+    private static int maxPlayerHealt = 1000;
     public static int getMaxPlayerHealt() {
         return maxPlayerHealt;
     }
@@ -81,4 +82,16 @@ public class ConfigHandler {
     public static float getSailsDrag() {
         return sailsDrag;
     }
+
+    public static float playerMass = 5;
+    public static float getPlayerMass() {
+        return playerMass;
+    }
+    //OTHER INFORMATION
+
+    private static float windChangeInterval =15f;
+    public static float getWindChangeInterval() {
+        return windChangeInterval;
+    }
+
 }

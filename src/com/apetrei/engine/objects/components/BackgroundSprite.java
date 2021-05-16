@@ -50,7 +50,7 @@ public class BackgroundSprite extends Component {
     public void componentRender( ) {
 
         //Aici se afiseaza imaginea pe ecran
-        this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawRotatedSprite(transformComponent.getPosition(),spriteScale,sprite, scrollFactor);
+        this.getParent().getGameContainer().getRenderer().getLayerRenderer().drawSprite(transformComponent.getPosition(),spriteScale,sprite, scrollFactor);
     }
 
     //__________________SETTERS______________________

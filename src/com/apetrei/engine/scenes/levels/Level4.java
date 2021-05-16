@@ -18,11 +18,8 @@ public class Level4 extends GameplayScene {
     @Override
     public void init() {
         super.init();
-
-        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Unga bunga shunga lunga", 2f,1));
-        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
-
         initializeGame(gameContainer);
+        gameContainer.getRenderer().getCamera().setBounds(800,800,800,800);
     }
 
     @Override
@@ -34,7 +31,6 @@ public class Level4 extends GameplayScene {
                 gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.OBJECTIVE_DESTROYED ){
             gameContainer.goBack();
         }
-
         if( gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.ENEMY_DESTROYED ){
             enemiesLeft--;
         }
@@ -43,7 +39,7 @@ public class Level4 extends GameplayScene {
         if( enemiesLeft == 0){
             gameContainer.getGlobalEventQueue().declareEvent( GlobalEvent.LEVEL4_COMPLETED);
             if( !hasHappened.contains( GlobalEvent.LEVEL4_COMPLETED) ) {
-                gameContainer.getHudManager().getDialogManager().addDialogueLine(new DialogLine("You did it you wonker !", 2f, 1));
+          //      gameContainer.getHudManager().getDialogManager().addDialogueLine(new DialogLine("You did it you wonker !", 2f, 1));
             }
             hasHappened.add( GlobalEvent.LEVEL4_COMPLETED);
         }
@@ -71,7 +67,7 @@ public class Level4 extends GameplayScene {
         gameContainer.getObjectManager().addGameObject( ob.BackgroundBuilder("clouds.png", 1f, 0.4f) );
 
         //PLAYER
-        ob.setPlateToBuildAt( new Vector2(200, -350) );
+        ob.setPlateToBuildAt( new Vector2(0, 0) );
         GameObject player = ob.PlayerBuilder();
         gameContainer.getObjectManager().addGameObject(player );
 

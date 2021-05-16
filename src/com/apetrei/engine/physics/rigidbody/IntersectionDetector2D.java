@@ -29,7 +29,7 @@ public class IntersectionDetector2D {
         //lines are parallel
         float det = A1 * B2 - A2 * B1;
 
-        if (ExtraMath.compare(det, 0f)) {
+        if (ExtraMath.equal(det, 0f)) {
             return null; //parallel lines
         } else {
             float x = (B2 * C1 - B1 * C2) / det;
@@ -41,15 +41,15 @@ public class IntersectionDetector2D {
             Vector2 l2p1 = line2.getA();
             Vector2 l2p2 = line2.getB();
 
-            boolean online1 = ((Math.min(l1p1.x, l1p2.x) < x || ExtraMath.compare(Math.min(l1p1.x, l1p2.x), x))
-                    && (Math.max(l1p1.x, l1p2.x) > x ||  ExtraMath.compare(Math.max(l1p1.x, l1p2.x), x))
-                    && (Math.min(l1p1.y, l1p2.y) < y ||  ExtraMath.compare(Math.min(l1p1.y, l1p2.y), y))
-                    && (Math.max(l1p1.y, l1p2.y) > y ||  ExtraMath.compare(Math.max(l1p1.y, l1p2.y), y))
+            boolean online1 = ((Math.min(l1p1.x, l1p2.x) < x || ExtraMath.equal(Math.min(l1p1.x, l1p2.x), x))
+                    && (Math.max(l1p1.x, l1p2.x) > x ||  ExtraMath.equal(Math.max(l1p1.x, l1p2.x), x))
+                    && (Math.min(l1p1.y, l1p2.y) < y ||  ExtraMath.equal(Math.min(l1p1.y, l1p2.y), y))
+                    && (Math.max(l1p1.y, l1p2.y) > y ||  ExtraMath.equal(Math.max(l1p1.y, l1p2.y), y))
             );
-            boolean online2 = ((Math.min(l2p1.x, l2p2.x) < x ||  ExtraMath.compare(Math.min(l2p1.x, l2p2.x), x))
-                    && (Math.max(l2p1.x, l2p2.x) > x ||  ExtraMath.compare(Math.max(l2p1.x, l2p2.x), x))
-                    && (Math.min(l2p1.y, l2p2.y) < y ||  ExtraMath.compare(Math.min(l2p1.x, l2p2.x), y))
-                    && (Math.max(l2p1.y, l2p2.y) > y ||  ExtraMath.compare(Math.max(l2p1.x, l2p2.x), y))
+            boolean online2 = ((Math.min(l2p1.x, l2p2.x) < x ||  ExtraMath.equal(Math.min(l2p1.x, l2p2.x), x))
+                    && (Math.max(l2p1.x, l2p2.x) > x ||  ExtraMath.equal(Math.max(l2p1.x, l2p2.x), x))
+                    && (Math.min(l2p1.y, l2p2.y) < y ||  ExtraMath.equal(Math.min(l2p1.x, l2p2.x), y))
+                    && (Math.max(l2p1.y, l2p2.y) > y ||  ExtraMath.equal(Math.max(l2p1.x, l2p2.x), y))
             );
 
             if (online1 && online2)

@@ -1,7 +1,7 @@
 package com.apetrei.engine.gui;
 
 import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.objects.GameObject;
+import com.apetrei.engine.sound.SoundManager;
 import com.apetrei.misc.Vector2;
 import com.apetrei.providers.GameContainer;
 import com.apetrei.providers.ResourceLoader;
@@ -21,8 +21,7 @@ public class DialogManager {
     private Queue<DialogLine> dialogueQueue = new LinkedList<>();
     ArrayList<BufferedImage> portraits = new ArrayList<BufferedImage>();
 
-    private String currentDialogLine ="";
-    int character;
+    boolean readyForDialogue = true;
 
     public DialogManager(GameContainer gameContainer){
         this.gameContainer = gameContainer;
@@ -47,18 +46,24 @@ public class DialogManager {
     }
 
     private void playDialogue(){
-        if( !dialogueQueue.isEmpty()) {
 
-            currentDialogLine = dialogueQueue.peek().dialogLine;
-            character = dialogueQueue.peek().character;
+        if( !dialogueQueue.isEmpty()) {
+            if (readyForDialogue ){
+                SoundManager.getInstance().playSound(dialogueQueue.peek().audioFile);
+                readyForDialogue = false;
+            }
 
             if(lasDialogueTime + dialogueQueue.peek().duration < timePassed  ) {
                 lasDialogueTime = timePassed;
+                readyForDialogue = true;
                 dialogueQueue.poll();
             }
-        }else {
-            currentDialogLine = "";
         }
+    }
+
+    public void resetDialogueQueue(){
+        dialogueQueue.clear();
+        readyForDialogue = true;
     }
 
     public boolean isDialogueFinished(){
@@ -68,21 +73,30 @@ public class DialogManager {
     }
 
     void displayDialogueBox(){
-        //DIALOGUE BOX
-        float portraitScale = 0.12f;
-        //Poz of portrait
-        Vector2 portraitPoz = new Vector2(ConfigHandler.getWidth() * 0.55f  ,ConfigHandler.getHeight() *  0.13f );
-        //Coltul drept sus al potretului
-        Vector2 cornerOfPortrair = new Vector2( (float)portraits.get( character).getWidth()/2 * portraitScale,
-                (float) -portraits.get(character).getHeight()/2 *portraitScale);
+        if(!isDialogueFinished()) {
+            int character = dialogueQueue.peek().character;
+            //DIALOGUE BOX
+            float portraitScale = 0.12f;
+            //Poz of portrait
+            Vector2 portraitPoz = new Vector2(ConfigHandler.getWidth() * 0.55f, ConfigHandler.getHeight() * 0.13f);
+            //Coltul drept sus al potretului
+            Vector2 cornerOfPortrair = new Vector2(
+                    (float) portraits.get(character).getWidth() / 2 * portraitScale,
+                    (float) -portraits.get(character).getHeight() / 2 * portraitScale);
 
-        //Poz of dialogue box
-        Vector2 dialogueCorner =new Vector2( portraitPoz).add( cornerOfPortrair );
-        //Size of dialogue box
-        Vector2 dialogueSize = new Vector2( 450f,portraits.get( character ).getHeight() *portraitScale);
+            //Poz of dialogue box
+            Vector2 dialogueCorner = new Vector2(portraitPoz).add(cornerOfPortrair);
+            //Size of dialogue box
+            Vector2 dialogueSize = new Vector2(450f, portraits.get(character).getHeight() * portraitScale);
 
-        gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle(dialogueCorner,new Vector2( dialogueCorner).add(dialogueSize), new Color(238,183,107));
-        gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(portraitPoz, portraitScale, portraits.get(character));
-        gameContainer.getRenderer().getTextRenderer().drawTextInABox( currentDialogLine, dialogueCorner.add (new Vector2(10,2)), new Vector2( dialogueCorner).add(dialogueSize), "Serif" ,22, Color.BLACK );
+            //Draw everything
+            gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle(dialogueCorner, new Vector2(dialogueCorner).add(dialogueSize), new Color(238, 183, 107));
+            gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(portraitPoz, portraitScale, portraits.get(character));
+            gameContainer.getRenderer().getTextRenderer().drawTextInABox(
+                    dialogueQueue.peek().dialogLine,
+                    dialogueCorner.add(new Vector2(10, 2)),
+                    new Vector2(dialogueCorner).add(dialogueSize),
+                    "Serif", 22, Color.BLACK);
+        }
     }
 }

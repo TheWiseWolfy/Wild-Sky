@@ -48,7 +48,7 @@ public class GameContainer implements Runnable {
         hudManager = new HUDManager(this);
         menuManager = new MenuManager(this);
         input = new Input(this);
-        physicsSystem = new PhysicsSystem2D();
+        physicsSystem = new PhysicsSystem2D(this);
         globalEventQueue = new GlobalEventQueue();
 
         objectManager = new ObjectManager(this);

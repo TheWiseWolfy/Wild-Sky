@@ -32,9 +32,10 @@ public class ObjectManager {
     }
 
 
-    public void addGameObject(GameObject created){
+    public GameObject addGameObject(GameObject created){
        objectsOnHold.add(created);
        notifyObserversOfNewObject(created);
+        return created;
     }
 
     //Update fuctions

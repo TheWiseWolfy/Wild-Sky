@@ -40,8 +40,8 @@ public class TextRenderer {
         //Vector math
         float maxRowLenght = pozB.x - pozA.x;
 
-          Vector2 textPoz = new Vector2(pozA);
-          textPoz.add( new Vector2(  0, fontMetrics.getHeight() ));
+        Vector2 textPoz = new Vector2(pozA);
+        textPoz.add( new Vector2(  0, fontMetrics.getHeight() ));
 
         //Algoritm complicat de scris in cutie
 
@@ -56,7 +56,7 @@ public class TextRenderer {
             potentialCurrentRow.append(" ");
 
             //Daca randul a devenim prea lung atunci afisam ce sa concatenat pana la cuvantul asta
-            if( fontMetrics.stringWidth(  potentialCurrentRow.toString()  ) > maxRowLenght ){
+            if( fontMetrics.stringWidth(  potentialCurrentRow.toString()  ) + 50> maxRowLenght ){
                 //We draw the current row
                 graphics.drawString(currentRow.toString(), (int) textPoz.x, (int) textPoz.y);
                 //Desenam cu un rand mai jos acum.

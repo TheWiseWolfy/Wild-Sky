@@ -17,45 +17,58 @@ public class SoundManager {
 
     public void playSound(String soundName) {
 
-        if( activeClips.containsKey(soundName)  ){
+        if (!activeClips.containsKey(soundName)) {
+            loadClip(soundName);
+        }
 
-            Clip clip = activeClips.get(soundName);
+        Clip clip = activeClips.get(soundName);
+
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        float range = gainControl.getMaximum() - gainControl.getMinimum();
+        float gain = (range * ConfigHandler.Volume) + gainControl.getMinimum();
+        gainControl.setValue(gain);
+
+        clip.setFramePosition(0);
+        clip.start();
+
+    }
+    private void loadClip(String soundName){
+        try {
+            Clip clip = AudioSystem.getClip();
+            AudioInputStream sound = ResourceLoader.getInstance().getSound(soundName);
+            clip.open(sound);
 
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             float range = gainControl.getMaximum() - gainControl.getMinimum();
             float gain = (range * ConfigHandler.Volume) + gainControl.getMinimum();
             gainControl.setValue(gain);
 
-            clip.setFramePosition(0);
-            clip.start();
+            activeClips.put(soundName, clip);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else {
-            try {
-                Clip clip = AudioSystem.getClip();
-                AudioInputStream sound = ResourceLoader.getInstance().getSound(soundName);
-                clip.open(sound);
+    }
 
-                clip.setFramePosition(0);
-                clip.start();
-                activeClips.put(soundName, clip);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public float getLenghtOfClip(String soundName){
+        if( !activeClips.containsKey(soundName)  ){
+            loadClip(soundName);
         }
+        return (float)activeClips.get(soundName).getMicrosecondLength() /1000000;
     }
 
     public void stopSound( String soundName){
         if( activeClips.containsKey(soundName )){
             Clip clip = activeClips.get(soundName);
+
             clip.stop();
         }
     }
 
     public void stopAllSound(){
-
         for (var sound : activeClips.entrySet()) {
             stopSound(sound.getKey());
         }
+
     }
 
     //______________________SINGLETON ________________---

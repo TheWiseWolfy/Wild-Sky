@@ -1,6 +1,7 @@
 package com.apetrei.engine.scenes;
 
 import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.gui.DialogLine;
 import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.UIElements.Button;
@@ -12,6 +13,7 @@ import com.apetrei.misc.exceptions.ResourceNotFoundException;
 
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -21,7 +23,14 @@ public abstract class GameplayScene implements Scene {
     protected GameContainer gameContainer;
 
     boolean paused = false;
-    BufferedImage pauseMenuBackground = null;
+    BufferedImage pauseMenuBackground;
+
+
+    protected float timePassed =0;
+    private float timeOfLastChange = 0;
+    private float windChangeInterval = ConfigHandler.getWindChangeInterval();
+
+    Random random = new Random();
 
     public GameplayScene(GameContainer gameContainer) {
         this.gameContainer = gameContainer;
@@ -40,11 +49,15 @@ public abstract class GameplayScene implements Scene {
         gameContainer.getObjectManager().resetObjectManager();
 
         initializePauseMenu(gameContainer);
+        gameContainer.getHudManager().getDialogManager().resetDialogueQueue();
+        SoundManager.getInstance().stopAllSound();
+        //RANDOM WIND CHANGES
+
     }
 
     @Override
     public void update( float frameTime) {
-        SoundManager.getInstance().stopAllSound();
+        timePassed +=frameTime;
 
         if( ConfigHandler.isDebugMode()) {
             if (gameContainer.getInput().isKey(KeyEvent.VK_F1, InputType.DOWN)) {
@@ -74,6 +87,17 @@ public abstract class GameplayScene implements Scene {
         }else {
             gameContainer.getMenuManager().update();
         }
+
+        //RANDOM WIND CHANGES
+        if( timeOfLastChange + windChangeInterval  < timePassed  ){
+            int randomNum = random.nextInt(30) ;
+            float randomX =  random.nextFloat() * 2 - 1;
+            float randomY =  random.nextFloat() * 2 - 1;
+            gameContainer.getPhysicsSystem().getWindEffect().setWind(new Vector2(randomX, randomY),randomNum);
+            timeOfLastChange = timePassed;
+
+            if(ConfigHandler.isDebugMode()) System.out.println("Wind power became:" + randomNum);
+        }
     }
 
     @Override
@@ -99,6 +123,8 @@ public abstract class GameplayScene implements Scene {
         Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
         Button button1 = Button.makeButton("Menu",button1Poz, 0.3f, () -> {
             gameContainer.goBack();
+            SoundManager.getInstance().stopAllSound();
+
         });
 
         //SETTINGS BUTTON
@@ -111,5 +137,14 @@ public abstract class GameplayScene implements Scene {
         gameContainer.getMenuManager().addUIElement(button1);
         gameContainer.getMenuManager().addUIElement(button2);
         gameContainer.getMenuManager().addUIElement(button3);
+    }
+
+    protected void playDialogue(String line, String audioFile ,int character){
+        gameContainer.getHudManager().getDialogManager().addDialogueLine(new DialogLine(
+                        line ,
+                        audioFile,
+                        SoundManager.getInstance().getLenghtOfClip(audioFile),
+                        character)
+        );
     }
 }

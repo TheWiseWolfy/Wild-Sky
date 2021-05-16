@@ -8,6 +8,7 @@ import com.apetrei.engine.objects.components.Rigidbody2D;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 import com.apetrei.misc.observer.ObjectManagerObserver;
+import com.apetrei.providers.GameContainer;
 import org.testng.internal.collections.Pair;
 
 import java.util.*;
@@ -20,6 +21,7 @@ import java.util.*;
  *      - Atunci cand o coliziune este detectata, in aceasta fuctie va fi calculata si transmisa consecinta aceste coliziuni.
  */
 public class PhysicsSystem2D implements ObjectManagerObserver {
+    GameContainer gameContainer;
     private int impulseIterations = 5;
 
     private List<Collider2D> colliders;
@@ -29,13 +31,14 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
 
     Set<Pair<Integer, Integer>> activeCollisions = new HashSet<>();
 
-    WindEffect windEffect = new WindEffect();
+    WindEffect windEffect;
 
-    public PhysicsSystem2D() {
+    public PhysicsSystem2D(GameContainer gameContainer) {
         colliders = new ArrayList<>();
         bodies1 = new ArrayList<>();
         bodies2 = new ArrayList<>();
         collisions = new ArrayList<>();
+        windEffect = new WindEffect(gameContainer);
     }
 
     public void updatePhysics(float fixedUpdate) {
@@ -127,7 +130,7 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
         }
 
         //Colisiunea va respecta principile obiectului mai elastic dintre cele 2 ( nu e realistic dar csf)
-        float e = Math.min(a.getCor(), b.getCor());
+        float e = Math.min( a.getCor(), b.getCor() );
 
         float numerator = (-(1.0f + e) * relativeVel.dot(relativeNormal));
         float forceStrenght = numerator / invMassSum;

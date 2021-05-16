@@ -1,5 +1,6 @@
 package com.apetrei.engine.scenes.levels;
 
+import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.providers.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.DialogLine;
@@ -21,12 +22,7 @@ public class Level2 extends GameplayScene {
     @Override
     public void init() {
         super.init();
-
-        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Unga bunga shunga lunga", 2f,1));
-        gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("Yes, Sir !", 1.5f,0));
-
         initializeGame(gameContainer);
-
         gameContainer.getRenderer().getCamera().setBounds(300,300,1500,1500);
 
     }
@@ -55,14 +51,60 @@ public class Level2 extends GameplayScene {
         ObjectBuilder ob = new ObjectBuilder( gameContainer);
         //BACKGROUND
         gameContainer.getObjectManager().addGameObject( ob.BackgroundBuilder("Level2_background.png", 0.7f,0.2f) );
-        ob.setPlateToBuildAt( new Vector2(200, -350) );
+        ob.setPlateToBuildAt( new Vector2(0, -350) );
         gameContainer.getObjectManager().addGameObject( ob.BackgroundBuilder("clouds.png", 1f, 0.4f) );
 
         //PLAYER
         ob.setPlateToBuildAt( new Vector2(-1300, 0) );
-        gameContainer.getObjectManager().addGameObject( ob.PlayerBuilder() );
+        GameObject player =ob.PlayerBuilder();
+        gameContainer.getObjectManager().addGameObject( player );
 
+        //DETECTOR
         initializeDetector();
+
+        /////////ENEMY
+        ob.setPlateToBuildAt( new Vector2(400, 100));
+        gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
+
+        /////////ENEMY2
+        ob.setPlateToBuildAt( new Vector2(500, 200));
+       gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
+
+        /////////ENEMY3
+        ob.setPlateToBuildAt( new Vector2(700, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
+
+        /////////ENEMY4
+        ob.setPlateToBuildAt( new Vector2(1600, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
+
+        /////////ENEMY5
+        ob.setPlateToBuildAt( new Vector2(1600, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
+
+        /////////ENEMY5
+        ob.setPlateToBuildAt( new Vector2(2200, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
+
+        /////////ENEMY5
+        ob.setPlateToBuildAt( new Vector2(2300, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
+
+        /////////ENEMY5
+        ob.setPlateToBuildAt( new Vector2(2700, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
+
+        /////////ENEMY5
+        ob.setPlateToBuildAt( new Vector2(2800, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
+
+        /////////ENEMY5
+        ob.setPlateToBuildAt( new Vector2(3200, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
+
+        /////////ENEMY5
+        ob.setPlateToBuildAt( new Vector2(3500, 0));
+        gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
     }
 
     private void initializeDetector( ){
@@ -80,7 +122,7 @@ public class Level2 extends GameplayScene {
 
                         if( !hasHappened.contains( GlobalEvent.LEVEL2_COMPLETED) ){
                             hasHappened.add( GlobalEvent.LEVEL2_COMPLETED);
-                            gameContainer.getHudManager().getDialogManager().addDialogueLine( new DialogLine("You did it you wonker !",2f,1));
+
                         }
                     }
 

@@ -13,14 +13,15 @@ public class EnemyComponent extends Component implements HealthInterface{
     private TurretComponent turretComponent;
     private enemyAI ai;
 
-    GameObject objective;
-
     int maxHealt = 100;
     int healt = maxHealt;
 
-    public EnemyComponent(GameObject objective){
+    float enemyEnginePower = 50;
+
+    public EnemyComponent(int maxHealt){
         super();
-        this.objective = objective;
+        this.maxHealt = maxHealt;
+        healt = maxHealt;
     }
 
     // ________________________Component______________________
@@ -33,18 +34,15 @@ public class EnemyComponent extends Component implements HealthInterface{
         catch (Exception e){
             e.printStackTrace();
         }
-
         parent.addTag(ObjectTag.enemy);
-        ai = new enemyAI(this, this.getParent().getGameContainer() );
-        ai.setObjective( objective);
-
     }
 
     //_________________________________COMPONENT__________________________
     @Override
     public void componentUpdate(double fT) {
-        ai.updateAI();
-
+        if(ai != null) {
+            ai.updateAI();
+        }
         if( healt <= 0){
             this.parent.kill();
             parent.getGameContainer().getGlobalEventQueue().declareEvent( GlobalEvent.ENEMY_DESTROYED );
@@ -57,12 +55,21 @@ public class EnemyComponent extends Component implements HealthInterface{
 
     //____________________________POSSIBLE COMMANDS_______________
 
-
-    public void chaseTarger(GameObject gameObject){
-
+    public void chaseTarget(GameObject gameObject){
         try {
             Rigidbody2D targetRigidbody = (Rigidbody2D) gameObject.getComponent(Rigidbody2D.class);
             goToPosition( targetRigidbody.getPosition() );
+
+        } catch (ComponentMissingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void runFromTarget(GameObject gameObject){
+
+        try {
+            Rigidbody2D targetRigidbody = (Rigidbody2D) gameObject.getComponent(Rigidbody2D.class);
+            getFurtherFrom( targetRigidbody.getPosition() );
 
         } catch (ComponentMissingException e) {
             e.printStackTrace();
@@ -73,7 +80,14 @@ public class EnemyComponent extends Component implements HealthInterface{
         Vector2 direction = new Vector2(pos).sub(rigidbody.getPosition());
         direction = direction.normalized();
         rigidbody.rotation =  - (float)Math.atan2(direction.x, direction.y) +(float) Math.PI /2f;
-        rigidbody.addForce(direction.mul(100f));
+        rigidbody.addForce(direction.mul(enemyEnginePower));
+    }
+
+    public void getFurtherFrom(Vector2 pos ){
+        Vector2 direction = new Vector2(pos).sub(rigidbody.getPosition());
+        direction = direction.normalized();
+        rigidbody.rotation =  - (float)Math.atan2(direction.x, direction.y) + (float) Math.PI /2f;
+        rigidbody.addForce(direction.mul(-enemyEnginePower));
     }
 
     public float distanceTo(GameObject gameObject) {
@@ -94,12 +108,30 @@ public class EnemyComponent extends Component implements HealthInterface{
         try {
             Rigidbody2D targetRigidbody = (Rigidbody2D) gameObject.getComponent(Rigidbody2D.class);
             turretComponent.fireProjectile(targetRigidbody.position );
-
-
         } catch (ComponentMissingException e) {
             e.printStackTrace();
         }
         return 0;
+    }
+
+
+    public void mentainDistance(GameObject gameObject, int minDistance, int maxDistance) {
+        if( distanceTo(gameObject) > minDistance){
+            chaseTarget(gameObject);
+        }else if( distanceTo(gameObject) < maxDistance){
+            runFromTarget(gameObject);
+        }
+
+    }
+
+    //________________________SETTER_______________________________
+
+    public void setAi(enemyAI ai) {
+        this.ai = ai;
+    }
+
+    public void setEnemyEnginePower(float enemyEnginePower) {
+        this.enemyEnginePower = enemyEnginePower;
     }
 
 
@@ -130,6 +162,5 @@ public class EnemyComponent extends Component implements HealthInterface{
     public int getHealth() {
         return healt;
     }
-
 
 }

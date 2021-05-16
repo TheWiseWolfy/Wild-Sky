@@ -4,7 +4,7 @@ public class ProjectileComponent extends  Component{
 
     float lifespawn;
     float timeAlive = 0;
-    ProjectileComponent (float lifespawn){
+    public ProjectileComponent(float lifespawn){
         this.lifespawn = lifespawn;
     }
 
