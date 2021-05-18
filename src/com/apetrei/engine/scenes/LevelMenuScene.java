@@ -1,13 +1,14 @@
 package com.apetrei.engine.scenes;
 
-import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.sound.SoundManager;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.providers.ConfigHandler;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.gui.UIElements.MapButton;
 import com.apetrei.engine.input.InputType;
-import com.apetrei.providers.ResourceLoader;
+import com.apetrei.engine.providers.DatabaseManager;
+import com.apetrei.engine.providers.ResourceLoader;
+import com.apetrei.engine.renderer.CustomFonts;
 import com.apetrei.engine.scenes.levels.Level1;
 import com.apetrei.engine.scenes.levels.Level2;
 import com.apetrei.engine.scenes.levels.Level3;
@@ -27,8 +28,8 @@ public class LevelMenuScene implements Scene {
     Vector2 moved = new Vector2(0,0);
 
     Vector2 mapPosition = new Vector2(0,0);
-    Vector2 relativeCoordonateSytem = new Vector2(0,0);
-    BufferedImage background = null;
+    Vector2 relativeCoordinateSystem = new Vector2(0,0);
+    BufferedImage backgroundMap = null;
 
     float borderX = 200;
     float borderY = 100;
@@ -41,7 +42,7 @@ public class LevelMenuScene implements Scene {
     public LevelMenuScene( GameContainer gameContainer){
 
         try {
-            background = ResourceLoader.getInstance().getSprite("map.png");
+            backgroundMap = ResourceLoader.getInstance().getSprite("map.png");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,6 +64,9 @@ public class LevelMenuScene implements Scene {
             ConfigHandler.setCurrentLevel( Math.max(4,   ConfigHandler.getCurrentLevel() ) );
         }
 
+        //Save current level
+      //  DatabaseManager.getInstance().updateDataBase();
+
         //BUTTONS
         mapButton1 = MapButton.makeMapButton("Level 1", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level1(gameContainer));
@@ -80,12 +84,12 @@ public class LevelMenuScene implements Scene {
             gameContainer.goTo(new Level4(gameContainer));
         });
 
-        //STATIC BUTTONS
         gameContainer.getMenuManager().addUIElement(mapButton1);
         gameContainer.getMenuManager().addUIElement(mapButton2);
         gameContainer.getMenuManager().addUIElement(mapButton3);
         gameContainer.getMenuManager().addUIElement(mapButton4);
 
+        //STATIC BUTTONS
         Vector2 buttonBackPoz = new Vector2(ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.9f  );
         Button buttonBack = Button.makeButton("Back", buttonBackPoz, 0.3f, gameContainer::goBack);
         gameContainer.getMenuManager().addUIElement(buttonBack);
@@ -131,8 +135,12 @@ public class LevelMenuScene implements Scene {
     @Override
     public void render() {
         gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle( new Vector2( 0,0), new Vector2( ConfigHandler.getWidth() + 400, ConfigHandler.getHeight()+ 200), new Color(182,90,73));
-        gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(mapPosition, 1.1f, background);
+        gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(mapPosition, 1.1f, backgroundMap);
         gameContainer.getMenuManager().draw();
+
+        Vector2 textVolumePoz2 = new Vector2( ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.8f );
+        gameContainer.getRenderer().getTextRenderer().drawText("Score: "+ String.valueOf(ConfigHandler.getScore()) , textVolumePoz2, CustomFonts.SEAGRAM ,35, Color.BLACK);
+
     }
 
     public void updateSlidingMap(){
@@ -168,13 +176,12 @@ public class LevelMenuScene implements Scene {
     }
 
     public void updateMovingButtons(){
+        relativeCoordinateSystem = new Vector2(mapPosition).sub( new Vector2( backgroundMap.getWidth()/2, backgroundMap.getHeight()/2 ));
 
-        relativeCoordonateSytem = new Vector2(mapPosition).sub( new Vector2( background.getWidth()/2, background.getHeight()/2 ));
-
-        Vector2 mapButton1Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1430,400));
-        Vector2 mapButton2Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1330,140));
-        Vector2 mapButton3Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(1070,60));
-        Vector2 mapButton4Poz = new Vector2(relativeCoordonateSytem).add(new Vector2(850,100));
+        Vector2 mapButton1Poz = new Vector2(relativeCoordinateSystem).add(new Vector2(1430,400));
+        Vector2 mapButton2Poz = new Vector2(relativeCoordinateSystem).add(new Vector2(1330,140));
+        Vector2 mapButton3Poz = new Vector2(relativeCoordinateSystem).add(new Vector2(1070,60));
+        Vector2 mapButton4Poz = new Vector2(relativeCoordinateSystem).add(new Vector2(850,100));
 
         mapButton1.setPosition(mapButton1Poz);
         mapButton2.setPosition(mapButton2Poz);

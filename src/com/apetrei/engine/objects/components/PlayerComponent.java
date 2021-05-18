@@ -1,7 +1,7 @@
 package com.apetrei.engine.objects.components;
 
-import com.apetrei.engine.ConfigHandler;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.providers.ConfigHandler;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.objects.ObjectTag;
@@ -21,8 +21,10 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
     private Rigidbody2D rigidbody;
     private TurretComponent turretComponent;
     private AnimatedSpriteComponent animatedSprite;
-    private List<PlayerObserver> observers = new ArrayList<PlayerObserver>();
     private Vector2 fireTarget = new Vector2();
+
+    private float enginePower = ConfigHandler.getEnginePower();
+    private float maneuverability = ConfigHandler.getManeuverability();
 
     public PlayerComponent(){
         super();
@@ -57,15 +59,13 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
 
         if(gameContainer.getInput().isKey( KeyEvent.VK_W , InputType.DOWN)) {
             engineLevel = engineLevel < 3 ? ++engineLevel : engineLevel;
-            notifyoObserver();
 
-            if(ConfigHandler.isDebugMode() ) System.out.println("Engine level: "+ rigidbody.position );
+            if(ConfigHandler.isDebugMode() ) System.out.println("Player position: "+ rigidbody.position );
             if(ConfigHandler.isDebugMode() ) System.out.println("Engine level: "+ engineLevel );
         }
 
         if(gameContainer.getInput().isKey( KeyEvent.VK_S , InputType.DOWN)) {
             engineLevel = engineLevel > -1 ? --engineLevel : engineLevel;
-            notifyoObserver();
 
             if(ConfigHandler.isDebugMode() )  System.out.println("Engine level: "+ engineLevel );
         }
@@ -74,16 +74,16 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
             case 0:
                 break;
             case 1:
-                forceToBeAplied.add( rigidbody.getForward().mul( ConfigHandler.getEnginePower() *  0.2f ));
+                forceToBeAplied.add( rigidbody.getForward().mul(enginePower *  0.2f ));
                 break;
             case 2:
-                forceToBeAplied.add( rigidbody.getForward().mul( ConfigHandler.getEnginePower() *  0.5f ));
+                forceToBeAplied.add( rigidbody.getForward().mul( enginePower *  0.5f ));
                 break;
             case 3:
-                forceToBeAplied.add( rigidbody.getForward().mul( ConfigHandler.getEnginePower() ));
+                forceToBeAplied.add( rigidbody.getForward().mul(enginePower ));
                 break;
             case -1:
-                forceToBeAplied.add( rigidbody.getForward().mul( ConfigHandler.getEnginePower() * - 0.2f ));
+                forceToBeAplied.add( rigidbody.getForward().mul( enginePower * - 0.2f ));
             default:
                 // code block
         }
@@ -91,27 +91,34 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
 
         //Angular movement
         if(gameContainer.getInput().isKey(KeyEvent.VK_D, InputType.CONTINUOUS) ) {
-            rigidbody.addAngularForce( ConfigHandler.getManeuverability());
+            rigidbody.addAngularForce( maneuverability);
         }
         if(gameContainer.getInput().isKey(KeyEvent.VK_A ,InputType.CONTINUOUS)) {
-            rigidbody.addAngularForce( -ConfigHandler.getManeuverability());
+            rigidbody.addAngularForce( -maneuverability);
         }
 
+        //SHIFT FUCTIONALITY
         if( gameContainer.getInput().isKey(KeyEvent.VK_SHIFT ,InputType.DOWN ) ){
             animatedSprite.playAnimation();
 
             currentSailsModifier = ConfigHandler.getWithouthSailsDrag();
+            enginePower = ConfigHandler.getEnginePowerWithouthSails();
+            maneuverability = ConfigHandler.getManeuverabilityWithouthSails();
+
             if(ConfigHandler.isDebugMode() )  System.out.println("Current wind modifier:" + currentSailsModifier);
         }
         if( gameContainer.getInput().isKey(KeyEvent.VK_SHIFT ,InputType.UP ) ){
             animatedSprite.playAnimationBackwards();
 
             currentSailsModifier = ConfigHandler.getSailsDrag();
+            enginePower = ConfigHandler.getEnginePower();
+            maneuverability = ConfigHandler.getManeuverability();
+
             if(ConfigHandler.isDebugMode() )   System.out.println("Current wind modifier:" +currentSailsModifier);
         }
 
+        //FIRE WEAPON
         fireTarget =  gameContainer.getRenderer().getCamera().mouseInGameSpace();
-
         if(gameContainer.getInput().isKey( KeyEvent.VK_SPACE , InputType.CONTINUOUS)) {
             turretComponent.fireProjectile(fireTarget);
         }
@@ -132,26 +139,10 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
         }
     }
 
-    //_________________________OBSERVER__________________
-    final public void attach( PlayerObserver newObs){
-        observers.add(newObs);
-    }
-
-    final public void dettach( PlayerObserver newObs){
-        observers.remove(newObs);
-
-    }
-
-    final public void  notifyoObserver(){
-        for ( var obs :observers ) {
-            obs.playerUpdate( engineLevel, playerHealt );
-        }
-    }
-
     //__________________________WIND_INTERFACE___________________
     @Override
     public Vector2 getDragDirection() {
-         return new Vector2( rigidbody.getForward() ).mul(currentSailsModifier);
+        return new Vector2( rigidbody.getForward() ).mul(currentSailsModifier);
     }
 
     @Override
@@ -173,7 +164,6 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
         }else {
             playerHealt = ConfigHandler.getMaxPlayerHealt();
         }
-        notifyoObserver();
     }
 
     public void substactHealth(int value){
@@ -183,7 +173,6 @@ public class PlayerComponent extends Component implements HealthInterface, WindI
             playerHealt = 0;
             parent.getGameContainer().getGlobalEventQueue().declareEvent(GlobalEvent.PLAYER_DESTROYED);
         }
-        notifyoObserver();
     }
 
     @Override

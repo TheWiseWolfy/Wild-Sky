@@ -1,6 +1,6 @@
 package com.apetrei.engine.gui;
 
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.gui.UIElements.UIElement;
 import java.util.ArrayList;
 import java.util.List;

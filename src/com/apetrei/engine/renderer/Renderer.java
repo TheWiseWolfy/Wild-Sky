@@ -1,6 +1,6 @@
 package com.apetrei.engine.renderer;
 
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 
 import java.awt.*;
 

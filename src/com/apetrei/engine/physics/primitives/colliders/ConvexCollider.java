@@ -1,6 +1,6 @@
 package com.apetrei.engine.physics.primitives.colliders;
 
-import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.providers.ConfigHandler;
 import com.apetrei.engine.objects.components.Collider2D;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.misc.ConvexPolygon2D;

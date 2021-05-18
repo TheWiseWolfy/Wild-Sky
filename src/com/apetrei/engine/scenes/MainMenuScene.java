@@ -1,13 +1,12 @@
 package com.apetrei.engine.scenes;
 
-import com.apetrei.engine.ConfigHandler;
-import com.apetrei.engine.event.GlobalEvent;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.providers.ConfigHandler;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.renderer.CustomFonts;
 import com.apetrei.engine.sound.SoundManager;
-import com.apetrei.providers.DatabaseManager;
-import com.apetrei.providers.ResourceLoader;
+import com.apetrei.engine.providers.DatabaseManager;
+import com.apetrei.engine.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
 
@@ -15,14 +14,22 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class MainMenuScene implements Scene {
-    GameContainer gameContainer;
+    private GameContainer gameContainer;
 
-    BufferedImage background = null;
+    private BufferedImage background = null;
+    private BufferedImage warningMenuBackground = null;
+    private boolean isWorningOn = false;
+
+    Button button1;
+    Button button2;
+    Button button5;
+    Button button6;
 
     public MainMenuScene(GameContainer gameContainer) {
         this.gameContainer = gameContainer;
         try {
             background = ResourceLoader.getInstance().getSprite("main_menu_background.jpg");
+            warningMenuBackground = ResourceLoader.getInstance().getSprite("warning_menu_background.png");
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
         }
@@ -31,19 +38,15 @@ public class MainMenuScene implements Scene {
     @Override
     public void init() {
         gameContainer.getMenuManager().clearUI();
-
         //START GAME BUTTON
-
         Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
-        Button button1 = Button.makeButton("New Game",button1Poz, 0.3f, () -> {
-            DatabaseManager.getInstance().resetGameState();
-            gameContainer.getGlobalEventQueue().resetHistory();
-            gameContainer.goTo(new LevelMenuScene(gameContainer));
+        button1 = Button.makeButton("New Game",button1Poz, 0.3f, () -> {
+            isWorningOn = true;
         });
 
         //SETTINGS BUTTON
         Vector2 button2Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
-        Button button2 = Button.makeButton("Continue",button2Poz, 0.3f, () -> {
+        button2 = Button.makeButton("Continue",button2Poz, 0.3f, () -> {
             gameContainer.goTo(new LevelMenuScene(gameContainer));
         });
 
@@ -57,27 +60,64 @@ public class MainMenuScene implements Scene {
         Vector2 button4Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 300);
         Button button4 =Button.makeButton("Quit",button4Poz, 0.3f, gameContainer::close);
 
+        //WARNING MENU
+        //CLOSE GAME BUTTON
+        Vector2 button5Poz = new Vector2(ConfigHandler.getWidth() / 2 - 100 , ConfigHandler.getHeight() / 2 );
+        button5 =Button.makeButton("New Game",button5Poz, 0.3f, () -> {
+            DatabaseManager.getInstance().resetGameState();
+            gameContainer.getGlobalEventQueue().resetHistory();
+            gameContainer.goTo(new LevelMenuScene(gameContainer));
+        });  //CLOSE GAME BUTTON
+
+        Vector2 button6Poz = new Vector2(ConfigHandler.getWidth() / 2 + 100, ConfigHandler.getHeight() / 2 );
+        button6 =Button.makeButton("Cancel",button6Poz, 0.3f, () -> {
+            isWorningOn = false;
+        });
+
         gameContainer.getMenuManager().addUIElement(button1);
         gameContainer.getMenuManager().addUIElement(button2);
         gameContainer.getMenuManager().addUIElement(button3);
         gameContainer.getMenuManager().addUIElement(button4);
 
+        gameContainer.getMenuManager().addUIElement(button5);
+        gameContainer.getMenuManager().addUIElement(button6);
+
         //SOUND
         SoundManager.getInstance().stopAllSound();
-        SoundManager.getInstance().playSound("music2.wav");
+        SoundManager.getInstance().playMusic("music2.wav");
+        isWorningOn = false;
     }
 
     @Override
     public void update( float frameTime) {
         gameContainer.getMenuManager().update();
+
+        if (isWorningOn ){
+            button1.setActive(false);
+            button2.setActive(false);
+            button5.setActive(true);
+            button6.setActive(true);
+        }else {
+            button1.setActive(true);
+            button2.setActive(true);
+            button5.setActive(false);
+            button6.setActive(false);
+        }
     }
 
     @Override
     public void render( ) {
         gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(new Vector2( ConfigHandler.getWidth()/2,ConfigHandler.getHeight()/2), 0.6f, background);
-        gameContainer.getMenuManager().draw();
-
         Vector2 textPoz = new Vector2( ConfigHandler.getWidth()/2, 200);
         gameContainer.getRenderer().getTextRenderer().drawText("Wild-Sky" , textPoz, CustomFonts.SEAGRAM ,100, Color.BLACK);
+
+        if(isWorningOn){
+            gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(new Vector2( ConfigHandler.getWidth()/2,ConfigHandler.getHeight()/2.15f), 0.6f, warningMenuBackground);
+
+            Vector2 textPoz2 = new Vector2( ConfigHandler.getWidth()/2, 300);
+            gameContainer.getRenderer().getTextRenderer().drawText("Esti sigur ca vrei sa iti resetezi progressul ?" , textPoz2, "Serif" ,20, Color.BLACK);
+        }
+        gameContainer.getMenuManager().draw();
+
     }
 }

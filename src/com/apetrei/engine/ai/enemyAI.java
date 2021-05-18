@@ -1,7 +1,8 @@
 package com.apetrei.engine.ai;
 
 
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectTag;
 import com.apetrei.engine.objects.components.EnemyComponent;
@@ -21,8 +22,8 @@ public class enemyAI {
     int visionRange = 1500;
     int attckDistance = 600;
     int fightRange = 400;
-    int attackObjectiveRange = 1200;
-    int mentainDistanceToObjective = 1000;
+    int attackObjectiveRange = 1000;
+    int mentainDistanceToObjective = 800;
 
     public enemyAI( EnemyComponent enemyComponent, GameContainer gameContainer){
         this.enemyComponent = enemyComponent;
@@ -53,7 +54,8 @@ public class enemyAI {
        if( currentState == AIState.CHASE_OBJECTIVE && objective != null){
            float distanceToObjective =  enemyComponent.distanceTo( objective);
            enemyComponent.chaseTarget( objective );
-           if (distanceToObjective <= attackObjectiveRange){
+
+           if (distanceToObjective <= attackObjectiveRange && !objective.hasTag(ObjectTag.player)){
                enemyComponent.destroy( objective);
                enemyComponent.mentainDistance(objective,mentainDistanceToObjective,attackObjectiveRange);
 
@@ -75,5 +77,10 @@ public class enemyAI {
     public void setObjective(GameObject objective) {
         this.objective = objective;
     }
+
+    public void setAttackObjectiveRange(int attackObjectiveRange) {
+        this.attackObjectiveRange = attackObjectiveRange;
+    }
+
 }
 

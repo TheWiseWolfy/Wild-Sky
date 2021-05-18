@@ -1,6 +1,6 @@
 package com.apetrei.engine.renderer;
 
-import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.providers.ConfigHandler;
 
 import javax.swing.*;
 import java.awt.*;

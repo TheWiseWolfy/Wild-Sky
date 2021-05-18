@@ -1,6 +1,6 @@
 package com.apetrei.engine.objects;
 
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.objects.components.Component;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 

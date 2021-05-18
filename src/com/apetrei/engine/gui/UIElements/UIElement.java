@@ -1,12 +1,14 @@
 package com.apetrei.engine.gui.UIElements;
 
 
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.misc.command.Command;
 
 public abstract class UIElement {
 
     protected boolean isActive = true;
+    protected boolean isInteractive = true;
+
     protected  Command command  = null;
 
     UIElement (Command command){
@@ -20,6 +22,7 @@ public abstract class UIElement {
     public void setActive(Boolean isActive){
         this.isActive = isActive;
     }
-
-
+    public void setnteractivee(Boolean isInteractive){
+        this.isInteractive = isInteractive;
+    }
 }

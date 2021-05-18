@@ -1,6 +1,6 @@
 package com.apetrei.game;
 
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 
 //!MAIN
 public class GameManager {

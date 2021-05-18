@@ -1,7 +1,7 @@
 package com.apetrei.engine.scenes.levels;
 
 import com.apetrei.engine.sound.SoundManager;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectBuilder;
@@ -19,7 +19,6 @@ public class Level1 extends GameplayScene {
     int maxObjectiveHealt = 1000;
 
     String line;
-    ObjectBuilder ob;
     public Level1(GameContainer gameContainer) {
         super(gameContainer);
     }
@@ -29,16 +28,18 @@ public class Level1 extends GameplayScene {
     @Override
     public void init() {
         super.init();
-        ob = new ObjectBuilder( gameContainer);
-        initializeGame(gameContainer);
         gameContainer.getRenderer().getCamera().setBounds(800,800,800,800);
-        SoundManager.getInstance().playSound("battle_music.wav");
+        SoundManager.getInstance().playMusic("battle_music.wav");
+        initializeGame(gameContainer);
 
         //Dialogue
         line = "Domnilor, flota austriacă a ajuns în ușa noastră. Cred că e timpul să le  arătam cât de ospitalieri suntem. Protejați capitala cu orice cost!";
         playDialogue(line, "1_R.wav", 1);
         line = "Ințeles, amirale!\n";
         playDialogue(line, "1_I.wav", 0);
+
+        //Enemies to kill
+        enemiesLeft = 9;
     }
 
     @Override
@@ -67,7 +68,6 @@ public class Level1 extends GameplayScene {
             gameContainer.goBack();
         }
 
-
         if( timePassed > 40) {
             gameContainer.getGlobalEventQueue().declareEvent(GlobalEvent.LEVEL1_WAVE1);
             if( !hasHappened.contains(GlobalEvent.LEVEL1_WAVE1) ) {
@@ -80,25 +80,24 @@ public class Level1 extends GameplayScene {
                 playDialogue(line, "4_W.wav", 2);
 
                 /////////ENEMY
-                ob.setPlateToBuildAt(new Vector2(500, 600));
+                ob.setPlateToBuildAt(new Vector2(1400, 200));
                 gameContainer.getObjectManager().addGameObject(ob.mediumEnemyBuilder(dock));
 
                 /////////ENEMY2
-                ob.setPlateToBuildAt(new Vector2(500, 700));
+                ob.setPlateToBuildAt(new Vector2(1400, 300));
                 gameContainer.getObjectManager().addGameObject(ob.mediumEnemyBuilder(dock));
 
                 /////////ENEMY3
-                ob.setPlateToBuildAt(new Vector2(500, 800));
+                ob.setPlateToBuildAt(new Vector2(1400, 400));
                 gameContainer.getObjectManager().addGameObject(ob.lightEnemyBuilder(dock));
 
                 /////////ENEMY4
-                ob.setPlateToBuildAt(new Vector2(500, 900));
+                ob.setPlateToBuildAt(new Vector2(1400, 500));
                 gameContainer.getObjectManager().addGameObject(ob.lightEnemyBuilder(dock));
 
                 hasHappened.add(GlobalEvent.LEVEL1_WAVE1);
             }
         }
-
 
             //WIN CONDITION
         if( enemiesLeft == 0){
@@ -107,7 +106,7 @@ public class Level1 extends GameplayScene {
                 line = "Lașii! Asta o să ii invete minte să se puna cu Carpatia.";
                 playDialogue(line, "5_R.wav", 1);
                 line = "Nu o să fie ultima oara cand auziti de mine. \n";
-                playDialogue(line, "5_W.wav", 1);
+                playDialogue(line, "5_W.wav", 2);
             }
             hasHappened.add( GlobalEvent.LEVEL1_COMPLETED);
         }
@@ -138,21 +137,20 @@ public class Level1 extends GameplayScene {
         dock.addComponent( new ObjectiveComponent(maxObjectiveHealt));
         gameContainer.getObjectManager().addGameObject(dock);
 
-        enemiesLeft = 8;
         //PLAYER
         ConvexPolygon2D wa = new ConvexPolygon2D(ShapeProvider.getZepelinCollider());
         gameContainer.getObjectManager().addGameObject( ob.PlayerBuilder() );
 
         /////////ENEMY
-        ob.setPlateToBuildAt( new Vector2(400, 1000));
+        ob.setPlateToBuildAt( new Vector2(700, 1000));
         gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( dock) );
 
         /////////ENEMY2
-        ob.setPlateToBuildAt( new Vector2(300, 1000));
+        ob.setPlateToBuildAt( new Vector2(400, 1000));
         gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( dock) );
 
         /////////ENEMY3
-        ob.setPlateToBuildAt( new Vector2(200, 1000));
+        ob.setPlateToBuildAt( new Vector2(100, 1000));
         gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( dock) );
 
         /////////ENEMY4

@@ -1,6 +1,6 @@
 package com.apetrei.engine.objects;
 
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.objects.components.TransformComponent;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ComponentMissingException;
@@ -126,10 +126,6 @@ public class ObjectManager {
     final public void attachObserver( ObjectManagerObserver newObs){
 
         observers.add(newObs);
-    }
-
-    final public void dettach( PlayerObserver newObs){
-        observers.remove(newObs);
     }
 
     final public void  notifyObserversOfNewObject( GameObject newGameObject){

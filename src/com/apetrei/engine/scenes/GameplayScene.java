@@ -1,13 +1,14 @@
 package com.apetrei.engine.scenes;
 
-import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.objects.ObjectBuilder;
+import com.apetrei.engine.providers.ConfigHandler;
 import com.apetrei.engine.gui.DialogLine;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
 import com.apetrei.engine.gui.UIElements.Button;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.sound.SoundManager;
-import com.apetrei.providers.ResourceLoader;
+import com.apetrei.engine.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
 
@@ -19,13 +20,14 @@ import java.util.TreeSet;
 
 
 public abstract class GameplayScene implements Scene {
+    private boolean paused = false;
+    private BufferedImage pauseMenuBackground;
+
     protected Set<GlobalEvent> hasHappened= new TreeSet<GlobalEvent>();
     protected GameContainer gameContainer;
+    protected ObjectBuilder ob;
 
-    boolean paused = false;
-    BufferedImage pauseMenuBackground;
-
-
+    protected String line;
     protected float timePassed =0;
     private float timeOfLastChange = 0;
     private float windChangeInterval = ConfigHandler.getWindChangeInterval();
@@ -40,6 +42,8 @@ public abstract class GameplayScene implements Scene {
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
         }
+        ob = new ObjectBuilder( gameContainer);
+
     }
 
     @Override
@@ -52,18 +56,12 @@ public abstract class GameplayScene implements Scene {
         gameContainer.getHudManager().getDialogManager().resetDialogueQueue();
         SoundManager.getInstance().stopAllSound();
         //RANDOM WIND CHANGES
-
+        SoundManager.getInstance().playSound("engine.wav",true);
     }
 
     @Override
     public void update( float frameTime) {
         timePassed +=frameTime;
-
-        if( ConfigHandler.isDebugMode()) {
-            if (gameContainer.getInput().isKey(KeyEvent.VK_F1, InputType.DOWN)) {
-                gameContainer.goBack();
-            }
-        }
 
         if (gameContainer.getInput().isKey(KeyEvent.VK_ESCAPE, InputType.DOWN)) {
             paused = !paused;
@@ -97,6 +95,12 @@ public abstract class GameplayScene implements Scene {
             timeOfLastChange = timePassed;
 
             if(ConfigHandler.isDebugMode()) System.out.println("Wind power became:" + randomNum);
+        }
+
+        //SCORE TRAKING
+        if(gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.ENEMY_DESTROYED){
+            // System.out.println(ConfigHandler.getScore() + 1 );
+            ConfigHandler.setScore( ConfigHandler.getScore() + 1 );
         }
     }
 
@@ -141,10 +145,10 @@ public abstract class GameplayScene implements Scene {
 
     protected void playDialogue(String line, String audioFile ,int character){
         gameContainer.getHudManager().getDialogManager().addDialogueLine(new DialogLine(
-                        line ,
-                        audioFile,
-                        SoundManager.getInstance().getLenghtOfClip(audioFile),
-                        character)
+                line ,
+                audioFile,
+                SoundManager.getInstance().getLenghtOfClip(audioFile),
+                character)
         );
     }
 }

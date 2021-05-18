@@ -1,14 +1,15 @@
 package com.apetrei.engine.gui;
 
-import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.providers.ConfigHandler;
+import com.apetrei.engine.renderer.CustomFonts;
 import com.apetrei.engine.renderer.LayerRenderer;
 import com.apetrei.misc.ExtraMath;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.components.ObjectiveComponent;
 import com.apetrei.engine.objects.components.HealthInterface;
 import com.apetrei.engine.objects.components.PlayerComponent;
-import com.apetrei.providers.ResourceLoader;
+import com.apetrei.engine.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.observer.ObjectManagerObserver;
 
@@ -75,9 +76,12 @@ public class HUDManager implements ObjectManagerObserver {
         gameContainer.getRenderer().getLayerRenderer().drawStaticSprite( poz, 2f ,gauge.get(engineLevel + 1));
 
         //Player health
-        Vector2 healthCorner =  new Vector2( ConfigHandler.getWidth() * 0.07f,ConfigHandler.getHeight() * 0.05f);
+        Vector2 healthCorner =  new Vector2( ConfigHandler.getWidth() * 0.05f,ConfigHandler.getHeight() * 0.05f);
         Vector2 healthSize = new Vector2((float)playerHealt / ConfigHandler.getMaxPlayerHealt() * 350f,30);
         gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle(healthCorner,new Vector2( healthCorner).add(healthSize), Color.red);
+
+        Vector2 healthTextPoz = ( new Vector2(healthCorner).add(healthSize)).sub( new Vector2( healthSize.x * 0.8f,0));
+        gameContainer.getRenderer().getTextRenderer().drawText("Ariana",healthTextPoz, CustomFonts.SEAGRAM,25,Color.BLACK);
 
         //OBJECTIVE HEALT
         if(objectiveHealth != -1){
@@ -85,6 +89,9 @@ public class HUDManager implements ObjectManagerObserver {
             Vector2 objectiveHealthCorner =  new Vector2( ConfigHandler.getWidth() * 0.07f,ConfigHandler.getHeight() * 0.9f);
             Vector2 objectiveHealthSize = new Vector2((float)objectiveHealth / maxObjectiveHealth * 600f,30);
             gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle(objectiveHealthCorner,new Vector2( objectiveHealthCorner).add(objectiveHealthSize), Color.red);
+
+            Vector2 objectiveHealthTextPoz = ( new Vector2(objectiveHealthCorner).add(objectiveHealthSize)).sub( new Vector2( objectiveHealthSize.x * 0.8f,0));
+            gameContainer.getRenderer().getTextRenderer().drawText("Objective",objectiveHealthTextPoz, CustomFonts.SEAGRAM,25,Color.BLACK);
         }
         //WIND DIRECTION
 

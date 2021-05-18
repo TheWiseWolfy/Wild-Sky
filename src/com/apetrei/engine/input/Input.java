@@ -1,7 +1,7 @@
 package com.apetrei.engine.input;
 
-import com.apetrei.engine.ConfigHandler;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.providers.ConfigHandler;
+import com.apetrei.engine.GameContainer;
 
 import java.awt.event.*;
 import java.util.LinkedList;
@@ -94,7 +94,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     public void keyPressed(KeyEvent e) {
 
         int code = e.getKeyCode();
-
         if (pressedKeys.contains(code)) {
             return;
         } else {
@@ -108,7 +107,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
     public void keyReleased(KeyEvent e) {
 
         pressedKeys.remove(e.getKeyCode());
-
         playerInputEvent event = new playerInputEvent(e, InputType.UP);
         addInput(event);
     }
@@ -119,9 +117,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     @Override
     public void mousePressed(MouseEvent e) {
-
         int code = e.getButton();
-
         if (pressedMouseKeys.contains(code)) {
             return;
         } else {
@@ -169,20 +165,17 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
         scroll = e.getWheelRotation();
     }
 
-    //_______________________________________________________GETTER_____________________________
+    //_____________________________________________GETTER_________________________________
 
     public int getMouseX() {
         return mouseX;
     }
-
     public int getMouseY() {
         return mouseY;
     }
-
     public int getScroll() {
         return scroll;
     }
-
 }
 
 

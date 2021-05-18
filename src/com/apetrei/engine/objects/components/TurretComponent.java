@@ -46,7 +46,7 @@ public class TurretComponent extends Component{
 
         if(lastFiredTime + countdown < timePassed  ) {
             lastFiredTime = timePassed;
-        //    SoundManager.getInstance().playSound("gun.wav");
+            SoundManager.getInstance().playSound("fireball.wav",false);
 
             //Calculam traiectoria pentru proiectil
             Vector2 trajectory = new Vector2(rigidbody.getPosition()).sub(target).normalized();
@@ -70,6 +70,7 @@ public class TurretComponent extends Component{
     private GameObject createProjectile(Vector2 projectileSpawnPoint, Vector2 trajectoryModified){
         //Create projectile
         GameObject projectile = new GameObject(this.getParent().getGameContainer());
+        projectile.addTag(ObjectTag.projectile);
 
         //RIGIDBODY
         Rigidbody2D rigid = new Rigidbody2D(projectileSpawnPoint, trajectoryModified, 0.1f);
@@ -94,7 +95,7 @@ public class TurretComponent extends Component{
         projectile.addComponent(projectileCollider);
 
         //OTHER
-        projectile.addComponent(new ProjectileComponent(projectileLifespan));
+        projectile.addComponent(new TimerComponent(projectileLifespan));
         AnimatedSpriteComponent animator =new AnimatedSpriteComponent(projectileName,5, true);
         animator.setSpriteScale(0.7f);
         animator.playAnimation();
@@ -104,8 +105,9 @@ public class TurretComponent extends Component{
 
     private boolean hitCondition(Collider2D collider){
         boolean value =  collider.parent != this.parent;
-        value = value && !collider.parent.hasComponent(ProjectileComponent.class);
+        value = value && !collider.parent.hasTag(ObjectTag.projectile);
         value = value && !collider.parent.hasTag( mask);
+        value = value && !collider.parent.hasTag( ObjectTag.ignoreProjectile);
         return value ;
     }
 
@@ -113,16 +115,25 @@ public class TurretComponent extends Component{
     public void componentUpdate(double fT) {
         timePassed +=fT;
     }
-
     @Override
     public void componentRender() {
-
     }
 
     //______________________________SETTER_____________________
 
     public void setProjectileName(String projectileName) {
         this.projectileName = projectileName;
+    }
+
+    public void setCountdown(float countdown) {
+        this.countdown = countdown;
+    }
+    public void setProjectileSpread(float projectileSpread) {
+        this.projectileSpread = projectileSpread;
+    }
+
+    public void setProjectileSpeed(float projectileSpeed) {
+        this.projectileSpeed = projectileSpeed;
     }
 
 }

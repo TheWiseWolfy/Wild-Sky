@@ -8,11 +8,11 @@ import java.util.TreeSet;
 public class GlobalEventQueue {
 
     private Queue<GlobalEvent> eventQueue = new LinkedList<>();
-    private Set<GlobalEvent> hasHappened= new TreeSet<GlobalEvent>();
+    private Set<GlobalEvent> globalHasHappened = new TreeSet<GlobalEvent>();
 
     public void declareEvent(GlobalEvent event ){
         eventQueue.add( event);
-        hasHappened.add(event);
+        globalHasHappened.add(event);
     }
 
     public GlobalEvent checkCurrentEvent(){
@@ -22,11 +22,11 @@ public class GlobalEventQueue {
     }
 
     public boolean didItHappen( GlobalEvent event ){
-        return hasHappened.contains(event);
+        return globalHasHappened.contains(event);
     }
 
     public void resetHistory(){
-        hasHappened.clear();
+        globalHasHappened.clear();
     }
 
     public void nextEvent(){

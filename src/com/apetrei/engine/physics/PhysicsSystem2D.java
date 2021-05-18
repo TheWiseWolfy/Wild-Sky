@@ -8,7 +8,7 @@ import com.apetrei.engine.objects.components.Rigidbody2D;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 import com.apetrei.misc.observer.ObjectManagerObserver;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import org.testng.internal.collections.Pair;
 
 import java.util.*;

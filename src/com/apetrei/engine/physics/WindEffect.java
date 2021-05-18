@@ -6,7 +6,7 @@ import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 import com.apetrei.misc.observer.ObjectManagerObserver;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package com.apetrei.engine.objects.components;
 import com.apetrei.engine.renderer.LayerRenderer;
 import com.apetrei.misc.ExtraMath;
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
-import com.apetrei.providers.ResourceLoader;
+import com.apetrei.engine.providers.ResourceLoader;
 
 import java.awt.image.BufferedImage;
 

@@ -1,10 +1,10 @@
 package com.apetrei.engine.gui;
 
-import com.apetrei.engine.ConfigHandler;
+import com.apetrei.engine.providers.ConfigHandler;
 import com.apetrei.engine.sound.SoundManager;
 import com.apetrei.misc.Vector2;
-import com.apetrei.providers.GameContainer;
-import com.apetrei.providers.ResourceLoader;
+import com.apetrei.engine.GameContainer;
+import com.apetrei.engine.providers.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -49,7 +49,7 @@ public class DialogManager {
 
         if( !dialogueQueue.isEmpty()) {
             if (readyForDialogue ){
-                SoundManager.getInstance().playSound(dialogueQueue.peek().audioFile);
+                SoundManager.getInstance().playSound(dialogueQueue.peek().audioFile,false);
                 readyForDialogue = false;
             }
 

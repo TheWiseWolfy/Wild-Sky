@@ -1,11 +1,11 @@
 package com.apetrei.engine.scenes.levels;
 
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.event.GlobalEvent;
-import com.apetrei.engine.gui.DialogLine;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.ObjectBuilder;
 import com.apetrei.engine.scenes.GameplayScene;
+import com.apetrei.engine.sound.SoundManager;
 import com.apetrei.misc.Vector2;
 
 public class Level4 extends GameplayScene {
@@ -18,8 +18,15 @@ public class Level4 extends GameplayScene {
     @Override
     public void init() {
         super.init();
-        initializeGame(gameContainer);
         gameContainer.getRenderer().getCamera().setBounds(800,800,800,800);
+        SoundManager.getInstance().playMusic("battle_music4.wav");
+        initializeGame(gameContainer);
+
+
+        line = "Zilele tale de tiranie s-au terminat!";
+        playDialogue(line, "4_1_I.wav", 0);
+        line = "Ce să terminat e mica ta rebeliune.";
+        playDialogue(line, "4_1_W.wav", 2);
     }
 
     @Override
@@ -39,7 +46,10 @@ public class Level4 extends GameplayScene {
         if( enemiesLeft == 0){
             gameContainer.getGlobalEventQueue().declareEvent( GlobalEvent.LEVEL4_COMPLETED);
             if( !hasHappened.contains( GlobalEvent.LEVEL4_COMPLETED) ) {
-          //      gameContainer.getHudManager().getDialogManager().addDialogueLine(new DialogLine("You did it you wonker !", 2f, 1));
+                line ="Cum e posibil ? Ce am facut gresit ? Nu pot să creeeed";
+                playDialogue(line, "4_3_W.wav", 2);
+                line = "O să ajuti lumea mai mult în moarte decât ai atunci cănd erai viață.";
+                playDialogue(line, "4_3_I.wav", 0);
             }
             hasHappened.add( GlobalEvent.LEVEL4_COMPLETED);
         }
@@ -48,7 +58,6 @@ public class Level4 extends GameplayScene {
         if( gameContainer.getHudManager().getDialogManager().isDialogueFinished()  && hasHappened.contains(GlobalEvent.LEVEL4_COMPLETED)) {
             gameContainer.goBack();
         }
-
     }
 
     @Override
@@ -57,10 +66,8 @@ public class Level4 extends GameplayScene {
     }
 
     private void initializeGame(GameContainer gameContainer) {
+        enemiesLeft = 5;
 
-        enemiesLeft = 3;
-
-        ObjectBuilder ob = new ObjectBuilder( gameContainer);
         //BACKGROUND
         gameContainer.getObjectManager().addGameObject( ob.BackgroundBuilder("Level4_background.png", 0.7f,0.2f) );
         ob.setPlateToBuildAt( new Vector2(200, -350) );
@@ -72,16 +79,28 @@ public class Level4 extends GameplayScene {
         gameContainer.getObjectManager().addGameObject(player );
 
         /////////ENEMY
-        ob.setPlateToBuildAt( new Vector2(800, 1000));
-        gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
+        ob.setPlateToBuildAt( new Vector2(300, 1000));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
+
+        /////////ENEMY
+        ob.setPlateToBuildAt( new Vector2(1000, 1000));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
+
+        /////////ENEMY
+        ob.setPlateToBuildAt( new Vector2(800, 1600));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
 
         /////////ENEMY2
-        ob.setPlateToBuildAt( new Vector2(400, 1000));
-        gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
+        ob.setPlateToBuildAt( new Vector2(400, -600));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
 
         /////////ENEMY3
-        ob.setPlateToBuildAt( new Vector2(200, 1000));
-        gameContainer.getObjectManager().addGameObject(   ob.mediumEnemyBuilder( player) );
+        ob.setPlateToBuildAt( new Vector2(200, -600));
+        gameContainer.getObjectManager().addGameObject(   ob.lightEnemyBuilder( player) );
+
+        ob.setPlateToBuildAt(new Vector2( 500, 1200));
+        gameContainer.getObjectManager().addGameObject( ob.heavyEnemyBuilder( player));
+        enemiesLeft++;
     }
 
 }

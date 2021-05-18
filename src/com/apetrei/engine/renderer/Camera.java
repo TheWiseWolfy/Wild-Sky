@@ -1,7 +1,7 @@
 package com.apetrei.engine.renderer;
 
-import com.apetrei.engine.ConfigHandler;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.providers.ConfigHandler;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.objects.GameObject;
 import com.apetrei.engine.objects.components.PlayerComponent;
 import com.apetrei.engine.objects.components.TransformComponent;

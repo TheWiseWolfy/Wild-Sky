@@ -1,9 +1,9 @@
 package com.apetrei.engine.gui.UIElements;
 
-import com.apetrei.engine.ConfigHandler;
-import com.apetrei.providers.GameContainer;
+import com.apetrei.engine.providers.ConfigHandler;
+import com.apetrei.engine.GameContainer;
 import com.apetrei.engine.input.InputType;
-import com.apetrei.providers.ResourceLoader;
+import com.apetrei.engine.providers.ResourceLoader;
 import com.apetrei.misc.command.Command;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ResourceNotFoundException;
@@ -49,13 +49,13 @@ public class Button extends UIElement {
     }
 
     private boolean isPressed(GameContainer gameContainer){
-        if( gameContainer.getInput().isMouseKey(MouseEvent.BUTTON1 , InputType.MOUSE_DOWN)  ) {
-
-            int mouseX = gameContainer.getInput().getMouseX();
-            int mouseY = gameContainer.getInput().getMouseY();
-
-            if (mouseX > cornerA.x && mouseY > cornerA.y && mouseX < cornerB.x && mouseY < cornerB.y ) {
-                return  true;
+        if(isInteractive) {
+            if (gameContainer.getInput().isMouseKey(MouseEvent.BUTTON1, InputType.MOUSE_DOWN)) {
+                int mouseX = gameContainer.getInput().getMouseX();
+                int mouseY = gameContainer.getInput().getMouseY();
+                if (mouseX > cornerA.x && mouseY > cornerA.y && mouseX < cornerB.x && mouseY < cornerB.y) {
+                    return true;
+                }
             }
         }
         return false;
@@ -67,7 +67,6 @@ public class Button extends UIElement {
             gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(position, scale, sprite);
 
             Vector2 textPoz = new Vector2(position);
-
             gameContainer.getRenderer().getTextRenderer().drawText(buttonText, position, "Serif", 20, Color.BLACK);
 
             if (ConfigHandler.isDebugMode())
@@ -100,7 +99,6 @@ public class Button extends UIElement {
         BufferedImage sprite = null;
         try {
             sprite = ResourceLoader.getInstance().getSprite("Button_short.png");
-
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
         }
