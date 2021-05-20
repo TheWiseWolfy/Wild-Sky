@@ -59,7 +59,7 @@ public class ObjectBuilder {
 
         //TURRET COMPONENT
         TurretComponent turretComponent = new TurretComponent(ObjectTag.enemy);
-        turretComponent.setCountdown(0.1f);
+        turretComponent.setCountdown(0.15f);
         turretComponent.setProjectileName("redProjectile");
         enemy.addComponent(turretComponent);
 
@@ -70,7 +70,7 @@ public class ObjectBuilder {
         EnemyComponent enemyComponent = new EnemyComponent(1000);
         enemyComponent.setEnemyEnginePower(150);
         enemyAI ai = new enemyAI(enemyComponent, gameContainer);
-        ai.setFightRange(950);
+        ai.setFightRange(900);
         if (objective != null){
             ai.setObjective(objective);
         }

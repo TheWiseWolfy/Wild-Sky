@@ -25,7 +25,7 @@ public class Level4 extends GameplayScene {
 
         line = "Zilele tale de tiranie s-au terminat!";
         playDialogue(line, "4_1_I.wav", 0);
-        line = "Ce să terminat e mica ta rebeliune.";
+        line = "Ce s-a terminat e mica ta rebeliune.";
         playDialogue(line, "4_1_W.wav", 2);
     }
 
@@ -46,7 +46,7 @@ public class Level4 extends GameplayScene {
         if( enemiesLeft == 0){
             gameContainer.getGlobalEventQueue().declareEvent( GlobalEvent.LEVEL4_COMPLETED);
             if( !hasHappened.contains( GlobalEvent.LEVEL4_COMPLETED) ) {
-                line ="Cum e posibil ? Ce am facut gresit ? Nu pot să creeeed";
+                line ="Cum e posibil ? Ce am facut gresit ? Nu pot să creeeed...";
                 playDialogue(line, "4_3_W.wav", 2);
                 line = "O să ajuti lumea mai mult în moarte decât ai atunci cănd erai viață.";
                 playDialogue(line, "4_3_I.wav", 0);
