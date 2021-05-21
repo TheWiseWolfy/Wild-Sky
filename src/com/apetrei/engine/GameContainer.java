@@ -18,8 +18,10 @@ import com.apetrei.engine.providers.ResourceLoader;
 import java.awt.event.KeyEvent;
 import java.util.Stack;
 
+/*!
+ * Clasa care centralizeaza toate sistemele jocului si le face vizibile in interior.
+ */
 public class GameContainer implements Runnable {
-
     //Thread pe care va rula enginul
     private final Thread thread;
 
@@ -71,8 +73,6 @@ public class GameContainer implements Runnable {
         thread.run();
     }
 
-    //The Runnable interface should be implemented by any class whose instances are intended to be executed by a thread.
-    // The class must define a method of no arguments called run.
     public void run() {
 
         //Atat timp cat jocul ruleaza
@@ -86,6 +86,7 @@ public class GameContainer implements Runnable {
         float frameTime = 0;
         float unprocessedTime = 0;
 
+        //Main game loop
         while (running) {
 
             //Presupunem ca nu trebuie sa redesenam jocul
@@ -96,14 +97,13 @@ public class GameContainer implements Runnable {
             unprocessedTime += frameTime;
 
             //MISC CODE
-
             if( input.isKey(KeyEvent.VK_F1 , InputType.DOWN ) ){
                 ConfigHandler.setDebugMode( !ConfigHandler.isDebugMode() );
                 System.out.println(ConfigHandler.isDebugMode());
             }
 
             //UPDATE//
-            sceneStack.peek().update(frameTime);
+            sceneStack.peek().update(frameTime);       //Actualizam scena curenta
             input.nextEvent();
             globalEventQueue.nextEvent();
             //////////
@@ -139,7 +139,8 @@ public class GameContainer implements Runnable {
                 popScene =false;
             }
         }//END WHILE
-        DatabaseManager.getInstance().updateDataBase();
+        DatabaseManager.getInstance().updateDataBase();     //Salvam baza de date o ultima oara
+        DatabaseManager.getInstance().closeConnection();       //Si apoi o inchidem
         window.close();
     }
 
@@ -148,12 +149,13 @@ public class GameContainer implements Runnable {
         running = false;
     }
 
+    //Fuctia folosita pentru a cobora in stack
     public void goBack(){
         if(sceneStack.size() > 1) {
             popScene = true;
         }
     }
-
+    //Fuctia folosita cand vrem sa ne ducem in alta scena.
     public void goTo(Scene newScene){
         if( newScene.getClass() != sceneStack.peek().getClass() ) {
             sceneToBeUsed = newScene;

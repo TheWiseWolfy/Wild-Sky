@@ -30,9 +30,9 @@ public class Level2 extends GameplayScene {
         //Dialogue
         line = "Spargeți blocada! Ajungeți pe cealaltă parte intregi! E un ordin.";
         playDialogue(line, "2_1_R.wav", 1);
-        line =  "Domnilor, pretul libertații noastre va fi plătit în sange, dar nu sangele nostru. ";
+        line =  "Domnilor, pretul libertații noastre va fi plătit în sânge, dar nu sângele nostru. ";
         playDialogue(line, "2_1_I.wav", 0);
-        line =  "Nu lasati nava să treacă! ";
+        line =  "Nu lăsați nava să treacă! ";
         playDialogue(line, "2_1_W.wav", 2);
     }
 

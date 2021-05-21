@@ -41,7 +41,7 @@ public class DatabaseManager {
         }
 
     }
-    private void closeConnection(){
+    public void closeConnection(){
         try {
             connection.close();
         } catch (SQLException throwables) {

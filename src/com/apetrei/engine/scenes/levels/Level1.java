@@ -108,7 +108,7 @@ public class Level1 extends GameplayScene {
         if( enemiesLeft == 0){
             gameContainer.getGlobalEventQueue().declareEvent( GlobalEvent.LEVEL1_COMPLETED);
             if( !hasHappened.contains( GlobalEvent.LEVEL1_COMPLETED) ){
-                line = "Lașii! Asta o să ii invete minte să se puna cu Carpatia.";
+                line = "Lașii! Asta o să ii invete minte să se pună cu Carpatia.";
                 playDialogue(line, "5_R.wav", 1);
                 line = "Nu o să fie ultima oară când auziți de mine.";
                 playDialogue(line, "5_W.wav", 2);

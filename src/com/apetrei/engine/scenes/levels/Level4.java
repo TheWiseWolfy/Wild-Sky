@@ -53,7 +53,6 @@ public class Level4 extends GameplayScene {
             }
             hasHappened.add( GlobalEvent.LEVEL4_COMPLETED);
         }
-
         //END LEVEL CONDITION
         if( gameContainer.getHudManager().getDialogManager().isDialogueFinished()  && hasHappened.contains(GlobalEvent.LEVEL4_COMPLETED)) {
             gameContainer.goBack();

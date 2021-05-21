@@ -49,7 +49,7 @@ public class Level3 extends GameplayScene {
 
             line = "Ne atacă! O să regreți că ai pus piciorul pe pămând Austriac. Doborați intrusul!";
             playDialogue(line, "3_2_W.wav", 2);
-            line = "Singurul lucru pe care il regret e că nu l-am atacat mai devreme.";
+            line = "Singurul lucru pe care îl regret e că nu l-am atacat mai devreme.";
             playDialogue(line, "3_2_I.wav", 0);
         }
 
