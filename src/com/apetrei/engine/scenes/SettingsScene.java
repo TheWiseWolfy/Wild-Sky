@@ -93,7 +93,7 @@ public class SettingsScene implements Scene{
                 " \nDesigner Principal - Bogdan Gabriel Apetrei" +
                 " \nRoluri:" +
                 " \nIulius - Iulian Tanăsache" +
-                " \nRadului -Radu Cornea" +
+                " \nRadulus -Radu Cornea" +
                 " \nReiner Von Wolfgang - Cătălin Toma";
         gameContainer.getRenderer().getTextRenderer().drawTextInABox( credits ,textCreditsPoz,textCreditsPoz2, "Serif",20,Color.BLACK);
 
