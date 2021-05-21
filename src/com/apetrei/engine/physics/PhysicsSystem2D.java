@@ -8,7 +8,7 @@ import com.apetrei.engine.objects.components.Rigidbody2D;
 import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 import com.apetrei.misc.observer.ObjectManagerObserver;
-import org.testng.internal.collections.Pair;
+import com.apetrei.engine.GameContainer;
 
 import java.util.*;
 
@@ -20,25 +20,32 @@ import java.util.*;
  *      - Atunci cand o coliziune este detectata, in aceasta fuctie va fi calculata si transmisa consecinta aceste coliziuni.
  */
 public class PhysicsSystem2D implements ObjectManagerObserver {
+    GameContainer gameContainer;
     private int impulseIterations = 5;
 
     private List<Collider2D> colliders;
-
     private List<Rigidbody2D> bodies1;
     private List<Rigidbody2D> bodies2;
-
     private List<CollisionManifold> collisions;
 
-    Set<Pair<Integer, Integer>> activeCollisions = new HashSet<>();
+    Set<AbstractMap.SimpleEntry<Integer, Integer>> activeCollisions = new HashSet<>();
 
-    public PhysicsSystem2D() {
+    WindEffect windEffect;
+
+    public PhysicsSystem2D(GameContainer gameContainer) {
         colliders = new ArrayList<>();
         bodies1 = new ArrayList<>();
         bodies2 = new ArrayList<>();
         collisions = new ArrayList<>();
+        windEffect = new WindEffect(gameContainer);
     }
 
     public void updatePhysics(float fixedUpdate) {
+        windEffect.update();
+        updateColisions();
+    }
+
+    private void updateColisions( ){
         bodies1.clear();
         bodies2.clear();
         collisions.clear();
@@ -64,15 +71,10 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
                 if (c1 != null && c2 != null) {
                     result = Collisions.findCollisionFeatures(c1, c2);
                 }
-
-
-
                 if (result != null && result.isColliding()) {
-
-
-                    if (!activeCollisions.contains( new Pair<Integer,Integer>(i,j) )) {
-                        activeCollisions.add(new Pair<Integer,Integer>(i, j));
-
+                    if (!activeCollisions.contains( new AbstractMap.SimpleEntry<Integer,Integer>(i,j) )) {
+                        activeCollisions.add(new AbstractMap.SimpleEntry<Integer,Integer>(i, j));
+                        //c1 si c2 sunt cele 2 obiecte in coliziune
                         c1.onCollision(c2);
                         c2.onCollision(c1);
                     }
@@ -83,7 +85,7 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
                     }
 
                 }else {
-                    activeCollisions.remove( new Pair<Integer,Integer>(i,j) );
+                    activeCollisions.remove( new AbstractMap.SimpleEntry<Integer,Integer>(i,j) );
                 }
             }
         }
@@ -124,7 +126,7 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
         }
 
         //Colisiunea va respecta principile obiectului mai elastic dintre cele 2 ( nu e realistic dar csf)
-        float e = Math.min(a.getCor(), b.getCor());
+        float e = Math.min( a.getCor(), b.getCor() );
 
         float numerator = (-(1.0f + e) * relativeVel.dot(relativeNormal));
         float forceStrenght = numerator / invMassSum;
@@ -140,31 +142,36 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
         b.addForce(impulse.mul(-1.0f));
     }
 
-    //TODO Make this automatic after a set criteria
-    //O fuctie prin care adaugem obiecte in sistemul de fizica
-    public void addCollider(Collider2D collider) {
+    private void addCollider(Collider2D collider) {
         this.colliders.add(collider);
     }
 
-    public void removeCollider(Collider2D collider) {
+    private void removeCollider(Collider2D collider) {
         this.colliders.remove(collider);
     }
 
     public void resetPhysicsSystem() {
-        this.colliders.clear();
+       // this.colliders.clear();
     }
+
+    //_______________________________________GETTERS_______________________
+
+    public WindEffect getWindEffect() {
+        return windEffect;
+    }
+
+    //____________________________________OBJECT_OBSERVER_______________________
 
     @Override
     public void newObjectUpdate(GameObject created) {
-
-         if( created.hasComponent(Collider2D.class)){
-             try {
-                 addCollider( (Collider2D) created.getComponent( Collider2D.class));
-             } catch (ComponentMissingException e) {
-                 System.err.println( "One with object with collisions has not been added to the Physics sistem.");
-                 e.printStackTrace();
-             }
-         }
+        if( created.hasComponent(Collider2D.class)){
+            try {
+                addCollider( (Collider2D) created.getComponent( Collider2D.class));
+            } catch (ComponentMissingException e) {
+                System.err.println( "One with object with collisions has not been added to the Physics sistem.");
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -178,8 +185,6 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
             }
         }
     }
-
-
 }
 
 

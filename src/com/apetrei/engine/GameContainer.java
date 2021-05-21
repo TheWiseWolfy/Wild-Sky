@@ -1,27 +1,29 @@
 package com.apetrei.engine;
 
+import com.apetrei.engine.event.GlobalEventQueue;
 import com.apetrei.engine.gui.HUDManager;
 import com.apetrei.engine.gui.MenuManager;
 import com.apetrei.engine.input.Input;
 import com.apetrei.engine.input.InputType;
 import com.apetrei.engine.objects.ObjectManager;
 import com.apetrei.engine.physics.PhysicsSystem2D;
-import com.apetrei.engine.renderer.ImageLoader;
+import com.apetrei.engine.providers.ConfigHandler;
 import com.apetrei.engine.renderer.Renderer;
 import com.apetrei.engine.renderer.Window;
-import com.apetrei.engine.scenes.GameplayScene;
 import com.apetrei.engine.scenes.MainMenuScene;
 import com.apetrei.engine.scenes.Scene;
+import com.apetrei.engine.providers.DatabaseManager;
+import com.apetrei.engine.providers.ResourceLoader;
 
 import java.awt.event.KeyEvent;
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
 
+/*!
+ * Clasa care centralizeaza toate sistemele jocului si le face vizibile in interior.
+ */
 public class GameContainer implements Runnable {
-
     //Thread pe care va rula enginul
     private final Thread thread;
-    //private final Thread threadTest;
 
     private final Window window;
     private final Renderer renderer;
@@ -31,45 +33,46 @@ public class GameContainer implements Runnable {
     private final HUDManager hudManager;
     private final MenuManager menuManager;
     private final PhysicsSystem2D physicsSystem;
+    private final GlobalEventQueue globalEventQueue;
 
-    //Scene stack
+    //SCENE SYSTEM
     Stack<Scene> sceneStack = new Stack<>();
-
+    private Scene sceneToBeUsed;
+    private boolean popScene = false;
     private boolean running = false;
 
     public GameContainer() {
-        //Initializari importante
+        //Engine Initialization
         thread = new Thread(this);
-
         window = new Window();
         renderer = new Renderer(this);
         hudManager = new HUDManager(this);
         menuManager = new MenuManager(this);
         input = new Input(this);
-        physicsSystem = new PhysicsSystem2D();
+        physicsSystem = new PhysicsSystem2D(this);
+        globalEventQueue = new GlobalEventQueue();
 
         objectManager = new ObjectManager(this);
         objectManager.attachObserver(hudManager);
-        objectManager.attachObserver( physicsSystem);
+        objectManager.attachObserver(physicsSystem);
+        objectManager.attachObserver(physicsSystem.getWindEffect() );
+        objectManager.attachObserver(renderer.getCamera());
 
-        MainMenuScene mainMenuScene = new MainMenuScene();
+        //Loading stuffs
+        DatabaseManager.getInstance().updateConfigClass();
+        ResourceLoader.getInstance();
+
+        //Game Initialization
+        MainMenuScene mainMenuScene = new MainMenuScene(this);
+        mainMenuScene.init();
         sceneStack.add(mainMenuScene);
     }
 
-    //Nu consider ca un singleton e ideal aici, dar e o scurtatura usoara pentru a permite serializarea catorva obiecte.
-
     public void start() {
-        ImageLoader.getInstance();      //Pre initializare
-
+        ResourceLoader.getInstance();      //Pre initializare
         thread.run();
     }
 
-    public void stop() {
-
-    }
-
-    //The Runnable interface should be implemented by any class whose instances are intended to be executed by a thread.
-    // The class must define a method of no arguments called run.
     public void run() {
 
         //Atat timp cat jocul ruleaza
@@ -83,6 +86,7 @@ public class GameContainer implements Runnable {
         float frameTime = 0;
         float unprocessedTime = 0;
 
+        //Main game loop
         while (running) {
 
             //Presupunem ca nu trebuie sa redesenam jocul
@@ -92,29 +96,17 @@ public class GameContainer implements Runnable {
             lastTime = firstTime;
             unprocessedTime += frameTime;
 
+            //MISC CODE
+            if( input.isKey(KeyEvent.VK_F1 , InputType.DOWN ) ){
+                ConfigHandler.setDebugMode( !ConfigHandler.isDebugMode() );
+                System.out.println(ConfigHandler.isDebugMode());
+            }
+
             //UPDATE//
-
-            sceneStack.peek().update(this,frameTime);
-
-            if(input.isKey( KeyEvent.VK_F1 , InputType.DOWN)) {
-              goTo (new GameplayScene(this) );
-            }
-            if(input.isKey( KeyEvent.VK_F2 , InputType.DOWN)) {
-                goBack();
-            }
+            sceneStack.peek().update(frameTime);       //Actualizam scena curenta
             input.nextEvent();
-
-            ///////////
-
-            if (ConfigHandler.isDebugMode()) {
-                //   System.out.println("Current FPS:" + 1 / frameTime + "\r");
-            }
-
-            try {
-                  TimeUnit.MICROSECONDS.sleep( 8666);
-            }catch (Exception e){
-
-            }
+            globalEventQueue.nextEvent();
+            //////////
 
             //RENDERING
             while (unprocessedTime >= ConfigHandler.getUpdateCap()) {
@@ -123,13 +115,11 @@ public class GameContainer implements Runnable {
             }
 
             if (render) {
-
                 renderer.PrepareRender();
                 ////RENDER////
-                sceneStack.peek().render(this);
+                sceneStack.peek().render();
                 /////////////
                 renderer.Render();
-
             } else {
                 try {
                     Thread.sleep(1);
@@ -138,25 +128,38 @@ public class GameContainer implements Runnable {
                 }
             }
 
+            //CHANGE SCENE AT THE END OF FRAME
+            if(sceneToBeUsed != null){
+                sceneToBeUsed.init();
+                sceneStack.add( sceneToBeUsed);
+                sceneToBeUsed = null;
+            } else if(popScene){
+                sceneStack.pop();
+                sceneStack.peek().init();
+                popScene =false;
+            }
         }//END WHILE
+        DatabaseManager.getInstance().updateDataBase();     //Salvam baza de date o ultima oara
+        DatabaseManager.getInstance().closeConnection();       //Si apoi o inchidem
         window.close();
     }
 
     //_____________________SCENE_STACK_____________________
-
     public void close(){
         running = false;
-
     }
 
+    //Fuctia folosita pentru a cobora in stack
     public void goBack(){
         if(sceneStack.size() > 1) {
-            sceneStack.pop();
+            popScene = true;
         }
     }
-
-    public void goTo(GameplayScene newScene){
-        sceneStack.add(newScene);
+    //Fuctia folosita cand vrem sa ne ducem in alta scena.
+    public void goTo(Scene newScene){
+        if( newScene.getClass() != sceneStack.peek().getClass() ) {
+            sceneToBeUsed = newScene;
+        }
     }
 
     //______________________GETTERS__________________________
@@ -164,29 +167,25 @@ public class GameContainer implements Runnable {
     public ObjectManager getObjectManager() {
         return objectManager;
     }
-
     public Window getWindow() {
         return window;
     }
-
     public Input getInput() {
         return input;
     }
-
     public Renderer getRenderer() {
         return renderer;
     }
-
     public PhysicsSystem2D getPhysicsSystem() {
         return physicsSystem;
     }
-
     public HUDManager getHudManager() {
         return hudManager;
     }
-
     public MenuManager getMenuManager() {
         return menuManager;
     }
-
+    public GlobalEventQueue getGlobalEventQueue() {
+        return globalEventQueue;
+    }
 }

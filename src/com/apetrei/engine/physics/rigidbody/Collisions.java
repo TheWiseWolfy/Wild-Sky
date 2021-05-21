@@ -38,7 +38,7 @@ public class Collisions {
 
             //TODO Calculate actual depth
 
-            return new CollisionManifold(normal,10f, intersectie  );
+            return new CollisionManifold(normal,5f, intersectie  );
         }else {
             return  new CollisionManifold();
         }

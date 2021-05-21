@@ -1,121 +1,154 @@
 package com.apetrei.engine.scenes;
 
+import com.apetrei.engine.objects.ObjectBuilder;
+import com.apetrei.engine.providers.ConfigHandler;
+import com.apetrei.engine.gui.DialogLine;
 import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.objects.GameObject;
-import com.apetrei.engine.objects.ObjectTag;
-import com.apetrei.engine.objects.components.*;
-import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
-import com.apetrei.misc.ConvexPolygon2D;
+import com.apetrei.engine.event.GlobalEvent;
+import com.apetrei.engine.gui.UIElements.Button;
+import com.apetrei.engine.input.InputType;
+import com.apetrei.engine.sound.SoundManager;
+import com.apetrei.engine.providers.ResourceLoader;
 import com.apetrei.misc.Vector2;
+import com.apetrei.misc.exceptions.ResourceNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GameplayScene implements Scene{
-
-   public GameplayScene (GameContainer gameContainer){
-
-       gameContainer.getPhysicsSystem().resetPhysicsSystem();
-       gameContainer.getObjectManager().resetObjectManager();
-
-       initializeGame( gameContainer);
-
-   }
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 
 
-    @Override
-    public void update(GameContainer gameContainer, float frameTime) {
+public abstract class GameplayScene implements Scene {
+    private boolean paused = false;
+    private BufferedImage pauseMenuBackground;
 
+    protected Set<GlobalEvent> hasHappened= new TreeSet<GlobalEvent>();
+    protected GameContainer gameContainer;
+    protected ObjectBuilder ob;
 
-        //PHYSICS UPDATE
-        gameContainer. getPhysicsSystem().updatePhysics(frameTime);
-        //UPDATE
-        gameContainer.getObjectManager().updateObjects(frameTime);
-        //HUD UPDATE
+    protected String line;
+    protected float timePassed =0;
+    private float timeOfLastChange = 0;
+    private float windChangeInterval = ConfigHandler.getWindChangeInterval();
+
+    Random random = new Random();
+
+    public GameplayScene(GameContainer gameContainer) {
+        this.gameContainer = gameContainer;
+
+        try {
+            pauseMenuBackground = ResourceLoader.getInstance().getSprite("Pause_menu_background.png");
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
+        ob = new ObjectBuilder( gameContainer);
 
     }
 
     @Override
-    public void render(GameContainer gameContainer) {
-       gameContainer.getObjectManager().renderObjects();
-        gameContainer.getHudManager().updateHUD();
+    public void init() {
+        gameContainer.getMenuManager().clearUI();
+        gameContainer.getPhysicsSystem().resetPhysicsSystem();
+        gameContainer.getObjectManager().resetObjectManager();
+
+        initializePauseMenu(gameContainer);
+        gameContainer.getHudManager().getDialogManager().resetDialogueQueue();
+        SoundManager.getInstance().stopAllSound();
+        //RANDOM WIND CHANGES
+        SoundManager.getInstance().playSound("engine.wav",true);
     }
 
-    static public void initializeGame(GameContainer gameContainer) {
+    @Override
+    public void update( float frameTime) {
+        timePassed +=frameTime;
 
-        List<Vector2> waka = new ArrayList<Vector2>();
-        waka.add(new Vector2(-20, 50));
-        waka.add(new Vector2(30, 50));
-        waka.add(new Vector2(70, 0));
-        waka.add(new Vector2(30, -50));
-        waka.add(new Vector2(-30, -50));
-        waka.add(new Vector2(-70, 0));
-        ConvexPolygon2D wa = new ConvexPolygon2D(waka);
+        if (gameContainer.getInput().isKey(KeyEvent.VK_ESCAPE, InputType.DOWN)) {
+            paused = !paused;
+            if( ConfigHandler.isDebugMode()) {
+                if (paused) {
+                    System.out.println("The game has been paused.");
+                } else {
+                    System.out.println("The game has been unpaused.");
+                }
+            }
+        }
 
-        //BACKGROUND
-        GameObject background = new GameObject(gameContainer);
-        background.addComponent(new TransformComponent(new Vector2(600, 600)));
-        BackgroundSprite backSprite = new BackgroundSprite("Level1_background.png");
-        backSprite.setScrollFactor(0.2f);
-        background.addComponent(backSprite);
-        gameContainer.getObjectManager().addGameObject(background);
+        //PAUSE MENU AND MAIN LOOP
+        if (!paused) {
+            //PHYSICS UPDATE
+            gameContainer.getPhysicsSystem().updatePhysics(frameTime);
+            //UPDATE
+            gameContainer.getObjectManager().updateObjects(frameTime);
+            //HUD UPDATE
+            gameContainer.getHudManager().updateHUD(frameTime);
+        }else {
+            gameContainer.getMenuManager().update();
+        }
 
-        //PLAYER
-        GameObject gameObject1 = new GameObject(gameContainer);
-        gameObject1.addTag(ObjectTag.player);
-        gameObject1.addComponent(new Rigidbody2D(new Vector2(400, 400), 1));
-        Collider2D colider1 = new ConvexCollider(false,wa);
-        gameObject1.addComponent(colider1);
-        gameObject1.addComponent(new TurretComponent());
-        gameObject1.addComponent(new PlayerComponent());
-        gameObject1.addComponent(new SpriteComponent("Airship.png"));
-        gameContainer.getObjectManager().addGameObject(gameObject1);
+        //RANDOM WIND CHANGES
+        if( timeOfLastChange + windChangeInterval  < timePassed  ){
+            int randomNum = random.nextInt(30) ;
+            float randomX =  random.nextFloat() * 2 - 1;
+            float randomY =  random.nextFloat() * 2 - 1;
+            gameContainer.getPhysicsSystem().getWindEffect().setWind(new Vector2(randomX, randomY),randomNum);
+            timeOfLastChange = timePassed;
 
-        /////////ENEMY
+            if(ConfigHandler.isDebugMode()) System.out.println("Wind power became:" + randomNum);
+        }
 
-        GameObject gameObject2 = new GameObject(gameContainer);
-        gameObject2.addTag( ObjectTag.hasHealth);
+        //SCORE TRAKING
+        if(gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.ENEMY_DESTROYED){
+            // System.out.println(ConfigHandler.getScore() + 1 );
+            ConfigHandler.setScore( ConfigHandler.getScore() + 1 );
+        }
+    }
 
-        gameObject2.addComponent(new Rigidbody2D(new Vector2(600, 600), 5));
-        Collider2D colider2 = new ConvexCollider(false,wa);
-        gameObject2.addComponent(colider2);
-        gameObject2.addComponent(new SpriteComponent("Airship.png"));
-        gameObject2.addComponent(new EnemyComponent() );
-        gameContainer.getObjectManager().addGameObject(gameObject2);
+    @Override
+    public void render() {
+        if (!paused) {
+            gameContainer.getObjectManager().renderObjects();
+            gameContainer.getHudManager().renderHUD();
+        }else {
+            gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(new Vector2( ConfigHandler.getWidth()/2,ConfigHandler.getHeight()/2), 0.6f, pauseMenuBackground);
+            gameContainer.getMenuManager().draw();
+        }
+    }
 
-        /////////
-        GameObject gameObject3 = new GameObject(gameContainer);
-        gameObject3.addTag( ObjectTag.hasHealth);
-        gameObject3.addComponent(new Rigidbody2D(new Vector2(600, 350), 5));
-        Collider2D colider3 = new ConvexCollider(false,wa);
-        gameObject3.addComponent(colider3);
-        gameObject3.addComponent(new SpriteComponent("Airship.png"));
-        gameObject3.addComponent(new EnemyComponent() );
+    private void initializePauseMenu(GameContainer gameContainer){
 
-        gameContainer.getObjectManager().addGameObject(gameObject3);
+        //MENU BUTTON
+        Vector2 button2Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 -100);
+        Button button2 =  Button.makeButton("Continua",button2Poz, 0.3f, () -> {
+            paused = false;
+        });
 
+        //MENU BUTTON
+        Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
+        Button button1 = Button.makeButton("Meniu",button1Poz, 0.3f, () -> {
+            gameContainer.goBack();
+            SoundManager.getInstance().stopAllSound();
 
-        //map element
-        /////////
-        GameObject dock = new GameObject(gameContainer);
-        dock.addComponent(new Rigidbody2D(new Vector2(400, 50), 0));
+        });
 
-        List<Vector2> waka2 = new ArrayList<Vector2>();
+        //SETTINGS BUTTON
+        Vector2 button3Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
+        Button button3 = Button.makeButton("Setari",button3Poz, 0.3f, () -> {
+            gameContainer.goTo(new SettingsScene(gameContainer));
+            paused = false;
+        });
 
-        waka2.add(new Vector2(-720, 200));
-        waka2.add(new Vector2(631, 200));
-        waka2.add(new Vector2(630, -301));
-        waka2.add(new Vector2(-720, -300));
+        gameContainer.getMenuManager().addUIElement(button1);
+        gameContainer.getMenuManager().addUIElement(button2);
+        gameContainer.getMenuManager().addUIElement(button3);
+    }
 
-        ConvexPolygon2D wa2 = new ConvexPolygon2D(waka2);
-
-        Collider2D colider4 = new ConvexCollider(false,wa2);
-        dock.addComponent(colider4);
-        BackgroundSprite sprite = new BackgroundSprite("Port.png");
-        sprite.setSpriteScale(1f);
-        dock.addComponent(sprite);
-
-        gameContainer.getObjectManager().addGameObject(dock);
-
+    protected void playDialogue(String line, String audioFile ,int character){
+        gameContainer.getHudManager().getDialogManager().addDialogueLine(new DialogLine(
+                line ,
+                audioFile,
+                SoundManager.getInstance().getLenghtOfClip(audioFile),
+                character)
+        );
     }
 }

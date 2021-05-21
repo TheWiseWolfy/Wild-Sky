@@ -1,6 +1,8 @@
 package com.apetrei.engine.objects.components;
 
 public interface HealthInterface {
-    public void addHealt( int value);
-    public void substactHealt( int value);
+    public void addHealth(int value);
+    public void substactHealth(int value);
+    public int getMaxHealth();
+    public int getHealth();
 }

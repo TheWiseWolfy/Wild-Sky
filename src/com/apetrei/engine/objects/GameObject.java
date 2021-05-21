@@ -1,10 +1,7 @@
 package com.apetrei.engine.objects;
 
 import com.apetrei.engine.GameContainer;
-import com.apetrei.engine.objects.components.Collider2D;
 import com.apetrei.engine.objects.components.Component;
-import com.apetrei.engine.physics.primitives.colliders.ConvexCollider;
-import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 
 import java.io.Serializable;
@@ -22,7 +19,6 @@ import java.util.TreeSet;
 public class GameObject implements Serializable {
 
     Set<ObjectTag> tags = new TreeSet<ObjectTag>();
-
     //protected LinkedList<GameObject> children;
     HashMap<String, Component> components;
 
@@ -38,64 +34,9 @@ public class GameObject implements Serializable {
     }
 
 
-
-    public void addComponent(Component newComponent ){
-        newComponent.setParent(this);
-        newComponent.componentInit();
-        components.put(newComponent.getClass().getSimpleName() ,newComponent);
-    }
-
-    public boolean hasComponent(Class component){
-        boolean isPresent =  components.containsKey( component.getSimpleName() );
-
-        boolean childIsPresent = false;
-
-        for(var entry : components.entrySet()) {
-            var subclass = entry.getValue().getClass();
-            if (component.isAssignableFrom(subclass ) ) {
-                childIsPresent = true;
-            }
-        }
-        return isPresent || childIsPresent;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void kill(){
-        active = false;
-    }
-
-    //Fuctii de actualizare
-    public  void update(double fT){
-
-        for (Map.Entry<String, Component> componentEntry : components.entrySet()) {
-            componentEntry.getValue().componentUpdate(fT);
-        }
-
-    }
-    public  void render( ){
-
-        for (Map.Entry<String, Component> componentEntry : components.entrySet()) {
-            componentEntry.getValue().componentRender();
-        }
-    }
-    //_______________________________TAGS____________________________
-
-    public void addTag(ObjectTag tag){
-        tags.add(tag);
-    }
-
-    public boolean hasTag(ObjectTag tag){
-        return tags.contains( tag);
-    }
-
-
-    //_______________________________GETTER__________________________
+    //_______________________________COMPONENT SYSTEM_____________
 
     public Component getComponent(Class desiredClass) throws ComponentMissingException {
-
         Component newComponent = components.get(desiredClass.getSimpleName());
 
         // -Daca ceri un obiect, si acesta este prezent, iti va fi returnat.
@@ -113,6 +54,60 @@ public class GameObject implements Serializable {
         }
         throw new ComponentMissingException(desiredClass.getSimpleName());
     }
+
+
+    public void addComponent(Component newComponent ){
+        newComponent.setParent(this);
+        newComponent.componentInit();
+        components.put(newComponent.getClass().getSimpleName() ,newComponent);
+    }
+
+    public boolean hasComponent(Class component){
+        boolean isPresent =  components.containsKey( component.getSimpleName() );
+        boolean childIsPresent = false;
+        for(var entry : components.entrySet()) {
+            var subclass = entry.getValue().getClass();
+            if (component.isAssignableFrom(subclass ) ) {
+                childIsPresent = true;
+            }
+        }
+        return isPresent || childIsPresent;
+    }
+
+    //________________________________________GAME OBJECT FUCIONALITY_____________
+    public boolean isActive() {
+        return active;
+    }
+
+    public void kill(){
+        active = false;
+    }
+
+    //Fuctii de actualizare
+    public  void update(double fT){
+        for (Map.Entry<String, Component> componentEntry : components.entrySet()) {
+            componentEntry.getValue().componentUpdate(fT);
+        }
+    }
+    public  void render( ){
+
+        for (Map.Entry<String, Component> componentEntry : components.entrySet()) {
+            componentEntry.getValue().componentRender();
+        }
+    }
+
+    //_______________________________TAGS____________________________
+
+    public void addTag(ObjectTag tag){
+        tags.add(tag);
+    }
+
+    public boolean hasTag(ObjectTag tag){
+        return tags.contains( tag);
+    }
+
+    //_______________________________GETTER__________________________
+
 
     public GameContainer getGameContainer() {
         return gameContainer;

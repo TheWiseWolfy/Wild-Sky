@@ -25,7 +25,7 @@ public class Rigidbody2D extends TransformComponent {
     private float angularAcceleration = 0;
     private float angularForceAcumulator = 0;
 
-    private float cor = 2f;       //Coeficient of restitution ??
+    private float cor = 1f;       //Coeficient of restitution ??
 
     private Vector2 forward = new Vector2();
 
@@ -36,7 +36,6 @@ public class Rigidbody2D extends TransformComponent {
     public Rigidbody2D(Vector2 pos, float mass) {
         super(pos);
         this.mass = mass;
-
         if (this.mass != 0.0f) {
             this.inverseMass = 1.0f / this.mass;
         }

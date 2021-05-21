@@ -6,9 +6,11 @@ import com.apetrei.misc.command.Command;
 
 public abstract class UIElement {
 
+    protected boolean isActive = true;
+    protected boolean isInteractive = true;
+
     protected  Command command  = null;
 
-    int press = 0;
     UIElement (Command command){
         this.command = command;
     }
@@ -17,4 +19,10 @@ public abstract class UIElement {
 
     abstract public void draw(GameContainer gameContainer);
 
+    public void setActive(Boolean isActive){
+        this.isActive = isActive;
+    }
+    public void setnteractivee(Boolean isInteractive){
+        this.isInteractive = isInteractive;
+    }
 }

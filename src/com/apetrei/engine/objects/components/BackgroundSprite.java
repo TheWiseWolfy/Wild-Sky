@@ -1,7 +1,7 @@
 package com.apetrei.engine.objects.components;
 
-import com.apetrei.misc.exceptions.SpriteNotFoundException;
-import com.apetrei.engine.renderer.ImageLoader;
+import com.apetrei.misc.exceptions.ResourceNotFoundException;
+import com.apetrei.engine.providers.ResourceLoader;
 
 import java.awt.image.BufferedImage;
 
@@ -15,23 +15,18 @@ public class BackgroundSprite extends Component {
     //Numele imagini folosite
     String name;
     BufferedImage sprite = null;
-    //TODO: BufferedImage is a buffered streaming implementation. To serialize,
-    // the data must be flushed out to a static object like a byte[] array and then THAT object may be serialized/deserialized
-    //private BufferedImage sprite;
 
     //Rata de miscare a obictului in relatie cu miscarea camerei, folosit pentru efectul de paralax
     private float scrollFactor = 1f;
-
-
 
     public BackgroundSprite(String name){
         super();
         this.name = name;
 
         try {
-            sprite = ImageLoader.getInstance().getSprite(name);
+            sprite = ResourceLoader.getInstance().getSprite(name);
 
-        } catch ( SpriteNotFoundException e) {
+        } catch ( ResourceNotFoundException e) {
             e.printStackTrace();
         }
     }
