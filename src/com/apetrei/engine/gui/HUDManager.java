@@ -17,14 +17,16 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/*!
+ * Aici ne ocupam de afisarea numitor informatii in timpul jocului.
+ */
 public class HUDManager implements ObjectManagerObserver {
-
     private GameContainer gameContainer;
 
     //Variables
     private int engineLevel = 0;
     private int playerHealt = 0;
-    private int objectiveHealth = -1;
+    private int objectiveHealth = 0;
     private int maxObjectiveHealth = 0;
 
     DialogManager dialogManager;
@@ -63,11 +65,13 @@ public class HUDManager implements ObjectManagerObserver {
             playerHealt = playerComponent.getHealth();
             engineLevel = playerComponent.getEngineLevel();
         }
+
         if( objectiveHealtInterface != null){
             maxObjectiveHealth = objectiveHealtInterface.getMaxHealth();
             objectiveHealth = objectiveHealtInterface.getHealth();
+        }else {
+            objectiveHealth = 0;
         }
-
         dialogManager.update(fT);
     }
 
@@ -75,26 +79,26 @@ public class HUDManager implements ObjectManagerObserver {
         Vector2 poz = new Vector2(ConfigHandler.getWidth() * 0.90f  ,ConfigHandler.getHeight() * 0.87f );
         gameContainer.getRenderer().getLayerRenderer().drawStaticSprite( poz, 2f ,gauge.get(engineLevel + 1));
 
-        //Player health
+        //PLAYER HEALT
         Vector2 healthCorner =  new Vector2( ConfigHandler.getWidth() * 0.05f,ConfigHandler.getHeight() * 0.05f);
         Vector2 healthSize = new Vector2((float)playerHealt / ConfigHandler.getMaxPlayerHealt() * 350f,30);
         gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle(healthCorner,new Vector2( healthCorner).add(healthSize), Color.red);
 
-        Vector2 healthTextPoz = ( new Vector2(healthCorner).add(healthSize)).sub( new Vector2( healthSize.x * 0.8f,0));
+        Vector2 healthTextPoz =  new Vector2(healthCorner).add(new Vector2(100,23));
         gameContainer.getRenderer().getTextRenderer().drawText("Ariana",healthTextPoz, CustomFonts.SEAGRAM,25,Color.BLACK);
 
         //OBJECTIVE HEALT
-        if(objectiveHealth != -1){
+        if(objectiveHealth != 0){
             //Player health
             Vector2 objectiveHealthCorner =  new Vector2( ConfigHandler.getWidth() * 0.07f,ConfigHandler.getHeight() * 0.9f);
             Vector2 objectiveHealthSize = new Vector2((float)objectiveHealth / maxObjectiveHealth * 600f,30);
             gameContainer.getRenderer().getLayerRenderer().drawFilledRectangle(objectiveHealthCorner,new Vector2( objectiveHealthCorner).add(objectiveHealthSize), Color.red);
 
-            Vector2 objectiveHealthTextPoz = ( new Vector2(objectiveHealthCorner).add(objectiveHealthSize)).sub( new Vector2( objectiveHealthSize.x * 0.8f,0));
-            gameContainer.getRenderer().getTextRenderer().drawText("Objective",objectiveHealthTextPoz, CustomFonts.SEAGRAM,25,Color.BLACK);
+            Vector2 objectiveHealthTextPoz =  new Vector2(objectiveHealthCorner).add(new Vector2(100,23));
+            gameContainer.getRenderer().getTextRenderer().drawText("Obiectiv",objectiveHealthTextPoz, CustomFonts.SEAGRAM,25,Color.BLACK);
         }
-        //WIND DIRECTION
 
+        //WIND DIRECTION
         if( gameContainer.getPhysicsSystem().getWindEffect().isThereWind()  ) {
             float angle = gameContainer.getPhysicsSystem().getWindEffect().getWindAngle();
             Vector2 arrowPoz = new Vector2(ConfigHandler.getWidth() * 0.43f, ConfigHandler.getHeight() * 0.13f);
@@ -103,18 +107,19 @@ public class HUDManager implements ObjectManagerObserver {
                 oldWindAngle = angle;
             }
             gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(arrowPoz, 0.5f, rotateArrow);
-        }
 
+            Vector2 arrowTextPoz = new Vector2(arrowPoz).add(new Vector2(0,-35));
+            gameContainer.getRenderer().getTextRenderer().drawText("Directia Vântului",arrowTextPoz, CustomFonts.SEAGRAM,25,Color.BLACK);
+
+        }
 
         //DIALOGUE
         dialogManager.displayDialogueBox();
     }
 
     //_________________________________OBESERVER_____________________________________
-
     @Override
     public void newObjectUpdate(GameObject gameObject) {
-
         if(gameObject.hasComponent(PlayerComponent.class)){
             try {
                 playerComponent = (PlayerComponent) gameObject.getComponent(PlayerComponent.class);
@@ -128,7 +133,6 @@ public class HUDManager implements ObjectManagerObserver {
             try {
                 objectiveHealtInterface = (HealthInterface) gameObject.getComponent(HealthInterface.class);
             } catch (Exception e) {
-                System.err.println( "");
                 e.printStackTrace();
             }
         }
@@ -136,7 +140,13 @@ public class HUDManager implements ObjectManagerObserver {
 
     @Override
     public void objectDeletedUpdate(GameObject gameObject) {
-
+        if(gameObject.hasComponent( ObjectiveComponent.class)){
+            try {
+                objectiveHealtInterface = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public DialogManager getDialogManager() {

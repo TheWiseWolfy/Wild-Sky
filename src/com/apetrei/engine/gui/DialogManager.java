@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/*!
+ * Aici ne ocupam de gestionarea si afisarea cererilor de dialog din joc
+ */
 public class DialogManager {
     GameContainer gameContainer;
 
@@ -46,13 +49,15 @@ public class DialogManager {
     }
 
     private void playDialogue(){
-
+        //Daca mai ramane dialog de afisat
         if( !dialogueQueue.isEmpty()) {
             if (readyForDialogue ){
+                //Dam play la documentul audio curent
                 SoundManager.getInstance().playSound(dialogueQueue.peek().audioFile,false);
                 readyForDialogue = false;
             }
 
+            //Dupa de documentul audio s-a terminat, mai pregatim unul si dam semnalul
             if(lasDialogueTime + dialogueQueue.peek().duration < timePassed  ) {
                 lasDialogueTime = timePassed;
                 readyForDialogue = true;

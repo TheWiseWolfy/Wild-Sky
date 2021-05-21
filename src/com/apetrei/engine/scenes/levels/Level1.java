@@ -35,11 +35,11 @@ public class Level1 extends GameplayScene {
         //Dialogue
         line = "Domnilor, flota austriacă a ajuns în ușa noastră. Cred că e timpul să le  arătam cât de ospitalieri suntem. Protejați capitala cu orice cost!";
         playDialogue(line, "1_R.wav", 1);
-        line = "Ințeles, amirale!\n";
+        line = "Ințeles, amirale!";
         playDialogue(line, "1_I.wav", 0);
 
         //Enemies to kill
-        enemiesLeft = 9;
+        enemiesLeft = 10;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Level1 extends GameplayScene {
         }
 
         if( gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.OBJECTIVE_DAMAGED && !hasHappened.contains(GlobalEvent.OBJECTIVE_DAMAGED )){
-            line = "Orasul este sub atac! Pastrati pozitii defensive!";
+            line = "Orasul este sub atac! Păstrați poziții defensive!";
             playDialogue(line, "2_R.wav", 1);
             line ="Uite o pată pe ecran. E o insectă sau e intreaga flotă Carpatiană?\n";
             playDialogue(line, "2_W.wav", 2);
@@ -72,28 +72,33 @@ public class Level1 extends GameplayScene {
             gameContainer.getGlobalEventQueue().declareEvent(GlobalEvent.LEVEL1_WAVE1);
             if( !hasHappened.contains(GlobalEvent.LEVEL1_WAVE1) ) {
 
-                line = " Cu curaj! O alta flota se apropie din vest.";
+                line = " Cu curaj! O altă flota se apropie din vest.";
                 playDialogue(line, "4_R.wav", 1);
-                line = "Toata lumea, ramaneti pe pozitie. Trageti doar la comanda mea. Astazi ne apăram patria!";
+                line = "Toată lumea, ramaneti pe pozitie! Trageti doar la comanda mea. Astăzi ne apărăm patria!";
                 playDialogue(line, "4_I.wav", 0);
-                line = "Cand o sa termin, nu o să mai ramana nimic de aparat.";
+                line = "Când o sa termin, nu o să mai rămână nimic de aparat.";
                 playDialogue(line, "4_W.wav", 2);
 
                 /////////ENEMY
-                ob.setPlateToBuildAt(new Vector2(1400, 200));
+                ob.setPlateToBuildAt(new Vector2(1800, 200));
                 gameContainer.getObjectManager().addGameObject(ob.mediumEnemyBuilder(dock));
 
                 /////////ENEMY2
-                ob.setPlateToBuildAt(new Vector2(1400, 300));
+                ob.setPlateToBuildAt(new Vector2(1800, 300));
                 gameContainer.getObjectManager().addGameObject(ob.mediumEnemyBuilder(dock));
 
                 /////////ENEMY3
-                ob.setPlateToBuildAt(new Vector2(1400, 400));
+                ob.setPlateToBuildAt(new Vector2(1800, 400));
                 gameContainer.getObjectManager().addGameObject(ob.lightEnemyBuilder(dock));
 
                 /////////ENEMY4
-                ob.setPlateToBuildAt(new Vector2(1400, 500));
+                ob.setPlateToBuildAt(new Vector2(1800, 500));
                 gameContainer.getObjectManager().addGameObject(ob.lightEnemyBuilder(dock));
+
+                /////////ENEMY4
+                ob.setPlateToBuildAt(new Vector2(1800, 600));
+                gameContainer.getObjectManager().addGameObject(ob.lightEnemyBuilder(dock));
+
 
                 hasHappened.add(GlobalEvent.LEVEL1_WAVE1);
             }
@@ -105,7 +110,7 @@ public class Level1 extends GameplayScene {
             if( !hasHappened.contains( GlobalEvent.LEVEL1_COMPLETED) ){
                 line = "Lașii! Asta o să ii invete minte să se puna cu Carpatia.";
                 playDialogue(line, "5_R.wav", 1);
-                line = "Nu o să fie ultima oara cand auziti de mine. \n";
+                line = "Nu o să fie ultima oară când auziți de mine.";
                 playDialogue(line, "5_W.wav", 2);
             }
             hasHappened.add( GlobalEvent.LEVEL1_COMPLETED);
@@ -137,8 +142,19 @@ public class Level1 extends GameplayScene {
         dock.addComponent( new ObjectiveComponent(maxObjectiveHealt));
         gameContainer.getObjectManager().addGameObject(dock);
 
+        //Decorations
+        ob.setPlateToBuildAt( new Vector2(100, 0)) ;
+        gameContainer.getObjectManager().addGameObject( ob.baloonDecoration() );
+        ob.setPlateToBuildAt( new Vector2(100, 300)) ;
+        gameContainer.getObjectManager().addGameObject( ob.baloonDecoration() );
+
+        ob.setPlateToBuildAt( new Vector2(800, 0)) ;
+        gameContainer.getObjectManager().addGameObject( ob.baloonDecoration() );
+        ob.setPlateToBuildAt( new Vector2(800, 300)) ;
+        gameContainer.getObjectManager().addGameObject( ob.baloonDecoration() );
+
         //PLAYER
-        ConvexPolygon2D wa = new ConvexPolygon2D(ShapeProvider.getZepelinCollider());
+        ob.setPlateToBuildAt( new Vector2(200, -350) );
         gameContainer.getObjectManager().addGameObject( ob.PlayerBuilder() );
 
         /////////ENEMY

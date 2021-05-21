@@ -34,7 +34,6 @@ public class SpriteComponent  extends Component {
 
     @Override
     public void componentInit() {
-
         try {
             transformComponent = (TransformComponent) parent.getComponent(TransformComponent.class);
         }
@@ -42,7 +41,6 @@ public class SpriteComponent  extends Component {
             e.printStackTrace();
         }
         rotatedSprite = sprite;
-
     }
     @Override
     public void componentUpdate( double fT) {

@@ -40,37 +40,37 @@ public class MainMenuScene implements Scene {
         gameContainer.getMenuManager().clearUI();
         //START GAME BUTTON
         Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
-        button1 = Button.makeButton("New Game",button1Poz, 0.3f, () -> {
+        button1 = Button.makeButton("Joc nou",button1Poz, 0.3f, () -> {
             isWorningOn = true;
         });
 
         //SETTINGS BUTTON
         Vector2 button2Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
-        button2 = Button.makeButton("Continue",button2Poz, 0.3f, () -> {
+        button2 = Button.makeButton("Continuă",button2Poz, 0.3f, () -> {
             gameContainer.goTo(new LevelMenuScene(gameContainer));
         });
 
         //SETTINGS BUTTON
         Vector2 button3Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 200);
-        Button button3 = Button.makeButton("Settings",button3Poz, 0.3f, () -> {
+        Button button3 = Button.makeButton("Setări",button3Poz, 0.3f, () -> {
             gameContainer.goTo(new SettingsScene(gameContainer));
         });
 
         //CLOSE GAME BUTTON
         Vector2 button4Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 300);
-        Button button4 =Button.makeButton("Quit",button4Poz, 0.3f, gameContainer::close);
+        Button button4 =Button.makeButton("Închide jocul",button4Poz, 0.3f, gameContainer::close);
 
         //WARNING MENU
         //CLOSE GAME BUTTON
         Vector2 button5Poz = new Vector2(ConfigHandler.getWidth() / 2 - 100 , ConfigHandler.getHeight() / 2 );
-        button5 =Button.makeButton("New Game",button5Poz, 0.3f, () -> {
+        button5 =Button.makeButton("Joc nou",button5Poz, 0.3f, () -> {
             DatabaseManager.getInstance().resetGameState();
             gameContainer.getGlobalEventQueue().resetHistory();
             gameContainer.goTo(new LevelMenuScene(gameContainer));
         });  //CLOSE GAME BUTTON
 
         Vector2 button6Poz = new Vector2(ConfigHandler.getWidth() / 2 + 100, ConfigHandler.getHeight() / 2 );
-        button6 =Button.makeButton("Cancel",button6Poz, 0.3f, () -> {
+        button6 =Button.makeButton("Abandonează",button6Poz, 0.3f, () -> {
             isWorningOn = false;
         });
 
@@ -115,7 +115,7 @@ public class MainMenuScene implements Scene {
             gameContainer.getRenderer().getLayerRenderer().drawStaticSprite(new Vector2( ConfigHandler.getWidth()/2,ConfigHandler.getHeight()/2.15f), 0.6f, warningMenuBackground);
 
             Vector2 textPoz2 = new Vector2( ConfigHandler.getWidth()/2, 300);
-            gameContainer.getRenderer().getTextRenderer().drawText("Esti sigur ca vrei sa iti resetezi progressul ?" , textPoz2, "Serif" ,20, Color.BLACK);
+            gameContainer.getRenderer().getTextRenderer().drawText("Esti sigur ca vrei sa iți resetezi progressul ?" , textPoz2, "Serif" ,20, Color.BLACK);
         }
         gameContainer.getMenuManager().draw();
 

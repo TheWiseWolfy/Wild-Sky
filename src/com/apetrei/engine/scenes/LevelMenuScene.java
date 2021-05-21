@@ -64,23 +64,20 @@ public class LevelMenuScene implements Scene {
             ConfigHandler.setCurrentLevel( Math.max(4,   ConfigHandler.getCurrentLevel() ) );
         }
 
-        //Save current level
-      //  DatabaseManager.getInstance().updateDataBase();
-
         //BUTTONS
-        mapButton1 = MapButton.makeMapButton("Level 1", mapPosition, 0.25f, () -> {
+        mapButton1 = MapButton.makeMapButton("Nivel 1", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level1(gameContainer));
         });
 
-        mapButton2 = MapButton.makeMapButton("Level 2", mapPosition, 0.25f, () -> {
+        mapButton2 = MapButton.makeMapButton("Nivel 2", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level2(gameContainer));
         });
 
-        mapButton3 = MapButton.makeMapButton("Level 3", mapPosition, 0.25f, () -> {
+        mapButton3 = MapButton.makeMapButton("Nivel 3", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level3(gameContainer));
         });
 
-        mapButton4 = MapButton.makeMapButton("Level 4", mapPosition, 0.25f, () -> {
+        mapButton4 = MapButton.makeMapButton("Nivel Final", mapPosition, 0.25f, () -> {
             gameContainer.goTo(new Level4(gameContainer));
         });
 
@@ -91,7 +88,7 @@ public class LevelMenuScene implements Scene {
 
         //STATIC BUTTONS
         Vector2 buttonBackPoz = new Vector2(ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.9f  );
-        Button buttonBack = Button.makeButton("Back", buttonBackPoz, 0.3f, gameContainer::goBack);
+        Button buttonBack = Button.makeButton("Inapoi", buttonBackPoz, 0.3f, gameContainer::goBack);
         gameContainer.getMenuManager().addUIElement(buttonBack);
     }
 
@@ -139,7 +136,7 @@ public class LevelMenuScene implements Scene {
         gameContainer.getMenuManager().draw();
 
         Vector2 textVolumePoz2 = new Vector2( ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.8f );
-        gameContainer.getRenderer().getTextRenderer().drawText("Score: "+ String.valueOf(ConfigHandler.getScore()) , textVolumePoz2, CustomFonts.SEAGRAM ,35, Color.BLACK);
+        gameContainer.getRenderer().getTextRenderer().drawText("Scor: "+ String.valueOf(ConfigHandler.getScore()) , textVolumePoz2, CustomFonts.SEAGRAM ,35, Color.BLACK);
 
     }
 

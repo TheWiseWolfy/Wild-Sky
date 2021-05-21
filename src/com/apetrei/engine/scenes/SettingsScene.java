@@ -46,12 +46,12 @@ public class SettingsScene implements Scene{
         //Music volume
 
         //Volume
-        Vector2 buttonMusicVolumePoz = new Vector2(ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.3f  );
+        Vector2 buttonMusicVolumePoz = new Vector2(ConfigHandler.getWidth() * 0.1f, ConfigHandler.getHeight() * 0.33f  );
         Button buttonMusicVolume1 = Button.makeShortButton("-", buttonMusicVolumePoz, 0.3f, ()->{
             ConfigHandler.setMusicVolume(ConfigHandler.getMusicVolume() - 0.1f);
         });
 
-        Vector2 buttonMusicVolumePoz2 = new Vector2(ConfigHandler.getWidth() * 0.3f, ConfigHandler.getHeight() * 0.3f  );
+        Vector2 buttonMusicVolumePoz2 = new Vector2(ConfigHandler.getWidth() * 0.3f, ConfigHandler.getHeight() * 0.33f  );
         Button buttonMusicVolume2 = Button.makeShortButton("+", buttonMusicVolumePoz2, 0.3f, () -> {
             ConfigHandler.setMusicVolume(ConfigHandler.getMusicVolume() + 0.1f);
         });
@@ -78,10 +78,25 @@ public class SettingsScene implements Scene{
         gameContainer.getRenderer().getTextRenderer().drawText( String.valueOf(ConfigHandler.getSoundVolume()) , textVolumePoz2, CustomFonts.SEAGRAM ,20, Color.BLACK);
 
         //Music volume
-        Vector2 textMusicVolumePoz1 = new Vector2( ConfigHandler.getWidth() * 0.2f, ConfigHandler.getHeight() * 0.23f );
+        Vector2 textMusicVolumePoz1 = new Vector2( ConfigHandler.getWidth() * 0.2f, ConfigHandler.getHeight() * 0.25f );
         gameContainer.getRenderer().getTextRenderer().drawText( "Volum muzica:" , textMusicVolumePoz1, CustomFonts.SEAGRAM ,30, Color.BLACK);
-        Vector2 textMusicVolumePoz2 = new Vector2( ConfigHandler.getWidth() * 0.2f, ConfigHandler.getHeight() * 0.30f );
+        Vector2 textMusicVolumePoz2 = new Vector2( ConfigHandler.getWidth() * 0.2f, ConfigHandler.getHeight() * 0.33f );
         gameContainer.getRenderer().getTextRenderer().drawText( String.valueOf(ConfigHandler.getMusicVolume()) , textMusicVolumePoz2, CustomFonts.SEAGRAM ,20, Color.BLACK);
+
+        //Credits
+
+        Vector2 textCreditsPoz = new Vector2( ConfigHandler.getWidth() * 0.5f, ConfigHandler.getHeight() * 0.08f );
+        Vector2 textCreditsPoz2 = new Vector2( ConfigHandler.getWidth() * 0.8f, ConfigHandler.getHeight() * 0.6f );
+
+        String credits = "Credite: \nDirector - Bogdan Gabriel Apetrei" +
+                " \nManager de proiect  - Bogdan Gabriel Apetrei" +
+                " \nDesigner Principal - Bogdan Gabriel Apetrei" +
+                " \nRoluri:" +
+                " \nIulius - Iulian Tanăsache" +
+                " \nRadului -Radu Cornea" +
+                " \nReiner Von Wolfgang - Cătălin Toma";
+        gameContainer.getRenderer().getTextRenderer().drawTextInABox( credits ,textCreditsPoz,textCreditsPoz2, "Serif",20,Color.BLACK);
+
 
         gameContainer.getMenuManager().draw();
     }

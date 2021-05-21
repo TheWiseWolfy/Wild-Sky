@@ -9,7 +9,9 @@ import com.apetrei.engine.objects.components.EnemyComponent;
 
 import java.util.List;
 
-
+/*!
+ * O clasa care descrie comportamentul unui inamic dupa o lista de parametri locali.
+ */
 public class enemyAI {
 
     private EnemyComponent enemyComponent;
@@ -58,15 +60,13 @@ public class enemyAI {
            if (distanceToObjective <= attackObjectiveRange && !objective.hasTag(ObjectTag.player)){
                enemyComponent.destroy( objective);
                enemyComponent.mentainDistance(objective,mentainDistanceToObjective,attackObjectiveRange);
-
            }
        }
-     //  System.out.println(currentState.toString());
     }
 
     //_______________________SETTER_______________________
 
-    public void setAttckDistance(int attckDistance) {
+    public void setAttackDistance(int attckDistance) {
         this.attckDistance = attckDistance;
     }
 

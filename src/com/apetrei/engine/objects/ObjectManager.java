@@ -31,7 +31,6 @@ public class ObjectManager {
         this.gameContainer = gameContainer;
     }
 
-
     public GameObject addGameObject(GameObject created){
        objectsOnHold.add(created);
        notifyObserversOfNewObject(created);
@@ -39,9 +38,7 @@ public class ObjectManager {
     }
 
     //Update fuctions
-
     public void updateObjects(float fT){
-
         gameObjects.addAll(objectsOnHold );
         objectsOnHold.clear();
 
@@ -69,6 +66,9 @@ public class ObjectManager {
     }
 
    public void  resetObjectManager(){
+       for (var object :gameObjects) {
+           notifyObserversOfDeletedObject(object);
+       }
         gameObjects.clear();
         objectsOnHold.clear();
     }
@@ -124,7 +124,6 @@ public class ObjectManager {
     //_________________________OBSERVER__________________
 
     final public void attachObserver( ObjectManagerObserver newObs){
-
         observers.add(newObs);
     }
 

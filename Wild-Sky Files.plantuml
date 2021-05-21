@@ -3,20 +3,38 @@
 title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
-    class com.apetrei.engine.ConfigHandler {
+    class com.apetrei.engine.GameContainer {
+    }
+  }
+
+
+  namespace com.apetrei.engine {
+    namespace event {
+      enum GlobalEvent {
+      }
     }
   }
   
 
   namespace com.apetrei.engine {
-    class com.apetrei.engine.GameContainer {
+    namespace event {
+      class com.apetrei.engine.event.GlobalEventQueue {
+      }
     }
   }
   
 
   namespace com.apetrei.engine {
     namespace gui {
-      class com.apetrei.engine.gui.CommandImplementation {
+      class com.apetrei.engine.gui.DialogLine {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace gui {
+      class com.apetrei.engine.gui.DialogManager {
       }
     }
   }
@@ -42,6 +60,16 @@ title __SKEWED ENGINE's Class Diagram__\n
     namespace gui {
       namespace UIElements {
         class com.apetrei.engine.gui.UIElements.Button {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace gui {
+      namespace UIElements {
+        class com.apetrei.engine.gui.UIElements.MapButton {
         }
       }
     }
@@ -92,15 +120,29 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace objects {
-      class com.apetrei.engine.objects.ObjectManager {
+      class com.apetrei.engine.objects.ObjectBuilder {
       }
     }
   }
   
 
   namespace com.apetrei.engine {
+
+      class com.apetrei.engine.objects.ObjectManager {
+      }
+
+  }
+  
+
+
+  
+
+  namespace com.apetrei.engine {
     namespace objects {
-      enum ObjectTag {
+      namespace components {
+        class com.apetrei.engine.objects.components.AnimatedSpriteComponent {
+        }
+
       }
     }
   }
@@ -159,7 +201,7 @@ title __SKEWED ENGINE's Class Diagram__\n
   namespace com.apetrei.engine {
     namespace objects {
       namespace components {
-        class com.apetrei.engine.objects.components.PlayerComponent {
+        class com.apetrei.engine.objects.components.ObjectiveComponent {
         }
       }
     }
@@ -169,7 +211,7 @@ title __SKEWED ENGINE's Class Diagram__\n
   namespace com.apetrei.engine {
     namespace objects {
       namespace components {
-        class com.apetrei.engine.objects.components.ProjectileComponent {
+        class com.apetrei.engine.objects.components.PlayerComponent {
         }
       }
     }
@@ -199,6 +241,16 @@ title __SKEWED ENGINE's Class Diagram__\n
   namespace com.apetrei.engine {
     namespace objects {
       namespace components {
+        class com.apetrei.engine.objects.components.TimerComponent {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace objects {
+      namespace components {
         class com.apetrei.engine.objects.components.TransformComponent {
         }
       }
@@ -217,6 +269,16 @@ title __SKEWED ENGINE's Class Diagram__\n
   
 
   namespace com.apetrei.engine {
+    namespace objects {
+      namespace components {
+        interface com.apetrei.engine.objects.components.WindInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
     namespace physics {
       class com.apetrei.engine.physics.PhysicsSystem2D {
       }
@@ -226,7 +288,23 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace physics {
-      namespace primitives.colliders {
+      class com.apetrei.engine.physics.ShapeProvider {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace physics {
+      class com.apetrei.engine.physics.WindEffect {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+     namespace objects {
+         namespace components {
         class com.apetrei.engine.physics.primitives.colliders.ConvexCollider {
         }
       }
@@ -265,6 +343,38 @@ title __SKEWED ENGINE's Class Diagram__\n
   
 
   namespace com.apetrei.engine {
+    namespace providers {
+      class com.apetrei.engine.providers.ConfigHandler {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace providers {
+      class com.apetrei.engine.providers.DatabaseManager {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace providers {
+      class com.apetrei.engine.providers.ResourceLoader {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace renderer {
+      class com.apetrei.engine.renderer.Animation {
+      }
+    }
+  }
+
+
+  namespace com.apetrei.engine {
     namespace renderer {
       class com.apetrei.engine.renderer.Camera {
       }
@@ -274,7 +384,7 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace renderer {
-      class com.apetrei.engine.renderer.ImageLoader {
+      enum CustomFonts {
       }
     }
   }
@@ -298,6 +408,14 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace renderer {
+      class com.apetrei.engine.renderer.TextRenderer {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace renderer {
       class com.apetrei.engine.renderer.Window {
       }
     }
@@ -306,7 +424,15 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.engine {
     namespace scenes {
-      class com.apetrei.engine.scenes.GameplayScene {
+      abstract class com.apetrei.engine.scenes.GameplayScene {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace scenes {
+      class com.apetrei.engine.scenes.LevelMenuScene {
       }
     }
   }
@@ -323,6 +449,62 @@ title __SKEWED ENGINE's Class Diagram__\n
   namespace com.apetrei.engine {
     namespace scenes {
       interface com.apetrei.engine.scenes.Scene {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace scenes {
+      class com.apetrei.engine.scenes.SettingsScene {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace scenes {
+      namespace levels {
+        class com.apetrei.engine.scenes.levels.Level1 {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace scenes {
+      namespace levels {
+        class com.apetrei.engine.scenes.levels.Level2 {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace scenes {
+      namespace levels {
+        class com.apetrei.engine.scenes.levels.Level3 {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace scenes {
+      namespace levels {
+        class com.apetrei.engine.scenes.levels.Level4 {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.engine {
+    namespace sound {
+      class com.apetrei.engine.sound.SoundManager {
       }
     }
   }
@@ -347,12 +529,6 @@ title __SKEWED ENGINE's Class Diagram__\n
   
 
   namespace com.apetrei.misc {
-    class com.apetrei.misc.DebugFuctions {
-    }
-  }
-  
-
-  namespace com.apetrei.misc {
     class com.apetrei.misc.ExtraMath {
     }
   }
@@ -368,23 +544,6 @@ title __SKEWED ENGINE's Class Diagram__\n
     class com.apetrei.misc.Vector2 {
     }
   }
-  
-
-  namespace com.apetrei.misc {
-    namespace command {
-      interface com.apetrei.misc.command.ColliderCommand {
-      }
-    }
-  }
-  
-
-  namespace com.apetrei.misc {
-    namespace command {
-      interface com.apetrei.misc.command.Command {
-      }
-    }
-  }
-  
 
   namespace com.apetrei.misc {
     namespace exceptions {
@@ -404,7 +563,15 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.misc {
     namespace exceptions {
-      class com.apetrei.misc.exceptions.SpriteNotFoundException {
+      class com.apetrei.misc.exceptions.ResourceNotFoundException {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.misc {
+    namespace exceptions {
+      class com.apetrei.misc.exceptions.ValueNotFoundException {
       }
     }
   }
@@ -420,83 +587,73 @@ title __SKEWED ENGINE's Class Diagram__\n
 
   namespace com.apetrei.misc {
     namespace observer {
+      interface com.apetrei.misc.observer.ObjectiveObserver {
+      }
+    }
+  }
+  
+
+  namespace com.apetrei.misc {
+    namespace observer {
       interface com.apetrei.misc.observer.PlayerObserver {
       }
     }
   }
   
 
-  com.apetrei.engine.GameContainer .up.|> java.lang.Runnable
+  com.apetrei.engine.GameContainer o-- com.apetrei.engine.event.GlobalEventQueue : globalEventQueue
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.gui.HUDManager : hudManager
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.input.Input : input
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.gui.MenuManager : menuManager
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.objects.ObjectManager : objectManager
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.physics.PhysicsSystem2D : physicsSystem
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.renderer.Renderer : renderer
+  com.apetrei.engine.GameContainer o-- com.apetrei.engine.scenes.Scene : sceneToBeUsed
   com.apetrei.engine.GameContainer o-- com.apetrei.engine.renderer.Window : window
-  com.apetrei.engine.gui.CommandImplementation .up.|> com.apetrei.misc.command.Command
-  com.apetrei.engine.gui.HUDManager .up.|> com.apetrei.misc.observer.ObjectManagerObserver
-  com.apetrei.engine.gui.HUDManager .up.|> com.apetrei.misc.observer.PlayerObserver
-  com.apetrei.engine.gui.HUDManager o-- com.apetrei.engine.GameContainer : gameContainer
-  com.apetrei.engine.gui.MenuManager o-- com.apetrei.engine.GameContainer : gameContainer
+  com.apetrei.engine.gui.HUDManager o-- com.apetrei.engine.gui.DialogManager : dialogManager
   com.apetrei.engine.gui.UIElements.Button -up-|> com.apetrei.engine.gui.UIElements.UIElement
-  com.apetrei.engine.gui.UIElements.Button o-- com.apetrei.misc.Vector2 : position
-  com.apetrei.engine.gui.UIElements.Button o-- com.apetrei.misc.Vector2 : size
-  com.apetrei.engine.gui.UIElements.UIElement o-- com.apetrei.misc.command.Command : command
+  com.apetrei.engine.gui.UIElements.MapButton -up-|> com.apetrei.engine.gui.UIElements.Button
   com.apetrei.engine.input.Input .up.|> java.awt.event.KeyListener
   com.apetrei.engine.input.Input .up.|> java.awt.event.MouseListener
   com.apetrei.engine.input.Input .up.|> java.awt.event.MouseMotionListener
   com.apetrei.engine.input.Input .up.|> java.awt.event.MouseWheelListener
-  com.apetrei.engine.input.Input o-- com.apetrei.engine.GameContainer : gameContainer
   com.apetrei.engine.input.playerInputEvent o-- com.apetrei.engine.input.InputType : inputType
-  com.apetrei.engine.objects.GameObject .up.|> java.io.Serializable
-  com.apetrei.engine.objects.GameObject o-- com.apetrei.engine.GameContainer : gameContainer
-  com.apetrei.engine.objects.ObjectManager o-- com.apetrei.engine.GameContainer : gameContainer
+  com.apetrei.engine.objects.components.AnimatedSpriteComponent -up-|> com.apetrei.engine.objects.components.Component
   com.apetrei.engine.objects.components.BackgroundSprite -up-|> com.apetrei.engine.objects.components.Component
-  com.apetrei.engine.objects.components.BackgroundSprite o-- com.apetrei.engine.objects.components.TransformComponent : transformComponent
   com.apetrei.engine.objects.components.Collider2D -up-|> com.apetrei.engine.objects.components.Component
-  com.apetrei.engine.objects.components.Collider2D o-- com.apetrei.engine.objects.components.Rigidbody2D : rigidbody
-  com.apetrei.engine.objects.components.Collider2D o-- com.apetrei.misc.command.ColliderCommand : command
-  com.apetrei.engine.objects.components.Component .up.|> java.io.Serializable
-  com.apetrei.engine.objects.components.Component o-- com.apetrei.engine.objects.GameObject : parent
+  com.apetrei.engine.objects.GameObject o-- com.apetrei.engine.objects.components.Component
+
+  com.apetrei.engine.objects.ObjectManager o-- com.apetrei.engine.objects.GameObject : parent
+
   com.apetrei.engine.objects.components.EnemyComponent .up.|> com.apetrei.engine.objects.components.HealthInterface
   com.apetrei.engine.objects.components.EnemyComponent -up-|> com.apetrei.engine.objects.components.Component
+  com.apetrei.engine.objects.components.ObjectiveComponent .up.|> com.apetrei.engine.objects.components.HealthInterface
+  com.apetrei.engine.objects.components.ObjectiveComponent -up-|> com.apetrei.engine.objects.components.Component
   com.apetrei.engine.objects.components.PlayerComponent .up.|> com.apetrei.engine.objects.components.HealthInterface
+  com.apetrei.engine.objects.components.PlayerComponent .up.|> com.apetrei.engine.objects.components.WindInterface
   com.apetrei.engine.objects.components.PlayerComponent -up-|> com.apetrei.engine.objects.components.Component
-  com.apetrei.engine.objects.components.PlayerComponent o-- com.apetrei.misc.Vector2 : fireTarget
-  com.apetrei.engine.objects.components.PlayerComponent o-- com.apetrei.engine.objects.components.Rigidbody2D : rigidbody
-  com.apetrei.engine.objects.components.PlayerComponent o-- com.apetrei.engine.objects.components.TurretComponent : turretComponent
-  com.apetrei.engine.objects.components.ProjectileComponent -up-|> com.apetrei.engine.objects.components.Component
-  com.apetrei.engine.objects.components.Rigidbody2D -up-|> com.apetrei.engine.objects.components.TransformComponent
-  com.apetrei.engine.objects.components.Rigidbody2D o-- com.apetrei.misc.Vector2 : acceleration
-  com.apetrei.engine.objects.components.Rigidbody2D o-- com.apetrei.misc.Vector2 : forceAccumulation
-  com.apetrei.engine.objects.components.Rigidbody2D o-- com.apetrei.misc.Vector2 : forward
-  com.apetrei.engine.objects.components.Rigidbody2D o-- com.apetrei.misc.Vector2 : linearVelocity
   com.apetrei.engine.objects.components.SpriteComponent -up-|> com.apetrei.engine.objects.components.Component
-  com.apetrei.engine.objects.components.SpriteComponent o-- com.apetrei.engine.objects.components.TransformComponent : transformComponent
+  com.apetrei.engine.objects.components.TimerComponent -up-|> com.apetrei.engine.objects.components.Component
+    com.apetrei.engine.objects.components.Rigidbody2D -up-|> com.apetrei.engine.objects.components.Component
+
   com.apetrei.engine.objects.components.TransformComponent -up-|> com.apetrei.engine.objects.components.Component
-  com.apetrei.engine.objects.components.TransformComponent o-- com.apetrei.misc.Vector2 : position
   com.apetrei.engine.objects.components.TurretComponent -up-|> com.apetrei.engine.objects.components.Component
-  com.apetrei.engine.objects.components.TurretComponent o-- com.apetrei.engine.objects.components.Rigidbody2D : rigidbody
-  com.apetrei.engine.physics.PhysicsSystem2D .up.|> com.apetrei.misc.observer.ObjectManagerObserver
+  com.apetrei.engine.physics.PhysicsSystem2D o-- com.apetrei.engine.physics.WindEffect : windEffect
   com.apetrei.engine.physics.primitives.colliders.ConvexCollider -up-|> com.apetrei.engine.objects.components.Collider2D
-  com.apetrei.engine.physics.primitives.colliders.ConvexCollider o-- com.apetrei.misc.ConvexPolygon2D : collider
-  com.apetrei.engine.physics.rigidbody.CollisionManifold o-- com.apetrei.misc.Vector2 : normal
-  com.apetrei.engine.renderer.Camera o-- com.apetrei.misc.Vector2 : cameraPosition
   com.apetrei.engine.renderer.LayerRenderer o-- com.apetrei.engine.renderer.Camera : camera
   com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.renderer.Camera : camera
-  com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.GameContainer : gameContainer
   com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.renderer.LayerRenderer : layerRenderer
+  com.apetrei.engine.renderer.Renderer o-- com.apetrei.engine.renderer.TextRenderer : textRenderer
   com.apetrei.engine.scenes.GameplayScene .up.|> com.apetrei.engine.scenes.Scene
+  com.apetrei.engine.scenes.GameplayScene o-- com.apetrei.engine.objects.ObjectBuilder : ob
+  com.apetrei.engine.scenes.LevelMenuScene .up.|> com.apetrei.engine.scenes.Scene
   com.apetrei.engine.scenes.MainMenuScene .up.|> com.apetrei.engine.scenes.Scene
-  com.apetrei.misc.AABB o-- com.apetrei.misc.Vector2 : halfSize
-  com.apetrei.misc.AABB o-- com.apetrei.misc.Vector2 : position
-  com.apetrei.misc.AABB o-- com.apetrei.misc.Vector2 : size
-  com.apetrei.misc.ConvexPolygon2D .up.|> java.io.Serializable
-  com.apetrei.misc.Line .up.|> java.io.Serializable
-  com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : A
-  com.apetrei.misc.Line o-- com.apetrei.misc.Vector2 : B
-  com.apetrei.misc.Vector2 .up.|> java.io.Serializable
+  com.apetrei.engine.scenes.SettingsScene .up.|> com.apetrei.engine.scenes.Scene
+  com.apetrei.engine.scenes.levels.Level1 -up-|> com.apetrei.engine.scenes.GameplayScene
+  com.apetrei.engine.scenes.levels.Level2 -up-|> com.apetrei.engine.scenes.GameplayScene
+  com.apetrei.engine.scenes.levels.Level3 -up-|> com.apetrei.engine.scenes.GameplayScene
+  com.apetrei.engine.scenes.levels.Level4 -up-|> com.apetrei.engine.scenes.GameplayScene
+
 
 
 right footer

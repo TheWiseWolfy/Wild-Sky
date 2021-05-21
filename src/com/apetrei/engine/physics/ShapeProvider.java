@@ -72,4 +72,17 @@ public class ShapeProvider {
 
         return new ConvexPolygon2D(shape);
     }
+
+    public static ConvexPolygon2D getBaloonCollider(){
+        List<Vector2>  shape = new ArrayList<Vector2>();
+
+        shape.add(new Vector2(-40, 30));
+        shape.add(new Vector2(50, 30));
+        shape.add(new Vector2(50, -60));
+        shape.add(new Vector2(-40, -60));
+
+        return new ConvexPolygon2D(shape);
+    }
+
+
 }

@@ -80,15 +80,18 @@ public class TurretComponent extends Component{
         //COLLIDER
         ConvexPolygon2D polygon = new ConvexPolygon2D(ShapeProvider.getProjectileCollider());
         Collider2D projectileCollider = new ConvexCollider(true, polygon, (Collider2D collider) -> {
-            if ( hitCondition(collider) ) {
-                if (collider.parent.hasComponent(HealthInterface.class)) {
+            //In cazul in care intram in coliziune cu orice
+            if ( hitCondition(collider) ) {  //Daca obiectul nu e alt proiectil,nu e obiectul care il trage sau nu e imun la proectile
+                if (collider.parent.hasComponent(HealthInterface.class)) {  //Daca inplmenenteaza interfata HealthInterface
                     try {
+                        //Recupereazo si scade 10 unitati de viata
                         HealthInterface enemy = (HealthInterface) collider.parent.getComponent(HealthInterface.class);
                         enemy.substactHealth(10);
                     } catch (ComponentMissingException e) {
                         e.printStackTrace();
                     }
                 }
+                //Daca proiectilul loveste un obiect valid, o sa se autodistruga.
                 projectile.kill();
             }
         });

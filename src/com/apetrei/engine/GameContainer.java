@@ -40,8 +40,6 @@ public class GameContainer implements Runnable {
     private boolean running = false;
 
     public GameContainer() {
-        DatabaseManager.getInstance().updateConfigClass();
-
         //Engine Initialization
         thread = new Thread(this);
         window = new Window();
@@ -57,6 +55,10 @@ public class GameContainer implements Runnable {
         objectManager.attachObserver(physicsSystem);
         objectManager.attachObserver(physicsSystem.getWindEffect() );
         objectManager.attachObserver(renderer.getCamera());
+
+        //Loading stuffs
+        DatabaseManager.getInstance().updateConfigClass();
+        ResourceLoader.getInstance();
 
         //Game Initialization
         MainMenuScene mainMenuScene = new MainMenuScene(this);
@@ -144,8 +146,8 @@ public class GameContainer implements Runnable {
     //_____________________SCENE_STACK_____________________
     public void close(){
         running = false;
-
     }
+
     public void goBack(){
         if(sceneStack.size() > 1) {
             popScene = true;

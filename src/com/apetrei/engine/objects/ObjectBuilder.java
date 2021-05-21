@@ -20,16 +20,20 @@ public class ObjectBuilder {
     public GameObject PlayerBuilder(){
 
         GameObject player = new GameObject(gameContainer);
+        //RIGIDBODY
         player.addComponent(new Rigidbody2D(plateToBuildAt, ConfigHandler.getPlayerMass() ));
+        //COLLIDER
         Collider2D collider = new ConvexCollider(false, ShapeProvider.getZepelinCollider() );
         player.addComponent(collider);
-
+        //TURRETCOMPONENT
         var turretComponent = new TurretComponent( ObjectTag.ally);
         turretComponent.setProjectileSpread(0.1f);
         player.addComponent( turretComponent );
 
+        //ANIMATOR
         var animator = new AnimatedSpriteComponent("Airship",12);
         player.addComponent(animator);
+        //PLAYER COMPONENT
         player.addComponent(new PlayerComponent());
 
         return  player;
@@ -79,8 +83,6 @@ public class ObjectBuilder {
         //
         return  enemy;
     }
-
-
 
     public  GameObject mediumEnemyBuilder(GameObject objective) {
 
@@ -141,7 +143,7 @@ public class ObjectBuilder {
         enemyComponent.setEnemyEnginePower(50);
         enemyAI ai = new enemyAI(enemyComponent,gameContainer );
         ai.setObjective( objective);
-        ai.setAttckDistance(400);
+        ai.setAttackDistance(400);
         ai.setAttackObjectiveRange(600);
         enemyComponent.setAi(ai);
         enemy.addComponent(enemyComponent);
@@ -149,7 +151,18 @@ public class ObjectBuilder {
         return  enemy;
     }
 
+    public GameObject baloonDecoration(){
+        GameObject object = new GameObject(gameContainer);
+        object.addComponent(new Rigidbody2D(plateToBuildAt, 0));
+       // object.addTag(ObjectTag.ignoreProjectile);
+        Collider2D colider = new ConvexCollider(false, ShapeProvider.getBaloonCollider());
+        object.addComponent(colider);
+        BackgroundSprite sprite = new BackgroundSprite("Ponton.png");
+        sprite.setSpriteScale(0.35f);
+        object.addComponent(sprite);
 
+       return object;
+    }
 
     //__________________________________PROJECTILE___________________
 

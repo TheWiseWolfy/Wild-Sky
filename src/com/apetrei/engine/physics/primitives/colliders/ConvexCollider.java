@@ -22,7 +22,6 @@ public class ConvexCollider extends Collider2D {
         this.collider = new ConvexPolygon2D(poligon);
     }
 
-
     public ConvexCollider(boolean isTrigger, ConvexPolygon2D poligon){
         super(isTrigger);
         this.collider = new ConvexPolygon2D(poligon);

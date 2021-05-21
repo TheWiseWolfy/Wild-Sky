@@ -25,8 +25,6 @@ public abstract class Collider2D extends Component {
         super();
         this.isTrigger = isTrigger;
         this.command = command;
-
-
     }
 
     @Override
@@ -40,15 +38,15 @@ public abstract class Collider2D extends Component {
     }
 
     @Override
-   abstract public void componentUpdate(double fT);
+    abstract public void componentUpdate(double fT);
     @Override
-   abstract public void componentRender();
+    abstract public void componentRender();
 
-     public void onCollision(Collider2D collided){
-         if(command != null) {
-             command.execute(collided);
-         }
-     }
+    public void onCollision(Collider2D collided){
+        if(command != null) {
+            command.execute(collided);
+        }
+    }
 
     public boolean isColliderTrigger(){
         return isTrigger;

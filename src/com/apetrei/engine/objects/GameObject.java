@@ -19,7 +19,6 @@ import java.util.TreeSet;
 public class GameObject implements Serializable {
 
     Set<ObjectTag> tags = new TreeSet<ObjectTag>();
-
     //protected LinkedList<GameObject> children;
     HashMap<String, Component> components;
 
@@ -38,7 +37,6 @@ public class GameObject implements Serializable {
     //_______________________________COMPONENT SYSTEM_____________
 
     public Component getComponent(Class desiredClass) throws ComponentMissingException {
-
         Component newComponent = components.get(desiredClass.getSimpleName());
 
         // -Daca ceri un obiect, si acesta este prezent, iti va fi returnat.
@@ -66,9 +64,7 @@ public class GameObject implements Serializable {
 
     public boolean hasComponent(Class component){
         boolean isPresent =  components.containsKey( component.getSimpleName() );
-
         boolean childIsPresent = false;
-
         for(var entry : components.entrySet()) {
             var subclass = entry.getValue().getClass();
             if (component.isAssignableFrom(subclass ) ) {

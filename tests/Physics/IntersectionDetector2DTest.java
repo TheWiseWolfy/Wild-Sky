@@ -4,8 +4,8 @@ import com.apetrei.engine.physics.rigidbody.IntersectionDetector2D;
 import com.apetrei.misc.ConvexPolygon2D;
 import com.apetrei.misc.Line;
 import com.apetrei.misc.Vector2;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Assertions;
+//import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,13 +15,8 @@ import static junit.framework.TestCase.*;
 
 public class IntersectionDetector2DTest  {
 
-
-
-
-
-    @Test
+   //@Test
     public void GetIntersectionPoint_Test(){
-
 
         Vector2 A = new Vector2(10,10);
         Vector2 B = new Vector2(200,230);
@@ -32,13 +27,8 @@ public class IntersectionDetector2DTest  {
         Vector2 B1= new Vector2(100,0);
 
         Line line2 = new Line(A1,B1);
-
-
         Vector2 testVector= IntersectionDetector2D.GetIntersectionPoint(line1,line2);
 
-        assertNotNull(testVector );
+       assertNotNull(testVector );
     }
-
-
-
 }

@@ -5,6 +5,9 @@ import com.apetrei.engine.gui.UIElements.UIElement;
 import java.util.ArrayList;
 import java.util.List;
 
+/*!
+ * O clasa simpla care tine evidenta elementelor de UI si le updateaza constant.
+ */
 public class MenuManager {
 
     protected List<UIElement> uiElements = new ArrayList<UIElement>();
@@ -13,7 +16,6 @@ public class MenuManager {
 
     public MenuManager(GameContainer gameContainer){
         this.gameContainer = gameContainer;
-
     }
 
     public void addUIElement(UIElement uiElement){
@@ -24,18 +26,15 @@ public class MenuManager {
         uiElements.clear();
     }
 
-
     public void update(){
         for ( var element : uiElements) {
             element.update(gameContainer);
         }
-
     }
 
     public void draw(){
         for (var element : uiElements) {
             element.draw(gameContainer);
         }
-
     }
 }

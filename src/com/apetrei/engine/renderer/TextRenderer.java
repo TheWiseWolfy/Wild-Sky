@@ -48,15 +48,19 @@ public class TextRenderer {
         String[] words =string.split(" ");
         StringBuilder currentRow = new StringBuilder();
         StringBuilder potentialCurrentRow = new StringBuilder();
+        Boolean nextRow = false;
 
         //Pentru fiecare cuvant din text.
         for( var word : words){
             //Adaugam cate un cuvand pe rand in stringBuilder
             potentialCurrentRow.append(word);
             potentialCurrentRow.append(" ");
+            if( word.contains("\n")){
+                nextRow = true;
+            }
 
             //Daca randul a devenim prea lung atunci afisam ce sa concatenat pana la cuvantul asta
-            if( fontMetrics.stringWidth(  potentialCurrentRow.toString()  ) + 50> maxRowLenght ){
+            if( fontMetrics.stringWidth(  potentialCurrentRow.toString()  ) + 50> maxRowLenght || nextRow){
                 //We draw the current row
                 graphics.drawString(currentRow.toString(), (int) textPoz.x, (int) textPoz.y);
                 //Desenam cu un rand mai jos acum.
@@ -67,6 +71,8 @@ public class TextRenderer {
                 potentialCurrentRow.setLength(0);
                 currentRow.append(word);
                 currentRow.append(" ");
+
+                nextRow = false;
             }else {
                 //Daca nu am trecut inca peste limita, adaugam cuvantul verificat la rand
                 currentRow.append(word);

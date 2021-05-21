@@ -47,7 +47,7 @@ public class Level3 extends GameplayScene {
         if( gameContainer.getGlobalEventQueue().checkCurrentEvent() == GlobalEvent.OBJECTIVE_DAMAGED && !hasHappened.contains(GlobalEvent.OBJECTIVE_DAMAGED )){
             hasHappened.add(GlobalEvent.OBJECTIVE_DAMAGED  );
 
-            line = "Ne ataca! O să regreti că ai pus piciorul pe pamand Austriac. Doborati intrusul!";
+            line = "Ne atacă! O să regreți că ai pus piciorul pe pămând Austriac. Doborați intrusul!";
             playDialogue(line, "3_2_W.wav", 2);
             line = "Singurul lucru pe care il regret e că nu l-am atacat mai devreme.";
             playDialogue(line, "3_2_I.wav", 0);
@@ -59,7 +59,7 @@ public class Level3 extends GameplayScene {
 
             if(  !hasHappened.contains(GlobalEvent.LEVEL3_COMPLETED )) {
                 hasHappened.add(GlobalEvent.LEVEL3_COMPLETED );
-                line = " Inacceptabil ! Chiar trebuie să fac eu totul ?";
+                line = " Inacceptabil! Chiar trebuie să fac eu totul ?";
                 playDialogue(line, "3_3_W.wav", 2);
             }
         }

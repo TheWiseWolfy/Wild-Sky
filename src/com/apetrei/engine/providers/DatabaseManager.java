@@ -59,8 +59,8 @@ public class DatabaseManager {
             ResultSet resultSet = statement.executeQuery( sql_command );
 
             return  resultSet.getFloat(collumnName);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         throw new ValueNotFoundException("collumnName");
     }
@@ -71,8 +71,8 @@ public class DatabaseManager {
             ResultSet resultSet = statement.executeQuery( sql_command );;
 
             return  resultSet.getInt(collumnName);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         throw new ValueNotFoundException("collumnName");
     }
@@ -124,16 +124,20 @@ public class DatabaseManager {
             //Settings
             ConfigHandler.setSoundVolume( recoverFloat("VOLUME","SETTINGS") );
             ConfigHandler.setMusicVolume( recoverFloat("MUSICVOLUME","SETTINGS") );
+        } catch (ValueNotFoundException e) {
 
-            //Game state
+            e.printStackTrace();
+        }
+
+        //Game state
+        try {
             ConfigHandler.setCurrentLevel( recoverInt("CURRENT_LEVEL","GAME_STATE") );
             ConfigHandler.setScore( recoverInt("SCORE","GAME_STATE") );
-
         } catch (ValueNotFoundException e) {
+            resetGameState();
             e.printStackTrace();
         }
     }
-
 
     //____________________________________SINGLETON___________________
     static public DatabaseManager getInstance(){

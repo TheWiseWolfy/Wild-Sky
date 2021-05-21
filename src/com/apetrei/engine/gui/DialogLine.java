@@ -1,5 +1,9 @@
 package com.apetrei.engine.gui;
 
+
+/*!
+ * O clasa care e folosita pentru toate liniile de dialog din joc.
+ */
 public class DialogLine {
     public String dialogLine = "";
     public String audioFile = "";

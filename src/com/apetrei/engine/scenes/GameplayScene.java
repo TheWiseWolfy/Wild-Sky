@@ -119,21 +119,21 @@ public abstract class GameplayScene implements Scene {
 
         //MENU BUTTON
         Vector2 button2Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 -100);
-        Button button2 =  Button.makeButton("Continue",button2Poz, 0.3f, () -> {
+        Button button2 =  Button.makeButton("Continua",button2Poz, 0.3f, () -> {
             paused = false;
         });
 
         //MENU BUTTON
-        Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
-        Button button1 = Button.makeButton("Menu",button1Poz, 0.3f, () -> {
+        Vector2 button1Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
+        Button button1 = Button.makeButton("Meniu",button1Poz, 0.3f, () -> {
             gameContainer.goBack();
             SoundManager.getInstance().stopAllSound();
 
         });
 
         //SETTINGS BUTTON
-        Vector2 button3Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 + 100);
-        Button button3 = Button.makeButton("Settings",button3Poz, 0.3f, () -> {
+        Vector2 button3Poz = new Vector2(ConfigHandler.getWidth() / 2, ConfigHandler.getHeight() / 2 );
+        Button button3 = Button.makeButton("Setari",button3Poz, 0.3f, () -> {
             gameContainer.goTo(new SettingsScene(gameContainer));
             paused = false;
         });

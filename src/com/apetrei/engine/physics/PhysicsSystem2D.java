@@ -9,7 +9,6 @@ import com.apetrei.misc.Vector2;
 import com.apetrei.misc.exceptions.ComponentMissingException;
 import com.apetrei.misc.observer.ObjectManagerObserver;
 import com.apetrei.engine.GameContainer;
-import org.testng.internal.collections.Pair;
 
 import java.util.*;
 
@@ -29,7 +28,7 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
     private List<Rigidbody2D> bodies2;
     private List<CollisionManifold> collisions;
 
-    Set<Pair<Integer, Integer>> activeCollisions = new HashSet<>();
+    Set<AbstractMap.SimpleEntry<Integer, Integer>> activeCollisions = new HashSet<>();
 
     WindEffect windEffect;
 
@@ -72,13 +71,10 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
                 if (c1 != null && c2 != null) {
                     result = Collisions.findCollisionFeatures(c1, c2);
                 }
-
                 if (result != null && result.isColliding()) {
-
-
-                    if (!activeCollisions.contains( new Pair<Integer,Integer>(i,j) )) {
-                        activeCollisions.add(new Pair<Integer,Integer>(i, j));
-
+                    if (!activeCollisions.contains( new AbstractMap.SimpleEntry<Integer,Integer>(i,j) )) {
+                        activeCollisions.add(new AbstractMap.SimpleEntry<Integer,Integer>(i, j));
+                        //c1 si c2 sunt cele 2 obiecte in coliziune
                         c1.onCollision(c2);
                         c2.onCollision(c1);
                     }
@@ -89,7 +85,7 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
                     }
 
                 }else {
-                    activeCollisions.remove( new Pair<Integer,Integer>(i,j) );
+                    activeCollisions.remove( new AbstractMap.SimpleEntry<Integer,Integer>(i,j) );
                 }
             }
         }
@@ -155,7 +151,7 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
     }
 
     public void resetPhysicsSystem() {
-        this.colliders.clear();
+       // this.colliders.clear();
     }
 
     //_______________________________________GETTERS_______________________
@@ -168,7 +164,6 @@ public class PhysicsSystem2D implements ObjectManagerObserver {
 
     @Override
     public void newObjectUpdate(GameObject created) {
-
         if( created.hasComponent(Collider2D.class)){
             try {
                 addCollider( (Collider2D) created.getComponent( Collider2D.class));
