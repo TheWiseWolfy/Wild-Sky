@@ -1,3 +1,7 @@
+
+<img src="https://imgur.com/Q4nkRHR"  width="800"  />
+
+
 W , S - deplasare fata spate
 A , D - intoarcere la stanga dreapta
 
