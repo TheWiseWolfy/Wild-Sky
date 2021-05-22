@@ -1,5 +1,5 @@
 
-<img src="https://imgur.com/Q4nkRHR"  width="800"  />
+<img src="https://i.imgur.com/Q4nkRHR.png"  width="800"  />
 
 
 W , S - deplasare fata spate
