@@ -1,11 +1,6 @@
 
+<img src="https://i.imgur.com/Q4nkRHR.png"  width="800"  />
 
-W , S - deplasare fata spate
-A , D - intoarcere la stanga dreapta
+Gameplay:
 
-SPACE - tragi cu un proiectil spre pozitia mouse-ului 
-SHIFT - Cobori velele pentru viteza mai buna si viteza de rotatie mai mica + afecteaza interactiunea cu vantul.
-
-Esc - Navigare / Inapoi
-
-F1 - Debug Mode
+The player has to control an airship and make his way across 4 campaign missions. The dialogue is voiced and the 4 missions have distict objectives. You can select a mission you unlocked from the map menu. Each mission has a diffrent objective, a diffrent map and each contains 3 types of enemies with diffrent behaviours. The airship can slowly change direction and speed, has to rely on the wind for extra speed and colides with objects in it's path. Ther's some other small mechanics.
